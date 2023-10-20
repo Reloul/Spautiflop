@@ -1,4 +1,4 @@
-package com.project.jee.Spautiflop;
+package com.project.jee.spautiflop;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
