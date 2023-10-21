@@ -1,5 +1,6 @@
 package com.project.jee.spautiflop.vue.model;
 
+import jakarta.persistence.Lob;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.multipart.MultipartFile;
@@ -9,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class UserRegistrationBody {
   private String pseudo;
   private String password;
-  //private MultipartFile photo;
-  private String image;
+
+  private MultipartFile photo;
+
 }
