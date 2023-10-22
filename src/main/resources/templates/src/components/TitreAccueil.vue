@@ -1,7 +1,10 @@
 <template>
     <div id="header">
         <h1 id="TitreSite">Spautiflop</h1>
-        <h3><a href="#">Sign Up</a> / <a href="#">Login</a></h3>
+        <h3>
+            <router-link to="/inscription">Sign Up</router-link> / 
+            <router-link to="/connexion">Login</router-link>
+        </h3>
     </div>
 </template>
 
