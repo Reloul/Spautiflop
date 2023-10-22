@@ -16,6 +16,7 @@ public class UserService {
 
   private final UserRepository userRepository;
   private final String pathDirectory = System.getProperty("user.dir") + "/src/main/resources/static/images/";
+  private final String defaultPhoto = "default.png";
 
   public UserService(UserRepository userRepository) {
     this.userRepository = userRepository;
