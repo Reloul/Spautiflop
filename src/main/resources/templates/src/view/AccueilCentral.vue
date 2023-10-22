@@ -3,57 +3,27 @@
     <h1>Bienvenu sur Spautiflop, le (presque) premier site de streaming de musique !</h1>
     <hr>
     <h2>Découvrez un large choix de musique et faites vos propres Playlist</h2>
-    <div id="CardDiapo">
-        <swiper :slides-per-view="3" :space-between="50" v-bind:navigation="true" :pagination="true" :scrollbar="true" @progress="onProgress" @swiper="onSwiper" @slideChange="onSlideChange">
-            <swiper-slide><CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" :imgL="imgL"/></swiper-slide>
-            <swiper-slide><CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" :imgL="imgL"/></swiper-slide>
-            <swiper-slide><CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" :imgL="imgL"/></swiper-slide>
-            <swiper-slide><CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" :imgL="imgL"/></swiper-slide>
-            <swiper-slide><CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" :imgL="imgL"/></swiper-slide>
-            <swiper-slide><CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" :imgL="imgL"/></swiper-slide>
-            <swiper-slide><CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" :imgL="imgL"/></swiper-slide>
-
-        </swiper> 
-
-    </div>
+    <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" :imgL="imgL"/>
   </div>
 </template>
 
 <script>
 import CarteMusique from '../components/CarteMusique.vue'
-import { Swiper, SwiperSlide } from 'swiper/vue';
-import SwiperCore, { Navigation, Pagination, Scrollbar, A11y } from 'swiper/core';
-import 'swiper/css';
-import 'swiper/css/navigation';
-import 'swiper/css/pagination';
-import 'swiper/css/scrollbar';
-
-SwiperCore.use([Navigation, Pagination, Scrollbar, A11y]);
-
-
 export default {
     name: 'AccueilCentral',
     components: {
         CarteMusique,
-        Swiper,
-        SwiperSlide,
     },
     data() {
         return{
-            img: require('../../../static/V4.jpg'),
+            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Bruce_McCandless_II_during_EVA_in_1984.jpg/1200px-Bruce_McCandless_II_during_EVA_in_1984.jpg',
             music: 'Moonless',
             artist: 'Fl3r',
-            nbLike: 8900,
-            isLike: true,
-            imgL: require('../../../static/heart.png'),
-            swiperOptions: {
-                navigation: true,
-                pagination: { clickable: true },
-                scrollbar: { draggable: true },
-            },
+            nbLike: '8900',
+            isLike: 'true',
+            imgL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f1/Heart_coraz%C3%B3n.svg/800px-Heart_coraz%C3%B3n.svg.png',
         }
-    },
-
+    }
 }
 </script>
 
@@ -61,7 +31,7 @@ export default {
     #Central{
         background-color: #3b4762;
         width: 70vw;
-        height: 600px;
+        height: 70vh;
         border-radius: 10px;
         text-align: center;
         margin:auto;
@@ -83,13 +53,4 @@ export default {
         margin-top: 8vh;
         margin-bottom: 5vh;
     }
-    #CardDiapo{
-        background-color: red;
-        margin-top: 50px;
-        margin-right: 5vw;
-        margin-left: 5vw;
-    }
-
-    
-   
 </style>
