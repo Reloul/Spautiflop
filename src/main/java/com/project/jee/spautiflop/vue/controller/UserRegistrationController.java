@@ -2,6 +2,8 @@ package com.project.jee.spautiflop.vue.controller;
 
 import com.project.jee.spautiflop.exception.UserAlreadyExistsException;
 import com.project.jee.spautiflop.service.UserService;
+import com.project.jee.spautiflop.vue.model.UserLoginBody;
+import com.project.jee.spautiflop.vue.model.UserLoginResponse;
 import com.project.jee.spautiflop.vue.model.UserRegistrationBody;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.validation.Valid;
@@ -31,6 +33,18 @@ public class UserRegistrationController {
     } catch (IOException e) {
       System.out.println(e.getMessage());
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    }
+  }
+
+  @PostMapping( "/login")
+  public ResponseEntity<UserLoginResponse> loginUser(@Valid @RequestBody UserLoginBody userLoginBody) {
+    String jsonWebToken = this.userService.loginUser(userLoginBody);
+
+    if(jsonWebToken == null)
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    else {
+      UserLoginResponse userLoginResponse = new UserLoginResponse(jsonWebToken);
+      return ResponseEntity.ok(userLoginResponse);
     }
   }
 }
