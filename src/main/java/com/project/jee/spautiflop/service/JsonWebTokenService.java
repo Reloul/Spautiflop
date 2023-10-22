@@ -1,5 +1,6 @@
 package com.project.jee.spautiflop.service;
 
+import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Value;
@@ -28,5 +29,9 @@ public class JsonWebTokenService {
       .withClaim(USERNAME_KEY, pseudo)
       .withExpiresAt(new java.util.Date(System.currentTimeMillis() + expirationTimeInSecs * 1000))
       .sign(algorithm);
+  }
+
+  public String getPseudoFromToken(String token) {
+    return JWT.decode(token).getClaim(USERNAME_KEY).asString();
   }
 }

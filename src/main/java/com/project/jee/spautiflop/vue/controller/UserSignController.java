@@ -1,25 +1,26 @@
 package com.project.jee.spautiflop.vue.controller;
 
 import com.project.jee.spautiflop.exception.UserAlreadyExistsException;
+import com.project.jee.spautiflop.model.LocalUser;
 import com.project.jee.spautiflop.service.UserService;
 import com.project.jee.spautiflop.vue.model.UserLoginBody;
 import com.project.jee.spautiflop.vue.model.UserLoginResponse;
 import com.project.jee.spautiflop.vue.model.UserRegistrationBody;
-import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
 @RestController
 @RequestMapping("/auth")
-public class UserRegistrationController {
+public class UserSignController {
 
   private final UserService userService;
 
-  public UserRegistrationController(UserService userService)
+  public UserSignController(UserService userService)
   {
     this.userService = userService;
   }
@@ -46,5 +47,11 @@ public class UserRegistrationController {
       UserLoginResponse userLoginResponse = new UserLoginResponse(jsonWebToken);
       return ResponseEntity.ok(userLoginResponse);
     }
+  }
+
+
+  @GetMapping("/me")
+  public LocalUser GetLoggedUser(@AuthenticationPrincipal LocalUser user) {
+    return user;
   }
 }
