@@ -9,7 +9,11 @@
   },
   "dependencies": {
     "core-js": "^3.8.3",
+    "ionicons": "^4.6.3",
+    "mdi": "^2.2.43",
+    "swiper": "^10.3.1",
     "vue": "^3.2.13",
+    "vue-ionicons": "^3.0.5",
     "vuetify": "^3.3.22"
   },
   "devDependencies": {
