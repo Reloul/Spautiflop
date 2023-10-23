@@ -16,5 +16,5 @@ public class ArtistRegisterBody {
   @Size(min = 3, max = 250)
   private String name;
 
-  private MultipartFile photo;
+  private MultipartFile cover;
 }

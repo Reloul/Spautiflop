@@ -13,10 +13,14 @@ public class FileService {
   private final String REFACTOR_PATH = "../../../static/";
   private final String PATH_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/";
   private final static String DEFAULT_IMAGE = "images/default.png";
+  private final static String DEFAULT_PROFILE = "profiles/default.png";
+  private final static String DEFAULT_ALBUM = "album/default.png";
 
   public String DEFAULT_IMAGE() {
     return REFACTOR_PATH + DEFAULT_IMAGE;
   }
+  public String DEFAULT_PROFILE() {return REFACTOR_PATH + DEFAULT_PROFILE;}
+  public String DEFAULT_ALBUM() {return REFACTOR_PATH + DEFAULT_ALBUM;}
   public String uploadImage(MultipartFile image) throws IOException {
     /* If no photo is provided, set the default one */
     if (image == null || image.isEmpty()) {
@@ -58,8 +62,8 @@ public class FileService {
     }
 
     /* If a music is provided, check if it is a music and save it */
-    else if (music.getContentType() == null || music.getContentType().startsWith("audio/") || !ImageIO.read(music.getInputStream()).getClass().getSimpleName().equals("BufferedImage"))
-      throw new IOException("File is not an audio");
+    else if (music.getContentType() == null || !music.getContentType().startsWith("audio/"))
+      throw new IOException("File is not an audio, it's type : " + music.getContentType());
 
     else {
       String filePath = PATH_DIRECTORY + "musics/" + String.valueOf(System.currentTimeMillis()) + music.getOriginalFilename();

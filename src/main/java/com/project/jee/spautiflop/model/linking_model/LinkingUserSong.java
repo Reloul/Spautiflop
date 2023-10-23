@@ -1,41 +1,31 @@
-package com.project.jee.spautiflop.model;
+package com.project.jee.spautiflop.model.linking_model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.jee.spautiflop.model.LocalUser;
+import com.project.jee.spautiflop.model.Song;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 @Getter
 @Setter
 @Entity
-@Table(name = "album")
-public class Album {
+@Table(name = "linking_user_song")
+public class LinkingUserSong {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "id", nullable = false)
   private Long id;
 
-  @Column(name = "name", nullable = false)
-  private String name;
-
-  @Column(name = "image")
-  private String image;
-
-  @Column(name = "release", nullable = false)
-  private String release;
-
-  @OneToMany(mappedBy = "album", orphanRemoval = true)
-  private List<Song> songs = new ArrayList<>();
+  @ManyToOne
+  @JoinColumn(name = "local_user_id")
+  private LocalUser localUser;
 
   @ManyToOne(optional = false)
-  @JoinColumn(name = "artist_id", nullable = false)
-  private Artist artist;
+  @JoinColumn(name = "song_id", nullable = false)
+  private Song song;
 
   @Override
   public final boolean equals(Object o) {
@@ -44,8 +34,8 @@ public class Album {
     Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
     Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
     if (thisEffectiveClass != oEffectiveClass) return false;
-    Album album = (Album) o;
-    return getId() != null && Objects.equals(getId(), album.getId());
+    LinkingUserSong that = (LinkingUserSong) o;
+    return getId() != null && Objects.equals(getId(), that.getId());
   }
 
   @Override

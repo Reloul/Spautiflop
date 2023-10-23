@@ -1,5 +1,6 @@
 package com.project.jee.spautiflop.service;
 
+import com.project.jee.spautiflop.exception.ArtistAlreadyExistsException;
 import com.project.jee.spautiflop.model.Album;
 import com.project.jee.spautiflop.model.Artist;
 import com.project.jee.spautiflop.model.Song;
@@ -7,6 +8,8 @@ import com.project.jee.spautiflop.model.repo.AlbumRepository;
 import com.project.jee.spautiflop.model.repo.ArtistRepository;
 import com.project.jee.spautiflop.model.repo.PlaylistRepository;
 import com.project.jee.spautiflop.model.repo.SongRepository;
+import com.project.jee.spautiflop.vue.model.AlbumRegisterBody;
+import com.project.jee.spautiflop.vue.model.ArtistRegisterBody;
 import com.project.jee.spautiflop.vue.model.SongRegistrationBody;
 import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
@@ -14,6 +17,8 @@ import org.springframework.stereotype.Service;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.net.UnknownHostException;
+import java.net.UnknownServiceException;
 import java.util.Optional;
 
 @Service
@@ -37,28 +42,34 @@ public class SongService {
     this.fileService = fileService;
   }
 
-  public Song registerSong(@Valid SongRegistrationBody songRegistrationBody) throws IOException, IllegalArgumentException{
-
+  public Song registerSong(@Valid SongRegistrationBody songRegistrationBody) throws IOException, IllegalArgumentException, ArtistAlreadyExistsException, UnknownServiceException
+  {
     Song song = new Song();
     song.setName(songRegistrationBody.getName());
 
-    if(songRegistrationBody.getArtist() != null)
-    {
-      Optional<Artist> opArtist = artistRepository.findByNameIgnoreCase(songRegistrationBody.getArtist());
-      /* if artist exists, add song to artist's list of songs
-       * else, create artist and add song to artist's list of songs
-       */
-      Artist artist;
-      if( opArtist.isPresent() ) {
-        artist = opArtist.get();
-      } else {
-        artist = artistService.registerArtist(songRegistrationBody.getArtist());
+    Optional<Artist> opArtist = artistRepository.findByNameIgnoreCase(songRegistrationBody.getArtist());
+    /* if artist exists, add song to artist's list of songs
+      * else, create artist and add song to artist's list of songs
+      */
+    Artist artist;
+    if( opArtist.isPresent() ) {
+      artist = opArtist.get();
+    } else {
+      ArtistRegisterBody artistRegisterBody = new ArtistRegisterBody();
+      artistRegisterBody.setName(songRegistrationBody.getArtist());
+      try {
+        artist = artistService.registerArtist(artistRegisterBody);
+      } catch (IOException e) {
+        throw new IOException(e.getMessage() + " : invalid image file in artist registration");
+      } catch (ArtistAlreadyExistsException e) {
+        throw new ArtistAlreadyExistsException(e.getMessage() + " : invalid artist name in song registration");
       }
-
-      song.setArtist(artist);
-      artistService.addSongToArtist(artist, song);
     }
 
+    song.setArtist(artist);
+    artistService.addSongToArtist(artist, song);
+
+    /* if an album is given */
     if(songRegistrationBody.getAlbum() != null)
     {
       Optional<Album> opAlbum = albumRepository.findByNameIgnoreCase(songRegistrationBody.getAlbum());
@@ -69,25 +80,56 @@ public class SongService {
       if( opAlbum.isPresent() ) {
         album = opAlbum.get();
       } else {
-        album = albumService.registerAlbum(songRegistrationBody.getAlbum());
+        AlbumRegisterBody albumRegisterBody = new AlbumRegisterBody();
+        albumRegisterBody.setName(songRegistrationBody.getAlbum());
+        albumRegisterBody.setCover(songRegistrationBody.getCover());
+        albumRegisterBody.setArtist(song.getArtist().getName());
+        try {
+          album = albumService.registerAlbum(albumRegisterBody);
+        } catch (Exception e) {
+          throw new UnknownServiceException(e.getMessage() + " : in song registration : album registration failed abnormally");
+        }
       }
 
       song.setAlbum(album);
       albumService.addSongToAlbum(album, song);
     }
 
+    /* else it's an single album => it take the name of the song */
+    else {
+      AlbumRegisterBody albumRegisterBody = new AlbumRegisterBody();
+      albumRegisterBody.setName(song.getName());
+      albumRegisterBody.setCover(songRegistrationBody.getCover());
+      albumRegisterBody.setArtist(song.getArtist().getName());
+
+      try {
+        Album album = albumService.registerAlbum(albumRegisterBody);
+        song.setAlbum(album);
+        albumService.addSongToAlbum(album, song);
+      } catch (IOException e) {
+        throw new IOException(e.getMessage() + " : invalid image file in album registration");
+      }
+    }
+
+    song.setGenre("");
     if(songRegistrationBody.getGenre() != null)
       song.setGenre(songRegistrationBody.getGenre());
 
     song.setNbLikes(new Long(0));
 
-    /* If a photo is provided, check if it is an image and save it */
+    /* If a audio is provided, check if it is an image and save it */
     try{
       song.setMusicLink(fileService.uploadMusic(songRegistrationBody.getMusic()));
     } catch (IOException e) {
-      throw new IOException("Error while saving photo  : " + e.getMessage());
+      throw new IOException("Error while saving video  : " + e.getMessage());
     } catch (IllegalArgumentException e) {
       throw new IllegalArgumentException("No music provided");
+    }
+
+    try {
+      song.setImage(fileService.uploadImage(songRegistrationBody.getCover()));
+    } catch (Exception e) {
+      song.setImage(fileService.DEFAULT_ALBUM());
     }
 
     return songRepository.save(song);
@@ -104,4 +146,22 @@ public class SongService {
     song.setAlbum(album);
     songRepository.save(song);
   }
+
+  public Song getSong(long id) throws IllegalArgumentException {
+    Optional<Song> opSong = this.songRepository.findById(id);
+    if(opSong.isPresent())
+      return opSong.get();
+    else
+      throw new IllegalArgumentException("Song not found");
+  }/*
+
+  public void addLike(Song song) {
+    song.setNbLikes(song.getNbLikes() + 1);
+    this.songRepository.save(song);
+  }
+
+  public void removeLike(Song song) {
+    song.setNbLikes(song.getNbLikes() - 1);
+    this.songRepository.save(song);
+  }*/
 }

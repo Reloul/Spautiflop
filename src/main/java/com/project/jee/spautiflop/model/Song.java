@@ -1,11 +1,15 @@
 package com.project.jee.spautiflop.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.jee.spautiflop.model.linking_model.LinkingUserSong;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -33,26 +37,15 @@ public class Song {
   private String musicLink;
 
   @ManyToOne
-  @JoinColumn(name = "album_id", unique = true)
+  @JoinColumn(name = "album_id")
+  @JsonIgnore
   private Album album;
 
   @ManyToOne
   @JoinColumn(name = "artist_id")
   private Artist artist;
 
-  @Override
-  public final boolean equals(Object o) {
-    if (this == o) return true;
-    if (o == null) return false;
-    Class<?> oEffectiveClass = o instanceof HibernateProxy ? ((HibernateProxy) o).getHibernateLazyInitializer().getPersistentClass() : o.getClass();
-    Class<?> thisEffectiveClass = this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass() : this.getClass();
-    if (thisEffectiveClass != oEffectiveClass) return false;
-    Song song = (Song) o;
-    return getId() != null && Objects.equals(getId(), song.getId());
-  }
+  @OneToMany(mappedBy = "song", orphanRemoval = true)
+  private Set<LinkingUserSong> linkingUserSongs = new LinkedHashSet<>();
 
-  @Override
-  public final int hashCode() {
-    return this instanceof HibernateProxy ? ((HibernateProxy) this).getHibernateLazyInitializer().getPersistentClass().hashCode() : getClass().hashCode();
-  }
 }

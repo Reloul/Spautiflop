@@ -1,10 +1,11 @@
 package com.project.jee.spautiflop.vue.controller;
 
+import com.project.jee.spautiflop.exception.ArtistAlreadyExistsException;
+import com.project.jee.spautiflop.model.Artist;
 import com.project.jee.spautiflop.model.LocalUser;
-import com.project.jee.spautiflop.model.Song;
+import com.project.jee.spautiflop.service.ArtistService;
 import com.project.jee.spautiflop.service.FileService;
-import com.project.jee.spautiflop.service.SongService;
-import com.project.jee.spautiflop.vue.model.SongRegistrationBody;
+import com.project.jee.spautiflop.vue.model.ArtistRegisterBody;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,25 +13,23 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.net.UnknownServiceException;
-import java.security.PublicKey;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/song")
-public class SongController {
+@RequestMapping("/api/artist")
+public class ArtistController {
 
-  private final SongService songService;
+  private final ArtistService artistService;
   private final FileService fileService;
 
-  public SongController(SongService songService, FileService fileService) {
-    this.songService = songService;
+  public ArtistController(ArtistService artistService, FileService fileService) {
+    this.artistService = artistService;
     this.fileService = fileService;
   }
-
   @PostMapping(value = "/add", consumes = {"multipart/form-data"})
-  public ResponseEntity<Object> GetLoggedUser(@AuthenticationPrincipal LocalUser user, @Valid @RequestBody @ModelAttribute SongRegistrationBody songRegistrationBody) {
+  public ResponseEntity<?> GetLoggedUser(@AuthenticationPrincipal LocalUser user, @Valid @RequestBody @ModelAttribute ArtistRegisterBody artistRegistrationBody) {
     try {
-      this.songService.registerSong(songRegistrationBody);
+      this.artistService.registerArtist(artistRegistrationBody);
       return ResponseEntity.ok().build();
     } catch (IllegalArgumentException e) {
       System.out.println(e.getMessage());
@@ -38,20 +37,22 @@ public class SongController {
     } catch (IOException e) {
       System.out.println(e.getMessage());
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    } catch (ArtistAlreadyExistsException e) {
+      System.out.println(e.getMessage());
+      return ResponseEntity.status(HttpStatus.CONFLICT).build();
+    }
+  }
+
+  @GetMapping(value = "/{id}")
+  public ResponseEntity<Artist> GetArtist(@PathVariable("id") @Valid @RequestBody @ModelAttribute Long id) {
+    try {
+      return ResponseEntity.ok(this.artistService.getArtist(id));
+    } catch (IllegalArgumentException e) {
+      System.out.println(e.getMessage());
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
     } catch (Exception e) {
       System.out.println(e.getMessage());
       return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
     }
   }
-
-  @GetMapping(value = "/{id}")
-  public ResponseEntity<Song> GetSong(@PathVariable("id") @Valid @RequestBody @ModelAttribute Long id) {
-    try {
-      return ResponseEntity.ok(this.songService.getSong(id));
-    } catch (IllegalArgumentException e) {
-      System.out.println(e.getMessage());
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
-  }
-
 }

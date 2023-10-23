@@ -1,6 +1,7 @@
 package com.project.jee.spautiflop.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.project.jee.spautiflop.model.linking_model.LinkingUserSong;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -31,14 +32,11 @@ public class LocalUser {
   private String password;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "user", cascade = {CascadeType.PERSIST, CascadeType.REMOVE}, orphanRemoval = true)
+  @OneToMany(mappedBy = "user", orphanRemoval = true)
   private List<Playlist> playlists = new ArrayList<>();
 
   @JsonIgnore
-  @ManyToMany
-  @JoinTable(name = "local_user_songs",
-          joinColumns = @JoinColumn(name = "localUser_id"),
-          inverseJoinColumns = @JoinColumn(name = "songs_id"))
-  private Set<Song> songsLiked = new LinkedHashSet<>();
+  @OneToMany(mappedBy = "localUser", orphanRemoval = true)
+  private List<LinkingUserSong> songLiked = new ArrayList<>();
 
 }
