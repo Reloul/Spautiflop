@@ -33,7 +33,7 @@ public class JsonWebTokenRequestFilter extends OncePerRequestFilter {
   /* what this method really do is to check if every request contains a token, and if it does, it will try to authenticate the user
    * by setting the authentication in the SecurityContext
    * to be fair, I don't really understand how it works, but it does, so I'm not gonna complain
-   * but now we can use the @AuthenticationPrincipal annotation in our controllers to get the current user
+   * but now we can use the @AuthenticationPrincipal annotation in our controllers to get the current user who made the request super fast yeah !
    * */
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
