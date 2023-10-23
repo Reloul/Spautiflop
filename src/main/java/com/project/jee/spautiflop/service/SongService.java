@@ -54,8 +54,9 @@ public class SongService {
       } else {
         artist = artistService.registerArtist(songRegistrationBody.getArtist());
       }
+
+      song.setArtist(artist);
       artistService.addSongToArtist(artist, song);
-      artistRepository.save(artist);
     }
 
     if(songRegistrationBody.getAlbum() != null)
@@ -70,8 +71,9 @@ public class SongService {
       } else {
         album = albumService.registerAlbum(songRegistrationBody.getAlbum());
       }
+
+      song.setAlbum(album);
       albumService.addSongToAlbum(album, song);
-      albumRepository.save(album);
     }
 
     if(songRegistrationBody.getGenre() != null)
@@ -80,13 +82,26 @@ public class SongService {
     song.setNbLikes(new Long(0));
 
     /* If a photo is provided, check if it is an image and save it */
-      try{
-        song.setMusicLink(fileService.uploadMusic(songRegistrationBody.getMusic()));
-      } catch (IOException e) {
-        throw new IOException("Error while saving photo  : " + e.getMessage());
-      } catch (IllegalArgumentException e) {
-        throw new IllegalArgumentException("No music provided");
-      }
+    try{
+      song.setMusicLink(fileService.uploadMusic(songRegistrationBody.getMusic()));
+    } catch (IOException e) {
+      throw new IOException("Error while saving photo  : " + e.getMessage());
+    } catch (IllegalArgumentException e) {
+      throw new IllegalArgumentException("No music provided");
+    }
 
+    return songRepository.save(song);
+  }
+
+  public void addArtistToSong(Song song, Artist artist)
+  {
+    song.setArtist(artist);
+    songRepository.save(song);
+  }
+
+  public void addAlbumToSong(Song song, Album album)
+  {
+    song.setAlbum(album);
+    songRepository.save(song);
   }
 }
