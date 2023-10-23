@@ -45,7 +45,5 @@ public class Song {
   @JoinColumn(name = "artist_id")
   private Artist artist;
 
-  @OneToMany(mappedBy = "song", orphanRemoval = true)
-  private Set<LinkingUserSong> linkingUserSongs = new LinkedHashSet<>();
 
 }

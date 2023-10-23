@@ -34,9 +34,4 @@ public class LocalUser {
   @JsonIgnore
   @OneToMany(mappedBy = "user", orphanRemoval = true)
   private List<Playlist> playlists = new ArrayList<>();
-
-  @JsonIgnore
-  @OneToMany(mappedBy = "localUser", orphanRemoval = true)
-  private List<LinkingUserSong> songLiked = new ArrayList<>();
-
 }

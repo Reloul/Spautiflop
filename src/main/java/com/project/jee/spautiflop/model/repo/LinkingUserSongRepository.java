@@ -8,9 +8,10 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface LinkingUserSongRepository extends CrudRepository<LinkingUserSong, Long> {
+  /*
   List<LinkingUserSong> findByLocalUser(LocalUser localUser);
 
   List<LinkingUserSong> findBySong(Song song);
-
+*/
 
 }
