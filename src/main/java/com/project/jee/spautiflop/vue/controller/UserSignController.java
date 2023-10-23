@@ -2,9 +2,11 @@ package com.project.jee.spautiflop.vue.controller;
 
 import com.project.jee.spautiflop.exception.UserAlreadyExistsException;
 import com.project.jee.spautiflop.model.LocalUser;
+import com.project.jee.spautiflop.service.FileService;
 import com.project.jee.spautiflop.service.UserService;
 import com.project.jee.spautiflop.vue.model.UserLoginBody;
 import com.project.jee.spautiflop.vue.model.UserLoginResponse;
+import com.project.jee.spautiflop.vue.model.UserProfile;
 import com.project.jee.spautiflop.vue.model.UserRegistrationBody;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -19,10 +21,12 @@ import java.io.IOException;
 public class UserSignController {
 
   private final UserService userService;
+  private final FileService fileService;
 
-  public UserSignController(UserService userService)
+  public UserSignController(UserService userService, FileService fileService)
   {
     this.userService = userService;
+    this.fileService = fileService;
   }
   @PostMapping(value = "/register", consumes = {"multipart/form-data"})
   public ResponseEntity<Object> registerUser(@Valid @RequestBody @ModelAttribute UserRegistrationBody userRegistrationBody) {
@@ -50,8 +54,14 @@ public class UserSignController {
   }
 
 
-  @GetMapping("/me")
+  @GetMapping( "/me")
   public LocalUser GetLoggedUser(@AuthenticationPrincipal LocalUser user) {
+    try {
+      user.setPhoto(fileService.retreiveImage(user.getPhoto()));
+    } catch (IOException e) {
+      System.out.println(e.getMessage());
+      user.setPhoto(fileService.DEFAULT_IMAGE());
+    }
     return user;
   }
 }

@@ -20,13 +20,12 @@ public class UserService {
   private final UserRepository userRepository;
   private final EncryptionService encryptionService;
   private final JsonWebTokenService JsonWebTokenService;
-  private final String pathDirectory = System.getProperty("user.dir") + "/src/main/resources/static/images/";
-  private static final String defaultPhoto = "default.png";
-
-  public UserService(UserRepository userRepository, EncryptionService encryptionService, JsonWebTokenService JsonWebTokenService) {
+  private final FileService fileService;
+  public UserService(UserRepository userRepository, EncryptionService encryptionService, JsonWebTokenService JsonWebTokenService, FileService fileService) {
     this.userRepository = userRepository;
     this.encryptionService = encryptionService;
     this.JsonWebTokenService = JsonWebTokenService;
+    this.fileService = fileService;
   }
 
   public LocalUser registerUser(@Valid UserRegistrationBody userRegistrationBody) throws UserAlreadyExistsException, IOException {
@@ -38,28 +37,11 @@ public class UserService {
     user.setPseudo(userRegistrationBody.getPseudo());
     user.setPassword(this.encryptionService.encryptPwd(userRegistrationBody.getPassword()));
 
-    /* If no photo is provided, set the default one */
-    if(userRegistrationBody.getPhoto() == null || userRegistrationBody.getPhoto().isEmpty())
-      user.setPhoto(pathDirectory +  defaultPhoto);
-
-    /* If a photo is provided, check if it is an image and save it */
-    else if(userRegistrationBody.getPhoto().getContentType() == null || !userRegistrationBody.getPhoto().getContentType().startsWith("image/") || !ImageIO.read(userRegistrationBody.getPhoto().getInputStream()).getClass().getSimpleName().equals("BufferedImage"))
-      throw new IOException("File is not an image");
-
-    else {
-      String filePath = this.pathDirectory + String.valueOf(System.currentTimeMillis()) + userRegistrationBody.getPhoto().getOriginalFilename();
-
-      if(filePath.length()>255)
-        throw new IOException("File name too long");
-
-      user.setPhoto(filePath);
-
-      System.out.println(pathDirectory);
-      try{
-        userRegistrationBody.getPhoto().transferTo(new File(filePath));
-      } catch (IOException e) {
-        throw new IOException("Error while saving photo  : " + e.getMessage());
-      }
+    try {
+      user.setPhoto(this.fileService.uploadImage(userRegistrationBody.getPhoto()));
+    } catch (IOException e) {
+      System.out.println(e.getMessage());
+      user.setPhoto(this.fileService.DEFAULT_IMAGE());
     }
 
     return this.userRepository.save(user);
@@ -76,4 +58,5 @@ public class UserService {
     }
     return null;
   }
+
 }
