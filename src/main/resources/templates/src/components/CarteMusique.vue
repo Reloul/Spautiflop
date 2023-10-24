@@ -6,12 +6,14 @@
     <div id="PresM">
         <p>{{ music }} - {{ artist }}</p>
     </div>
-    <div id="like">
-        {{ nbLike }}
-        <img :src="imgL" alt="Picture of like">
-    </div>
-    <div id="bouton">
-        <ion-icon name="play-circle-outline"></ion-icon>
+    <div id="bottomCard">
+        <div id="like">
+            {{ nbLike }}
+            <img :src="require('../assets/imgFolder/heart.png')" alt="Picture of like" :style="{ filter: isLike ? 'saturate(100%)':'saturate(0%)' }" >
+        </div>
+        <div id="button">
+            <a href="##"><v-icon icon="mdi-play" color="green"></v-icon></a>
+        </div>
     </div>
   </div>
 </template>
@@ -25,7 +27,6 @@ export default {
         artist: String,
         nbLike: Number,
         isLike: Boolean,
-        imgL: String,
     },
 }
 
