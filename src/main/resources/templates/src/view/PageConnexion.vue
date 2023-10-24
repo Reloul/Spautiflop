@@ -17,7 +17,7 @@
         <div id="input">
             <input type="submit" id="submit" value="Envoyer">
         </div>
-        <div id="sign-up"><a href="#">Sign-up</a></div>
+        <div id="sign-up"><router-link to="/inscription"> Sign Up </router-link></div>
     </div>
   </div>
 </template>

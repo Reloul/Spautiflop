@@ -34,7 +34,7 @@
                         </div>
                     </div>
                 </div>
-                <div id="sign-up"><a href="#">Login</a></div>
+                <div id="sign-up"><router-link to="/connexion"> Login </router-link></div>
             </form>
     </div>
   </div>
@@ -90,7 +90,7 @@ export default {
         margin-top: 10vh;
     }
     #input #profilPic{
-        width: 83px;
+        width: 98px;
         float: left;
     }
     input::file-selector-button{

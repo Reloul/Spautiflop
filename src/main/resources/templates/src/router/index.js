@@ -16,6 +16,11 @@ const routes = [
         path:'/inscription',
         name: 'Inscription',
         component: () => import(/* webpackChunkName: "inscription" */ '../view/PageInscription.vue' )
+    },
+    {
+        path:'/pagePricipale',
+        name:'pagePrincipale',
+        component: () => import(/* webpackChunkName: "pagePrincipale" */ '../view/PagePrincipale.vue')
     }
 ]
 
