@@ -26,13 +26,44 @@
             </div>
             <div id="sign-up"><router-link to="/inscription"> Inscription </router-link></div>
         </div>
+        <div id="input">
+            <input type="text" id="pseudonym">
+        </div>
+        <div id="label">
+            <label for="password">Mot de Passe</label>
+        </div>
+        <div id="input">
+            <input type="password" id="password">
+        </div>
+        <div id="input">
+            <input type="submit" id="submit" value="Envoyer">
+        </div>
+        <div id="sign-up"><router-link to="/inscription"> Sign Up </router-link></div>
+    </div>
+    <v-icon icon="mdi-chevron-left" color="red"></v-icon>
+    <v-btn @click="test">CLICK ME</v-btn>
     </form>
   </div>
 </template>
 
 <script>
+import { useQueryStore } from '../store/queryStore'
+
 export default {
     name : 'PageConnexion',
+    setup() {
+        const queryStore = useQueryStore();
+
+        const test = () => {
+            let formData = new FormData();
+            formData.append("pseudo", "test");
+            formData.append("password", "Password1");
+            queryStore.fetchPost("/auth/register","multipart/form-data" , formData );
+            console.log(queryStore.response);
+            console.log(queryStore.status);
+        }
+        return { test }
+    }
 }
 </script>
 
