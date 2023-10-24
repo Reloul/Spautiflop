@@ -1,10 +1,15 @@
 import {defineStore} from 'pinia'
+<<<<<<< HEAD
 import { API_URL as URL } from '@/util/global'
+=======
+import { API_URL } from '@/util/global'
+>>>>>>> 9a83f58 (starting to do some stuff on pinia)
 
 export const useQueryStore = defineStore( 'queryStore', {
   state: () => ({
     response: null,
     HttpCode: null,
+<<<<<<< HEAD
     jwt: null,
   }),
   actions: {
@@ -12,6 +17,11 @@ export const useQueryStore = defineStore( 'queryStore', {
     getHeaders() {
       return {"Authorization": `Bearer ${this.jwt}`}
     },
+=======
+  }),
+
+  actions: {
+>>>>>>> 9a83f58 (starting to do some stuff on pinia)
 
     setResponse(response) {
       this.response = response;
@@ -21,6 +31,7 @@ export const useQueryStore = defineStore( 'queryStore', {
       this.HttpCode = HttpCode;
     },
 
+<<<<<<< HEAD
     setJwt(jwt) {
       this.jwt = jwt;
     },
@@ -77,6 +88,31 @@ export const useQueryStore = defineStore( 'queryStore', {
       this.setHttpCode(response.status);
       this.setResponse(response.formData())
       return response.ok;
+=======
+    fetchPost(request, Content_Type = "application/json", body = null, requestType = "POST") {
+      return fetch(API_URL + request, {
+        method: requestType,
+        headers: {
+          "Content-Type": Content_Type,
+        },
+        body: body,
+      })
+      .then((response) => {
+        this.setHttpCode(response.status);
+        if (response.ok) {
+          return response.json();
+        }
+
+        throw new Error("Network response was not ok.");
+      })
+      .then((data) => {
+        this.setResponse(data);
+        return data;
+      })
+      .catch((error) => {
+        console.error("There has been a problem with your fetch operation:", error);
+      });
+>>>>>>> 9a83f58 (starting to do some stuff on pinia)
     }
   },
 });
