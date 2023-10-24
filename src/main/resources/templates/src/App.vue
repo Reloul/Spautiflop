@@ -1,14 +1,16 @@
 <template>
-  <PageAccueil />
+  <PageInscription />
 </template>
 
 <script>
-import PageAccueil from './view/PageAccueil.vue'
+//import PageAccueil from './view/PageAccueil.vue'
+import PageInscription from './view/PageInscription.vue'
+
 
 export default {
   name: 'App',
   components: {
-    PageAccueil,
+    PageInscription,
   }
 }
 </script>
