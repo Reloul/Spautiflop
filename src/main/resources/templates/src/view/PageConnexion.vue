@@ -36,6 +36,7 @@ export default {
         margin-top: 20vh;
         background-color: #3b4762;
         border-radius: 10px;
+        color: #A7BED3;
     }
     #connexion h1{
         padding-top: 10vh;
