@@ -41,8 +41,8 @@ public class UserSignController {
     }
   }
 
-  @PostMapping( "/login")
-  public ResponseEntity<UserLoginResponse> loginUser(@Valid @RequestBody UserLoginBody userLoginBody) {
+  @PostMapping( value = "/login", consumes = {"multipart/form-data"})
+  public ResponseEntity<UserLoginResponse> loginUser(@Valid @RequestBody @ModelAttribute UserLoginBody userLoginBody) {
     String jsonWebToken = this.userService.loginUser(userLoginBody);
 
     if(jsonWebToken == null)
