@@ -5,9 +5,13 @@ export const useQueryStore = defineStore( 'queryStore', {
   state: () => ({
     response: null,
     HttpCode: null,
+    jwt: null,
   }),
-
   actions: {
+
+    getHeaders() {
+      return {"Authorization": `Bearer ${this.jwt}`}
+    },
 
     setResponse(response) {
       this.response = response;
@@ -17,29 +21,54 @@ export const useQueryStore = defineStore( 'queryStore', {
       this.HttpCode = HttpCode;
     },
 
-    fetchPost(request, Content_Type = "application/json", body = null, requestType = "POST") {
-      return fetch(API_URL + request, {
-        method: requestType,
-        headers: {
-          "Content-Type": Content_Type,
-        },
-        body: body,
-      })
-      .then((response) => {
-        this.setHttpCode(response.status);
-        if (response.ok) {
-          return response.json();
-        }
+    setJwt(jwt) {
+      this.jwt = jwt;
+    },
 
-        throw new Error("Network response was not ok.");
-      })
-      .then((data) => {
-        this.setResponse(data);
-        return data;
-      })
-      .catch((error) => {
-        console.error("There has been a problem with your fetch operation:", error);
-      });
-    }
+    async registerUser(formData) {
+      const response =  await fetch(API_URL + "/auth/register", {method: "post",body: formData});
+      this.setHttpCode(response.status);
+      this.setResponse(null);
+      return response.ok      
+    },
+
+
+    async loginUser(pseudo, pwd) {
+      let formData = new FormData();
+      formData.append("pseudo", pseudo);
+      formData.append("password", pwd);
+
+      const response = await fetch(API_URL + "/auth/login", {method: "post",body: formData})
+      this.setHttpCode(response.status);
+      this.setResponse(null);
+
+      if(response.ok){
+        this.setResponse(JSON.stringify( await response.json()))
+        this.setJwt(await JSON.parse(this.response).jwt);
+        return true;
+      }
+
+      return false
+    },
+
+
+    async fetchJwtJson(request, body = null, method = "get") {
+      const response = await fetch(API_URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body});
+      this.setHttpCode(response.status);
+      this.setResponse(null);
+      if (response.ok) {
+        this.setResponse(await (response.json()));
+        return true;
+      }
+
+      return false;
+    },
+
+    async fetchJwt(request, body = null, method = "get") {
+      const response = await fetch(API_URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body}).
+      this.setHttpCode(response.status);
+      this.setResponse(null);
+      return response.ok;
+    },
   },
 });
