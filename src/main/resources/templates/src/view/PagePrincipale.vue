@@ -14,15 +14,25 @@
         </div>
     </div>
     <div id="main-content">
-        <input type="text">
+        <div id="top-main-content">
+            <SearchBar />
+            <UserTop />
+        </div>
     </div>
   </div>
 </template>
 
 <script>
 
+import UserTop from "../components/UserTop.vue";
+import SearchBar from "../components/SearchBar.vue";
+
 export default {
-    name: "PagePrincipale"
+    name: "PagePrincipale",
+    components : {
+        SearchBar,
+        UserTop,
+    },
 }
 </script>
 
@@ -89,14 +99,8 @@ export default {
         border-radius: 10px;
     }
 
-    #main-content input{
-        background-color: #b9d1db;
-        border-radius: 50px;
-        width: 40vw;
-        float: left;
-        margin-left: 50px;
-        margin-top: 20px;
-        padding: 5px;
+    #top-main-content{
+        display: flex;
     }
 
 </style>
