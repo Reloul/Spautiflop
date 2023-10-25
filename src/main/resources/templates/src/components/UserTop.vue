@@ -21,6 +21,7 @@ export default {
     #user-resume img{
         height: 70px;
         border-radius: 50%;
+        z-index: 3;
     }
 
     #user-resume{

@@ -40,6 +40,7 @@ export default {
         height: 217px;
         border-radius: 10px;
         color: #273043;
+        flex-basis: 200px;
     }
     #carteM #imgM img{
         margin-top: 2vh;
