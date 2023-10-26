@@ -1,11 +1,7 @@
 <template>
   <v-app>
     <v-main class="main">
-<<<<<<< HEAD
       <router-view/>
-=======
-      <PageConnexionVue />
->>>>>>> 01dcf40 (starting to do some stuff on pinia)
     </v-main>
   </v-app>
 </template>
