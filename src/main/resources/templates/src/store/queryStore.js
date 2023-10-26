@@ -1,9 +1,13 @@
 import {defineStore} from 'pinia'
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { API_URL as URL } from '@/util/global'
 =======
 import { API_URL } from '@/util/global'
 >>>>>>> 9a83f58 (starting to do some stuff on pinia)
+=======
+import { URL } from '@/util/global'
+>>>>>>> ff36a3a (register + login)
 
 export const useQueryStore = defineStore( 'queryStore', {
   state: () => ({
@@ -76,7 +80,11 @@ export const useQueryStore = defineStore( 'queryStore', {
     },
 
     async fetchJwt(request, body = null, method = "get") {
+<<<<<<< HEAD
       const response = await fetch(URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body});
+=======
+      const response = await fetch(URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body}).
+>>>>>>> ff36a3a (register + login)
       this.setHttpCode(response.status);
       this.setResponse(null);
       return response.ok;

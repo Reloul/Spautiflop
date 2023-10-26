@@ -181,4 +181,10 @@ export default {
 #main-progress{
     display: none;
 }
+    #submit{
+        background-color: #A7BED3;
+        color:#3b4762;
+        border: none;
+        padding: 5rem;
+    }
 </style>
