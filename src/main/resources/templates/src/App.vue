@@ -5,7 +5,6 @@
       <div>
         <SongProgress />
       </div>
->>>>>>> 4f2b384 (starting to do some stuff on pinia)
     </v-main>
   </v-app>
 </template>
