@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "deploy": "(vue-cli-service build && cd ../static && rm -fr css fonts js node_modules favicon.ico dist index.html && cd - && mv dist/* ../static )",
+    "deploy": "(vue-cli-service build && cd ../static && rm -fr img css fonts js node_modules favicon.ico dist index.html && cd - && mv dist/* ../static )",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
@@ -14,6 +14,7 @@
     "roboto-fontface": "*",
     "vue": "^3.2.13",
     "vue-router": "^4.2.5",
+    "vue-toastification": "^2.0.0-rc.5",
     "vuetify": "^3.0.0-beta.0",
     "webfontloader": "^1.0.0"
   },
