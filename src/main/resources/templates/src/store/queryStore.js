@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import { API_URL } from '@/util/global'
+import { URL } from '@/util/global'
 
 export const useQueryStore = defineStore( 'queryStore', {
   state: () => ({
@@ -26,10 +26,10 @@ export const useQueryStore = defineStore( 'queryStore', {
     },
 
     async registerUser(formData) {
-      const response =  await fetch(API_URL + "/auth/register", {method: "post",body: formData});
-      this.setHttpCode(response.status);
+      const response =  await fetch(URL + "/auth/register", {method: "post",body: formData});
+      this.setHttpCode(await response.status);
       this.setResponse(null);
-      return response.ok      
+      return response.ok;
     },
 
 
@@ -38,7 +38,7 @@ export const useQueryStore = defineStore( 'queryStore', {
       formData.append("pseudo", pseudo);
       formData.append("password", pwd);
 
-      const response = await fetch(API_URL + "/auth/login", {method: "post",body: formData})
+      const response = await fetch(URL + "/auth/login", {method: "post",body: formData})
       this.setHttpCode(response.status);
       this.setResponse(null);
 
@@ -53,7 +53,7 @@ export const useQueryStore = defineStore( 'queryStore', {
 
 
     async fetchJwtJson(request, body = null, method = "get") {
-      const response = await fetch(API_URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body});
+      const response = await fetch(URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body});
       this.setHttpCode(response.status);
       this.setResponse(null);
       if (response.ok) {
@@ -65,7 +65,7 @@ export const useQueryStore = defineStore( 'queryStore', {
     },
 
     async fetchJwt(request, body = null, method = "get") {
-      const response = await fetch(API_URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body}).
+      const response = await fetch(URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body}).
       this.setHttpCode(response.status);
       this.setResponse(null);
       return response.ok;

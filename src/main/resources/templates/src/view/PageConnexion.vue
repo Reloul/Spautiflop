@@ -27,42 +27,56 @@
             <div id="sign-up"><router-link to="/inscription"> Inscription </router-link></div>
         </div>
         <div id="input">
-            <input type="text" id="pseudonym">
+            <input ref="pseudo" type="text" id="pseudonym">
         </div>
         <div id="label">
             <label for="password">Mot de Passe</label>
         </div>
         <div id="input">
-            <input type="password" id="password">
+            <input ref="pwd" type="password" id="password">
         </div>
         <div id="input">
-            <input type="submit" id="submit" value="Envoyer">
+            <v-btn type="submit" id="submit" value="Envoyer" @click=login>Login</v-btn>
         </div>
         <div id="sign-up"><router-link to="/inscription"> Sign Up </router-link></div>
     </div>
     <v-icon icon="mdi-chevron-left" color="red"></v-icon>
-    <v-btn @click="test">CLICK ME</v-btn>
-    </form>
   </div>
 </template>
 
 <script>
 import { useQueryStore } from '../store/queryStore'
+import {ref} from 'vue'
+import {  useToast } from 'vue-toastification'
+import { useRouter } from 'vue-router'
 
 export default {
     name : 'PageConnexion',
     setup() {
+        const router = useRouter();
         const queryStore = useQueryStore();
+        const toast = useToast();
+        const pseudo = ref(null);
+        const pwd = ref(null);
 
-        const test = () => {
-            let formData = new FormData();
-            formData.append("pseudo", "test");
-            formData.append("password", "Password1");
-            queryStore.fetchPost("/auth/register","multipart/form-data" , formData );
-            console.log(queryStore.response);
-            console.log(queryStore.status);
+        const login = async () => {
+            if(pseudo.value.value === '' || pwd.value.value === ''){
+                toast.error('Veuillez remplir tous les champs !');
+                return;
+            }
+            const response = await queryStore.loginUser(pseudo.value.value, pwd.value.value);
+
+            if (queryStore.HttpCode === 200) {
+                toast.success('Connexion réussie !');
+
+                setTimeout(() => {
+                    router.push('/pagePrincipale');
+                }, 1150);
+            } else {
+                toast.error('Connexion échouée !');
+            }
         }
-        return { test }
+        return { login, pseudo, pwd }
     }
 }
 </script>
