@@ -32,8 +32,10 @@ export default {
         cliqueLike(isLike){
             if (isLike == true){
                 isLike = false;
+                this.filter='saturate(0%)';
             }else{
                 isLike = true;
+                this.filter='saturate(100%)'
             }
             console.log(isLike);
         }
