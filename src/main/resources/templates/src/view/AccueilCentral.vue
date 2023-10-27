@@ -13,8 +13,8 @@
                 <div class="slide">
 
                 <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike"/>
-                <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" />
-                <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" />
+<CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" />
+<CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" />
                 </div>
             </v-carousel-item>
 
@@ -35,7 +35,7 @@ export default {
     },
     data() {
         return{
-            img: '../assets/imgFolder/heart.png',
+            img: require('../../../static/images/moonless.jpg'),
             music: 'Moonless',
             artist: 'Fl3r',
             nbLike: 8900,

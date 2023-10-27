@@ -1,18 +1,33 @@
 <template>
     <div id="user-resume">
-        <span id="pseudo-main"> {{ pseudo }} </span>
-        <img id="photo-main" :src="profilPicture">
+        <span id="pseudo-main"> {{ userStore.pseudo }} </span>
+        <img id="photo-main" :src="require('../../../static/images/ppCouzi.jpg')" alt="user-img">
     </div>
 </template>
 
 <script>
+import {useUserStore} from '../store/userStore'
+import { onMounted, storeToRefs } from 'vue'
+import {useToast} from 'vue-toastification'
+import * as global from '../util/global'
+
 export default {
     name: 'UserTop',
-    data() {
-        return{
-            profilPicture : require('../../../static/ppCouz.jpg'),
-            pseudo : "Le Couz",
-        }
+    setup() {
+
+        const userStore = useUserStore();
+        const toast = useToast();
+
+        onMounted( async () => {
+            const response =  await userStore.init();
+            if(await userStore.HttpCode !== global.OK)
+                setTimeout(() => {
+                    //  toast.error('Erreur lors de la récupération des données de l\'utilisateur ! code : ' + userStore.HttpCode);
+                }, 1000);
+            }
+        );
+
+        return { userStore };
     }
 }
 </script>

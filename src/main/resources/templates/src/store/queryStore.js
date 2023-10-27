@@ -1,5 +1,5 @@
 import {defineStore} from 'pinia'
-import { URL } from '@/util/global'
+import { API_URL as URL } from '@/util/global'
 
 export const useQueryStore = defineStore( 'queryStore', {
   state: () => ({
@@ -57,7 +57,7 @@ export const useQueryStore = defineStore( 'queryStore', {
       this.setHttpCode(response.status);
       this.setResponse(null);
       if (response.ok) {
-        this.setResponse(await (response.json()));
+        this.setResponse(JSON.parse (JSON.stringify (await (response.json()))));
         return true;
       }
 

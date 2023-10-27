@@ -19,10 +19,18 @@
 </template>
 
 <script>
+import * as global from '../util/global'
 export default {
+    setup(props) {
+        const img2 = require('' + props.img)
+        const imgg = global.useImage(props.img);
+        console.log(props.img)
+        console.log(imgg)
+        return {imgg};
+    },
     name : 'CarteMusique',
     props : {
-        img: String,
+        img: URL,
         music: String,
         artist: String,
         nbLike: Number,

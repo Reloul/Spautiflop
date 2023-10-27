@@ -1,23 +1,25 @@
 import {defineStore} from 'pinia'
-import { useQueryJwtStore } from './queryJwtStore.js';
-const queryJwtStore = useQueryJwtStore();
+import { useQueryStore } from './queryStore';
+const queryStore = useQueryStore();
 
 export const useUserStore = defineStore( 'userStore', {
   state: () => ({
-    name: null,
-    image: null,
+    pseudo  : "Default username",
+    profilPicture: "../../../static/images/1698356720228blonin.png",
     musiqueLike : [],
     playlist : [],
   }),
-  methods: {
-    initialize() {
-      if(!queryJwtStore.jwt)
+  actions: {
+
+    async init() {
+      if(!queryStore.jwt)
         return;
 
-      const data = queryJwtStore.fetchJwtJson("/auth/me");
-      console.log(data);
-      //this.name = data.name;
-      //this.image = data.image;
+      await queryStore.fetchJwtJson("/auth/me");
+      const data = await queryStore.response;
+      this.pseudo = data.pseudo;
+      this.profilPicture = data.photo;
+      return true;
     }
   }
 

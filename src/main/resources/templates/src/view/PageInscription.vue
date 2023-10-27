@@ -39,7 +39,6 @@
                     </div>
                     <div id="input-temp">
                         <div id="input">
-                            <input type="submit" value="env">
                             <v-btn id="submit" @click=register>Envoyer</v-btn>
                         </div>
                     </div>
