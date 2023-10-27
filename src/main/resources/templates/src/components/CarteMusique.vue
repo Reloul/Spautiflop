@@ -27,13 +27,6 @@ import ParaSong from '../components/ParaSong'
 import * as global from '../util/global'
 
 export default {
-    setup(props) {
-        const img2 = require('' + props.img)
-        const imgg = global.useImage(props.img);
-        console.log(props.img)
-        console.log(imgg)
-        return {imgg};
-    },
     name : 'CarteMusique',
     components:{
         ParaSong,
@@ -48,7 +41,7 @@ export default {
         return {cliqueLike, like}
     },
     props : {
-        img: URL,
+        img: String,
         music: String,
         artist: String,
         nbLike: Number,

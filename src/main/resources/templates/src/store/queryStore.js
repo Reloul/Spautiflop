@@ -85,10 +85,14 @@ export const useQueryStore = defineStore( 'queryStore', {
 
     async fetchJwt(request, body = null, method = "get") {
 <<<<<<< HEAD
+<<<<<<< HEAD
       const response = await fetch(URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body});
 =======
       const response = await fetch(URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body}).
 >>>>>>> ff36a3a (register + login)
+=======
+      const response = await fetch(URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body});
+>>>>>>> 6f3d7c8 (last finition)
       this.setHttpCode(response.status);
       this.setResponse(null);
       return response.ok;
@@ -100,6 +104,7 @@ export const useQueryStore = defineStore( 'queryStore', {
       this.setHttpCode(response.status);
       this.setResponse(response.formData())
       return response.ok;
+<<<<<<< HEAD
 =======
     fetchPost(request, Content_Type = "application/json", body = null, requestType = "POST") {
       return fetch(API_URL + request, {
@@ -125,6 +130,8 @@ export const useQueryStore = defineStore( 'queryStore', {
         console.error("There has been a problem with your fetch operation:", error);
       });
 >>>>>>> 9a83f58 (starting to do some stuff on pinia)
+=======
+>>>>>>> 6f3d7c8 (last finition)
     }
   },
 });
