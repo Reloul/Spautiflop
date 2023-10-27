@@ -37,7 +37,8 @@ export default {
     }
     img{
         height: 55px;
-        transform: scaleX(-1);
+        border-radius: 10px;
+        margin-left: 5px;
     }
     #playlist-name{
         font-size: 22px;

@@ -1,8 +1,12 @@
 <template>
   <div id="popular">
     <div id="popular-title">
-        <span>Musique Populaire</span>
-        <hr>
+        <div id="span-cat">
+            <span> {{ nameCat }}</span>
+        </div>
+        <div id="hr-cat">
+            <hr>
+        </div>
     </div>
     <div id="popular-music">
         <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike"/>
@@ -23,6 +27,9 @@ export default {
     components: {
         CarteMusique,
     },
+    props: {
+        nameCat : String
+    },
     data(){
         return{
             img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Bruce_McCandless_II_during_EVA_in_1984.jpg/1200px-Bruce_McCandless_II_during_EVA_in_1984.jpg',
@@ -39,7 +46,7 @@ export default {
 
     #popular{
         margin-left: 50px;
-        margin-top: 10vh;
+        margin-top: 8vh;
         text-align: left;
         z-index: 1;
     }
@@ -56,10 +63,15 @@ export default {
         background-color: #3b4762;
         font-size: 20px;
         margin-left: 3vw;
-        position:absolute;
-        top: 17vh;
         padding: 10px;
     }
+    #span-cat{
+        width: 40vw;
+    }
+    #hr-cat{
+        margin-top: -10px;
+    }
+
     #popular-music{
         margin-top: 6vh;
         width: 70vw;

@@ -2,8 +2,8 @@
     <div id="header">
         <h1 id="TitreSite">Spautiflop</h1>
         <h3>
-            <router-link to="/inscription">Sign Up</router-link> / 
-            <router-link to="/connexion">Login</router-link>
+            <router-link to="/inscription">Inscription</router-link> / 
+            <router-link to="/connexion">Connexion</router-link>
         </h3>
     </div>
 </template>

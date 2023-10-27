@@ -1,9 +1,11 @@
 <template>
   <div id="left-side">
-        <div id="button-search">
-            <v-icon icon="mdi-magnify" color="#b9d1db" size="x-large"></v-icon>
-            <div id="text-search-button">Rechercher</div>
-        </div>
+        <router-link to="/pagePrincipale">
+            <div id="button-search">
+                <v-icon icon="mdi-magnify" color="#b9d1db" size="x-large"></v-icon>
+                <div id="text-search-button">Rechercher</div>
+            </div>
+        </router-link>
         <div id="left-playlist">
             <div id="title-left-playlist">
                 <v-icon icon="mdi-music-box-multiple" color="#b9d1db" size="x-large"> </v-icon>
@@ -11,8 +13,11 @@
             </div>
             <hr>
             <div id="playlist">
-                <PlaylistReduce :img="img" :name="name" :user="user"/>
-                <PlaylistReduce :img="img" :name="name" :user="user"/>
+                <div v-for="playlist in playlists" :key=playlist>
+                    <router-link to="/playlist" id="playlist-router">
+                        <PlaylistReduce :img="playlist.img" :name="playlist.name" :user="playlist.user"/>
+                    </router-link>
+                </div>
             </div>
         </div>
     </div>
@@ -28,9 +33,14 @@ export default {
     },
     data (){
         return{
-            img : require('../../../static/heart.png'),
-            name : "Liked",
-            user : "Le Couz",
+            playlists: [
+                { 
+                    img : require('../../../static/heart.png'), name : "Favoris",user : "Le Couz"
+                },
+                {
+                    img : require('../../../static/heart.png'), name : "Favoris",user : "Le Couz"
+                },
+        ],
         }
     }
 }
@@ -50,6 +60,9 @@ export default {
         font-size: 20px;
         min-width: 200px;
     }   
+    router-link{
+        text-decoration: none !important;
+    }
     #text-search-button{
         color: #b9d1db;
         padding: 5px;
@@ -60,6 +73,7 @@ export default {
         background-color: #3b4762;
         width: 250px;
         height: 85vh;
+        min-height: 750px;
         margin-left: 2vw;
         margin-top: 15px;
         border-radius: 10px;
@@ -89,6 +103,9 @@ export default {
     }
     #playlist{
         margin-top: 30px;
+    }
+    #playlist-router{
+        text-decoration: none;
     }
 
 </style>

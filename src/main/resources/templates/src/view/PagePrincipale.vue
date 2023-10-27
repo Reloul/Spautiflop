@@ -8,8 +8,8 @@
             <SearchBar />
             <UserTop />
         </div>
-        <div id="mid-main-content">
-            <PopularSong />
+        <div id="mid-main-content" v-for="name in nameCat" :key=name>
+            <PopularSong :nameCat="name"/>
         </div>
     </div>
   </div>
@@ -30,6 +30,11 @@ export default {
         LeftMain,
         PopularSong,
     },
+    data(){
+        return{
+            nameCat : ["Musiques Populaires","Découverte de Musique"],
+        }
+    }
 }
 </script>
 
@@ -48,6 +53,10 @@ export default {
 
     #top-main-content{
         display: flex;
+    }
+
+    #left-size{
+        position: fixed;
     }
 
 </style>
