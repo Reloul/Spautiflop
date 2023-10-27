@@ -1,6 +1,7 @@
 import {defineStore} from 'pinia'
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { API_URL as URL } from '@/util/global'
 =======
 import { API_URL } from '@/util/global'
@@ -8,6 +9,9 @@ import { API_URL } from '@/util/global'
 =======
 import { URL } from '@/util/global'
 >>>>>>> ff36a3a (register + login)
+=======
+import { API_URL as URL } from '@/util/global'
+>>>>>>> 2d97c74 (linking front and backend)
 
 export const useQueryStore = defineStore( 'queryStore', {
   state: () => ({
