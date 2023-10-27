@@ -1,13 +1,12 @@
 <template>
   <div id="connexion">
     <h1>Connexion</h1>
-    <form action=""> 
         <div id="input-group">
             <div id="label">
                 <label for="pseudonym">Pseudonyme</label>
             </div>
             <div id="input">
-                <input type="text" id="pseudonym">
+            <input ref="pseudo" type="text" id="pseudonym">
                 <div id="Erreur">
                     <span id="pseudpError">Erreur, pseudo introuvable!</span>
                 </div>
@@ -16,32 +15,17 @@
                 <label for="password">Mot de Passe</label>
             </div>
             <div id="input">
-                <input type="password" id="password">
+            <input ref="pwd" type="password" id="password">
                 <div id="Erreur">
                     <span id="mdpError">Erreur, mauvais mot de passe!</span>
                 </div>
             </div>
             <div id="input">
-                <input type="submit" id="submit" value="Se Connecter">
+                <v-btn type="submit" id="submit" value="Envoyer" @click=login>Login</v-btn>
             </div>
             <div id="sign-up"><router-link to="/inscription"> Inscription </router-link></div>
         </div>
-        <div id="input">
-            <input ref="pseudo" type="text" id="pseudonym">
-        </div>
-        <div id="label">
-            <label for="password">Mot de Passe</label>
-        </div>
-        <div id="input">
-            <input ref="pwd" type="password" id="password">
-        </div>
-        <div id="input">
-            <v-btn type="submit" id="submit" value="Envoyer" @click=login>Login</v-btn>
-        </div>
-        <div id="sign-up"><router-link to="/inscription"> Sign Up </router-link></div>
     </div>
-    <v-icon icon="mdi-chevron-left" color="red"></v-icon>
-  </div>
 </template>
 
 <script>

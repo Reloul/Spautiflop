@@ -65,10 +65,18 @@ export const useQueryStore = defineStore( 'queryStore', {
     },
 
     async fetchJwt(request, body = null, method = "get") {
-      const response = await fetch(URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body}).
+      const response = await fetch(URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body});
       this.setHttpCode(response.status);
       this.setResponse(null);
       return response.ok;
     },
+
+
+    async fetchJwtMultifile(request, body = null, method = "get") {
+      const response = await fetch(URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body});
+      this.setHttpCode(response.status);
+      this.setResponse(response.formData())
+      return response.ok;
+    }
   },
 });

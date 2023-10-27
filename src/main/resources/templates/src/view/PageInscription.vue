@@ -89,7 +89,7 @@ export default {
                     router.push('/connexion');
                 }, 1000);
             } else {
-                if (queryStore.setHttpCode === global.CONFLICT) {
+                if (queryStore.HttpCode === global.CONFLICT) {
                     toast.error('Nom d\'utilisateur déjà utilisé !');
                 } else {
                     toast.error('Erreur dans l\'inscription !');
@@ -164,19 +164,16 @@ export default {
         width: 5vw;
     }
 
-<<<<<<< HEAD
      #input-group #Erreur{
         margin-top: 5px;
         color: red;
         text-align: left;
         visibility: hidden  ;
     }   
-=======
     #submit{
         background-color: #A7BED3;
         color:#3b4762;
         border: none;
         padding: 5rem;
     }
->>>>>>> 8b6c310 (register + login)
 </style>

@@ -4,7 +4,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 
 @Service
@@ -50,9 +53,14 @@ public class FileService {
     }
   }
 
-  public String retreiveImage(String absolutePath) throws IllegalArgumentException, IOException {
+  public Image retreiveImage(String absolutePath) throws IllegalArgumentException, IOException {
+    FileInputStream input = new FileInputStream(fileItem);
+    MultipartFile multipartFile = new MockMultipartFile("fileItem",
+            fileItem.getName(), "image/png", IOUtils.toByteArray(input));
+    return (MultipartFile) ImageIO.read(new File(absolutePath));
+    /*
     String[] split = absolutePath.split("/");
-    return REFACTOR_PATH +  "images/" + split[split.length-1];
+    return REFACTOR_PATH +  "images/" + split[split.length-1];*/
   }
 
   public String uploadMusic(MultipartFile music) throws IllegalArgumentException, IOException {
