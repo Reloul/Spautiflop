@@ -9,7 +9,7 @@
     <div id="bottomCard">
         <div id="like">
             {{ nbLike }}
-            <img :src="require('../assets/imgFolder/heart.png')" alt="Picture of like" :style="{ filter: isLike ? 'saturate(100%)':'saturate(0%)' }" >
+            <img :src="require('../assets/imgFolder/heart.png')" alt="Picture of like" :style="{ filter: isLike ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike(isLike)">
         </div>
         <div id="button">
             <a href="##"><v-icon icon="mdi-play" color="green"></v-icon></a>
@@ -28,6 +28,16 @@ export default {
         nbLike: Number,
         isLike: Boolean,
     },
+    methods :{
+        cliqueLike(isLike){
+            if (isLike == true){
+                isLike = false;
+            }else{
+                isLike = true;
+            }
+            console.log(isLike);
+        }
+    }
 }
 
 </script>

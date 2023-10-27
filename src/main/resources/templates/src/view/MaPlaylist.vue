@@ -23,12 +23,13 @@
                     </div>
                 </div>
                 <div id="content-playlist">
-                    <v-table id="table-music" color="#3b4762">
+                    <v-table id="table-music" color="#3b4762" theme="dark">
                         <thead id="head-table">
                             <tr>
                                 <th class="text-left" id="head-table-music">Musique</th>
                                 <th class="text-left" id="head-table-music">Album</th>
                                 <th class="text-left" id="head-table-music">Date</th>
+                                <th class="text-left" id="head-table-music"></th>
                                 <th class="text-left" id="head-table-music"> <v-icon icon="mdi-clock-time-five-outline"></v-icon></th>
                             </tr>
                         </thead>
@@ -42,14 +43,24 @@
                                                 <span>{{ item.music }}</span> 
                                             </div>
                                             <div id="artist-colum-music">
-                                                <span>{{ item.artist }}</span>
+                                                <span>{{ item.artist }} </span>
                                             </div>
+                                        </div>
+                                        <div id="play-button">
+                                                <v-icon icon="mdi-play" color="#ead2ac"></v-icon>
                                         </div>
                                     </div>
                                 </td>
                                 <td>{{ item.album }}</td>
                                 <td>{{ item.date }}</td>
-                                <td>{{ item.time }}</td>
+                                <td>
+                                    <div id="time-row">
+                                        <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: isLike ? 'saturate(100%)':'saturate(0%)' }" id="img-like" >
+                                    </div>
+                                </td>
+                                <td>                                       
+                                    {{ item.time }}            
+                                </td>
                             </tr>
                         </tbody>
                     </v-table>
@@ -160,6 +171,24 @@ export default {
     }
     #row-music{
         height: 90px;
+        border-top-color: #b9d1db !important;
+    }
+    #img-like{
+        height: 30px;
     }
 
+    #time-row{
+        margin-top: -5px;
+        float: right;
+    }
+    #time-row-music{
+        margin-top: 8px;
+    }
+    #content-playlist{
+        margin-top: 4vh;
+    }
+    #play-button{
+        margin: auto;
+        margin-left: 20px;
+    }
 </style>
