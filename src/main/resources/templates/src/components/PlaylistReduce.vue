@@ -1,5 +1,5 @@
 <template>
-    <div id="playlist-reduce">
+    <div id="playlist-reduce" :class="{ 'active-playlist': isActive }" @click="toggleActive">
         <div id="picture-playlist">
             <img :src="img" alt="">
         </div>
@@ -21,8 +21,15 @@ export default {
         img : String,
         name : String,
         user : String,
-    }
-}
+        isActive: Boolean,
+        index: Number,
+    },
+    methods: {
+        toggleActive() {
+            this.$emit('toggle-active', this.index, !this.isActive);
+        },
+    },
+};
 </script>
 
 <style scoped>
@@ -52,6 +59,10 @@ export default {
     #text-playlist{
         display: block;
         margin-left: 8px;
+    }
+
+    .active-playlist{
+        background-color: #ead2ac !important;
     }
 
 </style>

@@ -13,9 +13,9 @@
             </div>
             <hr>
             <div id="playlist">
-                <div v-for="playlist in playlists" :key=playlist>
+                <div v-for="(playlist, index) in playlists" :key="index">
                     <router-link to="/playlist" id="playlist-router">
-                        <PlaylistReduce :img="playlist.img" :name="playlist.name" :user="playlist.user"/>
+                        <PlaylistReduce :img="playlist.img" :name="playlist.name" :user="playlist.user" @toggle-active="handleToggleActive" :isActive="activePlaylistIndex === index" :index="index"/>
                     </router-link>
                 </div>
             </div>
@@ -37,13 +37,20 @@ export default {
                 { 
                     img : require('../../../static/heart.png'), name : "Favoris",user : "Le Couz"
                 },
-                {
+                { 
                     img : require('../../../static/heart.png'), name : "Favoris",user : "Le Couz"
                 },
         ],
+        activePlaylistIndex: null,
         }
-    }
-}
+    },
+    methods: {
+        handleToggleActive(index, isActive) {
+            this.activePlaylistIndex = isActive ? index : null;
+            console.log('Playlist réduite active :', index);
+        },
+    },
+};
 </script>
 
 <style scoped>
