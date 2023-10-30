@@ -20,12 +20,17 @@ const routes = [
     {
         path:'/pagePrincipale',
         name:'pagePrincipale',
-        component: () => import(/* webpackChunkName: "pagePrincipale" */ '../view/PagePrincipale.vue')
+        component: () => import(/* webpackChunkName: "pagePrincipale" */ '../view/PagePrincipale.vue'),
     },
     {
         path:'/playlist',
         name:'Playlist',
-        component: () => import(/* webpackChunkName: "pagePrincipale" */ '../view/MaPlaylist.vue')
+        component: () => import(/* webpackChunkName: "playlist" */ '../view/MaPlaylist.vue')
+    },
+    {
+        path:'/recherche',
+        name:'Search',
+        component: () => import(/* webpackChunkName: "recherche" */ '../view/SearchPage.vue'),
     }
 ]
 

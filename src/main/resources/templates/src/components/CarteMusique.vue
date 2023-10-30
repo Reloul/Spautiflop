@@ -9,7 +9,7 @@
     <div id="bottomCard">
         <div id="like">
             {{ nbLike }}
-            <img :src="require('../assets/imgFolder/heart.png')" alt="Picture of like" :style="{ filter: isLike ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike(isLike)">
+            <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: like ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike">
         </div>
         <div id="button">
             <a href="##"><v-icon icon="mdi-play" color="green"></v-icon></a>
@@ -19,26 +19,24 @@
 </template>
 
 <script>
+import {ref} from 'vue'
 export default {
     name : 'CarteMusique',
+    setup(props) {
+        const like = ref(props.isLike);
+        
+        const cliqueLike = () => {
+            like.value = !like.value; // Inversez la valeur de isLike lors du clic
+        }
+
+        return {cliqueLike, like}
+    },
     props : {
         img: String,
         music: String,
         artist: String,
         nbLike: Number,
         isLike: Boolean,
-    },
-    methods :{
-        cliqueLike(isLike){
-            if (isLike == true){
-                isLike = false;
-                this.filter='saturate(0%)';
-            }else{
-                isLike = true;
-                this.filter='saturate(100%)'
-            }
-            console.log(isLike);
-        }
     }
 }
 

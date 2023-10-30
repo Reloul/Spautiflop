@@ -55,7 +55,7 @@
                                 <td>{{ item.date }}</td>
                                 <td>
                                     <div id="time-row">
-                                        <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: isLike ? 'saturate(100%)':'saturate(0%)' }" id="img-like" >
+                                        <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: item.isLike ? 'saturate(100%)':'saturate(0%)' }" id="img-like" >
                                     </div>
                                 </td>
                                 <td>                                       
@@ -95,6 +95,7 @@ export default {
                     album: "Moonless",
                     date: "22 oct. 2023",
                     time: "2:34",
+                    isLike: true,
                 },
                 {
                     music: "Moonless",
@@ -103,6 +104,7 @@ export default {
                     album: "Moonless",
                     date: "22 oct. 2023",
                     time: "2:34",
+                    isLike: true,
                 },
                 
             ]
