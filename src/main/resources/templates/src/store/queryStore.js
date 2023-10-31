@@ -77,7 +77,7 @@ export const useQueryStore = defineStore( 'queryStore', {
       this.setResponse(null);
       if (response.ok) {
         this.setResponse(JSON.parse (JSON.stringify (await (response.json()))));
-        return true;
+        return this.response;
       }
 
       return false;
@@ -99,6 +99,7 @@ export const useQueryStore = defineStore( 'queryStore', {
     },
 
 
+<<<<<<< HEAD
     async fetchJwtMultifile(request, body = null, method = "get") {
       const response = await fetch(URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body});
       this.setHttpCode(response.status);
@@ -133,5 +134,27 @@ export const useQueryStore = defineStore( 'queryStore', {
 =======
 >>>>>>> 6f3d7c8 (last finition)
     }
+=======
+    async fetchFile(request, body = null, method = "get") {
+      const reponse = await fetch(URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body});
+      this.setHttpCode(reponse.status);
+      this.setResponse(null);
+
+      if(!reponse.ok) {
+        console.log("Error while fetching file : " + reponse.status + " " + reponse.statusText);
+        return null
+      }
+        
+      return window.URL.createObjectURL(await reponse.blob());
+    },
+
+    async fetchImage(request, body = null, method = "get") {
+      return await this.fetchFile("/api/file/image/" + request, body, method);
+    },
+
+    async fetchAudio(request, body = null, method = "get") {
+      return await this.fetchFile("/api/file/audio/" + request, body, method);
+    },
+>>>>>>> 86315c1 (load correctly user image and can request song / image)
   },
 });
