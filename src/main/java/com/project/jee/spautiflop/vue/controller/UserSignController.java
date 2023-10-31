@@ -6,7 +6,6 @@ import com.project.jee.spautiflop.service.FileService;
 import com.project.jee.spautiflop.service.UserService;
 import com.project.jee.spautiflop.vue.model.UserLoginBody;
 import com.project.jee.spautiflop.vue.model.UserLoginResponse;
-import com.project.jee.spautiflop.vue.model.UserProfile;
 import com.project.jee.spautiflop.vue.model.UserRegistrationBody;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -29,7 +28,7 @@ public class UserSignController {
     this.fileService = fileService;
   }
   @PostMapping(value = "/register", consumes = {"multipart/form-data"})
-  public ResponseEntity<Object> registerUser(@Valid @RequestBody @ModelAttribute UserRegistrationBody userRegistrationBody) {
+  public ResponseEntity<?> registerUser(@Valid @RequestBody @ModelAttribute UserRegistrationBody userRegistrationBody) {
     try {
       this.userService.registerUser(userRegistrationBody);
       return ResponseEntity.ok().build();
@@ -54,14 +53,25 @@ public class UserSignController {
   }
 
 
-  @GetMapping( "/me")
+  @GetMapping( value = "/me")
   public LocalUser GetLoggedUser(@AuthenticationPrincipal LocalUser user) {
+    return user;
+  }
+/*
+  @GetMapping( value = "/test")
+  public ResponseEntity<Resource> test(@AuthenticationPrincipal LocalUser user) {
+    Resource r;
     try {
-      user.setPhoto(fileService.retreiveImage(user.getPhoto()));
+      r =  fileService.retreiveImage(user.getPhoto());
     } catch (IOException e) {
       System.out.println(e.getMessage());
       user.setPhoto(fileService.DEFAULT_IMAGE());
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    } catch (Exception e) {
+      System.out.println("Unhandle execption : " + e.getMessage());
+      return ResponseEntity.status(HttpStatus.I_AM_A_TEAPOT).build();
     }
-    return user;
-  }
+    return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + r.getFilename() + "\"")
+            .body(r);
+  }*/
 }
