@@ -1,33 +1,37 @@
 package com.project.jee.spautiflop.service;
 
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.UnknownServiceException;
+import java.nio.file.Paths;
 
 @Service
 public class FileService {
 
-  private final String REFACTOR_PATH = "../../../static/";
   private final String PATH_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/";
   private final static String DEFAULT_IMAGE = "images/default.png";
   private final static String DEFAULT_PROFILE = "profiles/default.png";
   private final static String DEFAULT_ALBUM = "album/default.png";
 
   public String DEFAULT_IMAGE() {
-    return REFACTOR_PATH + DEFAULT_IMAGE;
+    return PATH_DIRECTORY + DEFAULT_IMAGE;
   }
-  public String DEFAULT_PROFILE() {return REFACTOR_PATH + DEFAULT_PROFILE;}
-  public String DEFAULT_ALBUM() {return REFACTOR_PATH + DEFAULT_ALBUM;}
+  public String DEFAULT_PROFILE() {return PATH_DIRECTORY + DEFAULT_PROFILE;}
+  public String DEFAULT_ALBUM() {return PATH_DIRECTORY + DEFAULT_ALBUM;}
+
+  public String retrieveAbsolutePathImage(String filename) {
+    return PATH_DIRECTORY + "images/" + filename;
+  }
   public String uploadImage(MultipartFile image) throws IOException {
     /* If no photo is provided, set the default one */
     if (image == null || image.isEmpty()) {
-      return REFACTOR_PATH + "images/" + DEFAULT_IMAGE;
+      return DEFAULT_IMAGE;
     }
 
     /* If a photo is provided, check if it is an image and save it */
@@ -39,28 +43,31 @@ public class FileService {
     }
 
     else {
-      String filePath = PATH_DIRECTORY + "images/" + String.valueOf(System.currentTimeMillis()) + image.getOriginalFilename();
+      String filename = String.valueOf(System.currentTimeMillis()) + image.getOriginalFilename();
+      String filePath = PATH_DIRECTORY + "images/" + filename;
 
       if (filePath.length() > 255)
         throw new IOException("File name too long");
 
       try {
         image.transferTo(new File(filePath));
-        return filePath;
+        return filename;
       } catch (IOException e) {
         throw new IOException("Error while saving photo  : " + e.getMessage());
       }
     }
   }
 
-  public Image retreiveImage(String absolutePath) throws IllegalArgumentException, IOException {
-    FileInputStream input = new FileInputStream(fileItem);
-    MultipartFile multipartFile = new MockMultipartFile("fileItem",
-            fileItem.getName(), "image/png", IOUtils.toByteArray(input));
-    return (MultipartFile) ImageIO.read(new File(absolutePath));
-    /*
-    String[] split = absolutePath.split("/");
-    return REFACTOR_PATH +  "images/" + split[split.length-1];*/
+  public Resource retreiveImage(String absolutePath) throws  FileNotFoundException {
+    try {
+      Resource resource = new UrlResource(Paths.get(absolutePath).normalize().toUri());
+      if(resource.exists())
+          return resource;
+      else
+        throw new FileNotFoundException("file not found " + absolutePath);
+    } catch (MalformedURLException ex) {
+      throw new FileNotFoundException("File not found " + absolutePath + " catch MalformedURLException");
+    }
   }
 
   public String uploadMusic(MultipartFile music) throws IllegalArgumentException, IOException {
