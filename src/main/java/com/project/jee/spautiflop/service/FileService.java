@@ -28,6 +28,10 @@ public class FileService {
   public String retrieveAbsolutePathImage(String filename) {
     return PATH_DIRECTORY + "images/" + filename;
   }
+
+  public String retrieveAbsolutePathMusic(String filename) {
+    return PATH_DIRECTORY + "musics/" + filename;
+  }
   public String uploadImage(MultipartFile image) throws IOException {
     /* If no photo is provided, set the default one */
     if (image == null || image.isEmpty()) {
@@ -58,18 +62,6 @@ public class FileService {
     }
   }
 
-  public Resource retreiveImage(String absolutePath) throws  FileNotFoundException {
-    try {
-      Resource resource = new UrlResource(Paths.get(absolutePath).normalize().toUri());
-      if(resource.exists())
-          return resource;
-      else
-        throw new FileNotFoundException("file not found " + absolutePath);
-    } catch (MalformedURLException ex) {
-      throw new FileNotFoundException("File not found " + absolutePath + " catch MalformedURLException");
-    }
-  }
-
   public String uploadMusic(MultipartFile music) throws IllegalArgumentException, IOException {
       /* If no music is provided, set the default one */
     if (music == null || music.isEmpty()) {
@@ -92,5 +84,18 @@ public class FileService {
       } catch (IOException e) {
         throw new IOException("Error while saving music  : " + e.getMessage());
       }
-    } }
+    }
+  }
+
+  public Resource retreiveFile(String absolutePath) throws  FileNotFoundException {
+    try {
+      Resource resource = new UrlResource(Paths.get(absolutePath).normalize().toUri());
+      if(resource.exists())
+        return resource;
+      else
+        throw new FileNotFoundException("file not found " + absolutePath);
+    } catch (MalformedURLException ex) {
+      throw new FileNotFoundException("File not found " + absolutePath + " catch MalformedURLException");
+    }
+  }
 }

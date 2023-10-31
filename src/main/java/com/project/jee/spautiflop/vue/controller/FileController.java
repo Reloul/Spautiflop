@@ -31,11 +31,25 @@ public class FileController {
         this.fileService = fileService;
     }
 
-    @GetMapping("/{filename:.+}")
-    public ResponseEntity<Resource> getFile(@PathVariable String filename) {
+    @GetMapping("/image/{filename:.+}")
+    public ResponseEntity<Resource> getImage(@PathVariable String filename) {
         Resource file;
         try {
-            file =  fileService.retreiveImage(fileService.retrieveAbsolutePathImage(filename));
+            file =  fileService.retreiveFile(fileService.retrieveAbsolutePathImage(filename));
+        } catch (FileNotFoundException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + file.getFilename() + "\"")
+                .body(file);
+    }
+
+    @GetMapping("/audio/{filename:.+}")
+    public ResponseEntity<Resource> getMusic(@PathVariable String filename) {
+        Resource file;
+        try {
+            file =  fileService.retreiveFile(fileService.retrieveAbsolutePathMusic(filename));
         } catch (FileNotFoundException e) {
             System.out.println(e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
