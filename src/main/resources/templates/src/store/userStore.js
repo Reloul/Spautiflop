@@ -5,7 +5,7 @@ const queryStore = useQueryStore();
 export const useUserStore = defineStore( 'userStore', {
   state: () => ({
     pseudo  : "Default username",
-    profilPicture: "../../../static/images/1698356720228blonin.png",
+    profilPicture: null,
     musiqueLike : [],
     playlist : [],
   }),
@@ -15,10 +15,9 @@ export const useUserStore = defineStore( 'userStore', {
       if(!queryStore.jwt)
         return;
 
-      await queryStore.fetchJwtJson("/auth/me");
-      const data = await queryStore.response;
+      const data = await queryStore.fetchJwtJson("/auth/me");
       this.pseudo = data.pseudo;
-      this.profilPicture = data.photo;
+      this.profilPicture = await queryStore.fetchImage(data.photo);
       return true;
     }
   }

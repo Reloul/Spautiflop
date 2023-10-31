@@ -27,7 +27,7 @@
 <script>
 import CarteMusique from '../components/CarteMusique.vue'
 
-
+    
 export default {
     name: 'AccueilCentral',
     components: {
