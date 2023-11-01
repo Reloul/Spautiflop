@@ -4,10 +4,7 @@ import com.project.jee.spautiflop.exception.ArtistAlreadyExistsException;
 import com.project.jee.spautiflop.model.Album;
 import com.project.jee.spautiflop.model.Artist;
 import com.project.jee.spautiflop.model.Song;
-import com.project.jee.spautiflop.model.repo.AlbumRepository;
-import com.project.jee.spautiflop.model.repo.ArtistRepository;
-import com.project.jee.spautiflop.model.repo.PlaylistRepository;
-import com.project.jee.spautiflop.model.repo.SongRepository;
+import com.project.jee.spautiflop.model.repo.*;
 import com.project.jee.spautiflop.vue.model.AlbumRegisterBody;
 import com.project.jee.spautiflop.vue.model.ArtistRegisterBody;
 import com.project.jee.spautiflop.vue.model.SongRegistrationBody;
@@ -31,8 +28,9 @@ public class SongService {
   private final FileService fileService;
   private final ArtistService artistService;
   private final AlbumService albumService;
+  private final LikesRepository likesRepository;
 
-  public SongService(SongRepository songRepository, ArtistRepository artistRepository, PlaylistRepository playlistRepository, ArtistService artistService, AlbumService albumService, AlbumRepository albumRepository, FileService fileService){
+  public SongService(SongRepository songRepository, ArtistRepository artistRepository, PlaylistRepository playlistRepository, ArtistService artistService, AlbumService albumService, AlbumRepository albumRepository, FileService fileService, LikesRepository likesRepository){
     this.songRepository = songRepository;
     this.artistRepository = artistRepository;
     this.playlistRepository = playlistRepository;
@@ -40,6 +38,7 @@ public class SongService {
     this.albumService = albumService;
     this.albumRepository = albumRepository;
     this.fileService = fileService;
+    this.likesRepository = likesRepository;
   }
 
   public Song registerSong(@Valid SongRegistrationBody songRegistrationBody) throws IOException, IllegalArgumentException, ArtistAlreadyExistsException, UnknownServiceException
@@ -149,8 +148,11 @@ public class SongService {
 
   public Song getSong(long id) throws IllegalArgumentException {
     Optional<Song> opSong = this.songRepository.findById(id);
-    if(opSong.isPresent())
-      return opSong.get();
+    if(opSong.isPresent()){
+      Song song = opSong.get();
+      song.setNbLikes(likesRepository.countBySong(song));
+        return song;
+    }
     else
       throw new IllegalArgumentException("Song not found");
   }/*
