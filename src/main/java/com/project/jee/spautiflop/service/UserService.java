@@ -13,6 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.imageio.ImageIO;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
@@ -24,12 +26,14 @@ public class UserService {
   private final JsonWebTokenService JsonWebTokenService;
   private final FileService fileService;
   private final SongService songService;
-  public UserService(UserRepository userRepository, EncryptionService encryptionService, JsonWebTokenService JsonWebTokenService, FileService fileService, SongService songService) {
+  private final LikeService likeService;
+  public UserService(UserRepository userRepository, EncryptionService encryptionService, JsonWebTokenService JsonWebTokenService, FileService fileService, SongService songService, LikeService likeService) {
     this.userRepository = userRepository;
     this.encryptionService = encryptionService;
     this.JsonWebTokenService = JsonWebTokenService;
     this.fileService = fileService;
     this.songService = songService;
+    this.likeService = likeService;
   }
 
   public LocalUser registerUser(@Valid UserRegistrationBody userRegistrationBody) throws UserAlreadyExistsException, IOException {
@@ -62,38 +66,28 @@ public class UserService {
     }
     return null;
   }
-/*
-  public void addSongToFav(LocalUser user, long songId) throws IllegalArgumentException {
+
+  public void addSongToFav(LocalUser user, long songId) throws IllegalArgumentException , RuntimeException{
     Song song;
     try {
       song = this.songService.getSong(songId);
+      likeService.likeSong(user, song);
     } catch (IllegalArgumentException e) {
       throw new IllegalArgumentException(e.getMessage() + " : invalid song id in user's fav");
+    } catch (RuntimeException e) {
+      throw new RuntimeException(e.getMessage() + " : user already liked this song");
     }
-    System.out.println(song.getName());
-
-    if(user.getSongsLiked() == null)
-      throw new IllegalArgumentException("user's fav is null");
-    System.out.println(user.getSongsLiked());
-    Set<Song> ss =  user.getSongsLiked();
-    ss.add(song);
-    System.out.println(ss.size());
-    user.setSongsLiked(ss);
-    System.out.println(user.getSongsLiked().size());
-    this.songService.addLike(song);
-    System.out.println(user.getSongsLiked().size());
-    this.userRepository.save(user);
   }
 
-  public void removeSongFromFav(LocalUser user, long songId) throws IllegalArgumentException {
+  public void removeSongFromFav(LocalUser user, long songId) throws IllegalArgumentException , RuntimeException{
     Song song;
     try {
       song = this.songService.getSong(songId);
+      likeService.unlikeSong(user, song);
     } catch (IllegalArgumentException e) {
       throw new IllegalArgumentException(e.getMessage() + " : invalid song id in user's fav");
+    } catch (RuntimeException e) {
+      throw new RuntimeException(e.getMessage() + " : user do not like this song");
     }
-    user.getSongsLiked().remove(song);
-    this.songService.removeLike(song);
-    this.userRepository.save(user);
-  }*/
+   }
 }
