@@ -4,6 +4,7 @@ import com.project.jee.spautiflop.model.LocalUser;
 import com.project.jee.spautiflop.model.Song;
 import com.project.jee.spautiflop.service.FileService;
 import com.project.jee.spautiflop.service.SongService;
+import com.project.jee.spautiflop.vue.model.SongDataResponse;
 import com.project.jee.spautiflop.vue.model.SongRegistrationBody;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -45,9 +46,9 @@ public class SongController {
   }
 
   @GetMapping(value = "/{id}")
-  public ResponseEntity<Song> GetSong(@PathVariable("id") @Valid @RequestBody @ModelAttribute Long id) {
+  public ResponseEntity<SongDataResponse> GetSong(@PathVariable("id") @Valid @RequestBody @ModelAttribute Long id) {
     try {
-      return ResponseEntity.ok(this.songService.getSong(id));
+      return ResponseEntity.ok(new SongDataResponse(this.songService.getSong(id)));
     } catch (IllegalArgumentException e) {
       System.out.println(e.getMessage());
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
