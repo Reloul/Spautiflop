@@ -1,15 +1,13 @@
 package com.project.jee.spautiflop.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.project.jee.spautiflop.model.linking_model.LinkingUserSong;
+import com.project.jee.spautiflop.model.links.Likes;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -34,4 +32,8 @@ public class LocalUser {
   @JsonIgnore
   @OneToMany(mappedBy = "user", orphanRemoval = true)
   private List<Playlist> playlists = new ArrayList<>();
+
+  @OneToMany(mappedBy = "localUser", orphanRemoval = true)
+  private List<Likes> likes = new ArrayList<>();
+
 }
