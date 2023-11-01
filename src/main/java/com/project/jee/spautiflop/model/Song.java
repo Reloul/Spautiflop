@@ -43,6 +43,7 @@ public class Song {
   @JoinColumn(name = "artist_id")
   private Artist artist;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "song", orphanRemoval = true)
   private Set<Likes> likes = new LinkedHashSet<>();
 
