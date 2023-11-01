@@ -5,6 +5,7 @@ import com.project.jee.spautiflop.model.Artist;
 import com.project.jee.spautiflop.model.LocalUser;
 import com.project.jee.spautiflop.service.ArtistService;
 import com.project.jee.spautiflop.service.FileService;
+import com.project.jee.spautiflop.vue.model.ArtistDataResponse;
 import com.project.jee.spautiflop.vue.model.ArtistRegisterBody;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -44,9 +45,9 @@ public class ArtistController {
   }
 
   @GetMapping(value = "/{id}")
-  public ResponseEntity<Artist> GetArtist(@PathVariable("id") @Valid @RequestBody @ModelAttribute Long id) {
+  public ResponseEntity<ArtistDataResponse> GetArtist(@PathVariable("id") @Valid @RequestBody @ModelAttribute Long id) {
     try {
-      return ResponseEntity.ok(this.artistService.getArtist(id));
+      return ResponseEntity.ok(new ArtistDataResponse( this.artistService.getArtist(id)));
     } catch (IllegalArgumentException e) {
       System.out.println(e.getMessage());
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
