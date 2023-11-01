@@ -34,11 +34,12 @@ public class Song {
   @Column(name = "music_link", nullable = false, unique = true)
   private String musicLink;
 
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "album_id")
-  @JsonIgnore
   private Album album;
 
+  @JsonIgnore
   @ManyToOne
   @JoinColumn(name = "artist_id")
   private Artist artist;
