@@ -13,6 +13,9 @@
         </div>
         <div id="button">
             <a href="##"><v-icon icon="mdi-play" color="green"></v-icon></a>
+            <div id="para-song">
+                <ParaSong :items="items" :suppr="suppr "/>
+            </div>
         </div>
     </div>
   </div>
@@ -20,8 +23,13 @@
 
 <script>
 import {ref} from 'vue'
+import ParaSong from '../components/ParaSong'
+
 export default {
     name : 'CarteMusique',
+    components:{
+        ParaSong,
+    },
     setup(props) {
         const like = ref(props.isLike);
         
@@ -37,6 +45,18 @@ export default {
         artist: String,
         nbLike: Number,
         isLike: Boolean,
+    },
+    data(){
+        return{
+            items: [
+                { title: 'Favoris' },
+                { title: 'playlist couz' },
+            ],
+            suppr: [
+                { title: 'Favorises' },
+                { title: 'playlist de couz' },
+            ]
+        }
     }
 }
 
@@ -67,5 +87,18 @@ export default {
         text-align: left;
         margin-left: 30px;
         margin-top: -10px;
+    }
+    #button{
+        display: flex;
+        margin-left: 90px;
+    }
+    #para-song{
+        margin-left: 25px;
+    }
+</style>
+
+<style>
+    #para-add-song{
+        color: #273043;
     }
 </style>

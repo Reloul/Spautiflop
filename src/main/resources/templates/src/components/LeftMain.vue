@@ -1,6 +1,6 @@
 <template>
   <div id="left-side">
-        <router-link to="/pagePrincipale">
+        <router-link to="/pagePrincipale" style="text-decoration: none; color: inherit;">
             <div id="button-search">
                 <v-icon icon="mdi-magnify" color="#b9d1db" size="x-large"></v-icon>
                 <div id="text-search-button">Rechercher</div>
@@ -10,6 +10,9 @@
             <div id="title-left-playlist">
                 <v-icon icon="mdi-music-box-multiple" color="#b9d1db" size="x-large"> </v-icon>
                 <div id="text-library-left">Bibliothèque</div>
+                <div id="add-playlist">
+                    <AddPlaylist />
+                </div>
             </div>
             <hr>
             <div id="playlist">
@@ -17,6 +20,7 @@
                     <router-link to="/playlist" id="playlist-router">
                         <PlaylistReduce :img="playlist.img" :name="playlist.name" :user="playlist.user" @toggle-active="handleToggleActive" :isActive="activePlaylistIndex === index" :index="index"/>
                     </router-link>
+                    
                 </div>
             </div>
         </div>
@@ -24,12 +28,14 @@
 </template>
 
 <script>
+import AddPlaylist from '../components/AddPlaylist.vue';
 import PlaylistReduce from './PlaylistReduce.vue'
 
 export default {
     name : "LeftMain",
     components : {
         PlaylistReduce,
+        AddPlaylist,
     },
     data (){
         return{
@@ -42,7 +48,7 @@ export default {
                 },
         ],
         activePlaylistIndex: null,
-        }
+        };
     },
     methods: {
         handleToggleActive(index, isActive) {
@@ -114,5 +120,10 @@ export default {
     #playlist-router{
         text-decoration: none;
     }
+
+    #add-playlist{
+        margin: auto;
+    }
+
 
 </style>

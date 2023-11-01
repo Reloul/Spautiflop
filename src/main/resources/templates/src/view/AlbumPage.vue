@@ -1,23 +1,26 @@
 <template>
-    <div id="playlist-page">
+    <div id="album-page">
         <div id="left-side">
             <LeftMain />
         </div>
-        <div id="main-playlist">
+        <div id="main-album">
             <div id="top-main-content">
                 <UserTop />
             </div>
-            <div id="playlist-content">
-                <div id="top-content-playlist">
+            <div id="album-content">
+                <div id="top-content-album">
                     <div id="picture">
-                        <img :src='image' alt="">
+                        <img :src='image'>
                     </div>
                     <div id="text">
                         <div id="name">
                             <span> {{ name }}</span>
                         </div>
                         <div id="user">
-                            <span>{{ user }} - </span>
+                            <router-link to="/artist" style="text-decoration: none; color: inherit;">
+                                <span>{{ artist }}</span>
+                            </router-link>
+                            <span>{{ - date }} - </span>
                             <span>{{ nbSong }} musiques</span>
                         </div>
                     </div>
@@ -32,23 +35,23 @@
 
 <script>
 import LeftMain from '../components/LeftMain.vue';
-import UserTop from '../components/UserTop.vue';
 import TableMusic from '../components/TableMusic.vue';
-
+import UserTop from '../components/UserTop.vue';
 
 export default {
-    name:"MaPlaylist",
-    components: {
+    name: "AlbumPage",
+    components:{
         LeftMain,
-        UserTop,
         TableMusic,
+        UserTop,
     },
-    data() {
+    data(){
         return{
-            image: require("../../../static/heart.png"),
-            name: "Favoris",
-            user: "Le Couz",
-            nbSong: 2,
+            image: require('../../../static/V4.jpg'),
+            name: "Moonless",
+            artist: "Fl3r",
+            date: "2023",
+            nbSong: "2",
             musics: [
                 {
                     music: "Moonless",
@@ -68,7 +71,6 @@ export default {
                     time: "2:34",
                     isLike: true,
                 },
-                
             ]
         }
     }
@@ -76,10 +78,10 @@ export default {
 </script>
 
 <style scoped>
-    #playlist-page{
+    #album-page{
         display:flex;
     }
-    #playlist-content{
+    #album-content{
         background-color: #3b4762;
         width: 81vw;
         margin-left: 20px;
@@ -92,10 +94,11 @@ export default {
         height: 300px;
         border-radius: 10px;
     }
-    #top-content-playlist{
+    #top-content-album{
         text-align: left;
         margin-left: 50px;
         display: flex;
+        padding-top: 30px;
     }
     #text{
         display: block;
@@ -113,5 +116,4 @@ export default {
     #music{
         margin-top: 30px;
     }
-
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="artist">
         <div id="title">
             <div id="span-title">
                 <span>Artistes</span>
@@ -85,5 +85,10 @@ export default {
         display: flex;
         justify-content: space-between;
         width: 75vw;
+        flex-wrap: wrap;
+
+    }
+    #artist{
+        margin-bottom: 20px;
     }
 </style>

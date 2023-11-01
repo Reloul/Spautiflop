@@ -40,7 +40,7 @@ export default {
     }
 
     #user-resume{
-        position: absolute;
+        position: fixed;
         right: 5rem;
         top: 3rem;
         display: flex;

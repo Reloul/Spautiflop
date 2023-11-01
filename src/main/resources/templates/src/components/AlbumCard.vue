@@ -1,18 +1,20 @@
 <template>
     <div>
-        <div id="album-card">
-            <div id="album-photo">
-                <img :src="img">
-            </div>
-            <div id="text-album">
-                <div id="name">
-                    <span> {{ name }}</span>
+        <router-link to="/album" id="routerLink" style="text-decoration: none; color: inherit;">
+            <div id="album-card">
+                <div id="album-photo">
+                    <img :src="img">
                 </div>
-                <div id="type-album">
-                    <span>{{ date }} - {{ artist }}</span>
+                <div id="text-album">
+                    <div id="name">
+                        <span> {{ name }}</span>
+                    </div>
+                    <div id="type-album">
+                        <span>{{ date }} - {{ artist }}</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </router-link>
     </div>
 </template>
 
@@ -35,6 +37,7 @@ export default {
         height: 200px;
         width: 200px;
         color: #273043;
+        cursor: pointer;
     }
     #album-photo img{
         height: 100px;
@@ -53,6 +56,9 @@ export default {
 
     #type-album{
         font-size: 15px;
+    }
+    span{
+        text-decoration: none;
     }
 
 </style>

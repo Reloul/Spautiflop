@@ -1,17 +1,21 @@
 <template>
-  <div id="artist-card">
-        <div id="profilPicture">
-            <img :src="img">
-        </div>
-        <div id="text-artist">
-            <div id="name">
-                <span> {{ name }}</span>
+    <div>
+        <router-link to="/artist" style="text-decoration: none; color: inherit;">
+            <div id="artist-card">
+                    <div id="profilPicture">
+                        <img :src="img">
+                    </div>
+                    <div id="text-artist">
+                        <div id="name">
+                            <span> {{ name }}</span>
+                        </div>
+                        <div id="type-artist">
+                            <span>Artiste</span>
+                        </div>
+                    </div>
             </div>
-            <div id="type-artist">
-                <span>Artiste</span>
-            </div>
-        </div>
-  </div>
+        </router-link>
+    </div>
 </template>
 
 <script>
@@ -31,6 +35,7 @@ export default {
         height: 200px;
         width: 200px;
         color: #273043;
+        cursor: pointer;
     }
     #profilPicture img{
         height: 100px;

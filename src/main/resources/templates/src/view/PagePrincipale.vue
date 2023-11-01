@@ -42,6 +42,7 @@ export default {
 
     #main-page{
         display: flex;
+        overflow: auto;
     }
     #main-content{
         background-color: #3b4762;
