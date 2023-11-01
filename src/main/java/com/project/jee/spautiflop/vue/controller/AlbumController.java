@@ -5,6 +5,7 @@ import com.project.jee.spautiflop.model.Album;
 import com.project.jee.spautiflop.model.LocalUser;
 import com.project.jee.spautiflop.service.AlbumService;
 import com.project.jee.spautiflop.service.FileService;
+import com.project.jee.spautiflop.vue.model.AlbumDataResponse;
 import com.project.jee.spautiflop.vue.model.AlbumRegisterBody;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -47,9 +48,9 @@ public class AlbumController {
   }
 
   @GetMapping(value = "/{id}")
-  public ResponseEntity<Album> GetAlbum(@PathVariable("id") @Valid @RequestBody @ModelAttribute Long id) {
+  public ResponseEntity<AlbumDataResponse> GetAlbum(@PathVariable("id") @Valid @RequestBody @ModelAttribute Long id) {
     try {
-      return ResponseEntity.ok(this.albumService.getAlbum(id));
+      return ResponseEntity.ok(new AlbumDataResponse(this.albumService.getAlbum(id)));
     } catch (IllegalArgumentException e) {
       System.out.println(e.getMessage());
       return ResponseEntity.status(HttpStatus.NOT_FOUND).build();

@@ -24,15 +24,19 @@ public class Album {
   @Column(name = "name", nullable = false)
   private String name;
 
+  @JsonIgnore
   @Column(name = "image")
   private String image;
 
+  @JsonIgnore
   @Column(name = "release", nullable = false)
   private String release;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "album", orphanRemoval = true)
   private List<Song> songs = new ArrayList<>();
 
+  @JsonIgnore
   @ManyToOne(optional = false)
   @JoinColumn(name = "artist_id", nullable = false)
   private Artist artist;
