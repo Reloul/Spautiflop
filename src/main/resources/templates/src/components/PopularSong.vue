@@ -8,12 +8,10 @@
             <hr>
         </div>
     </div>
-    <div id="popular-music">
-        <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike"/>
-        <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" />
-        <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" />
-        <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" />
-        <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" />
+    <div id="popular-general">
+        <div id="popular-music" v-for="music in musics" :key="music">
+            <CarteMusique :img="music.img" :music="music.music" :artist="music.artist" :nbLike="music.nbLike" :isLike="music.isLike"/>
+        </div>
     </div>
   </div>
 </template>
@@ -32,11 +30,43 @@ export default {
     },
     data(){
         return{
-            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Bruce_McCandless_II_during_EVA_in_1984.jpg/1200px-Bruce_McCandless_II_during_EVA_in_1984.jpg',
-            music: 'Moonless',
-            artist: 'Fl3r',
-            nbLike: 8900,
-            isLike: false,
+            musics: [
+                {
+                    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Bruce_McCandless_II_during_EVA_in_1984.jpg/1200px-Bruce_McCandless_II_during_EVA_in_1984.jpg',
+                    music: 'Moonless',
+                    artist: 'Fl3r',
+                    nbLike: 8900,
+                    isLike: false,
+                },
+                {
+                    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Bruce_McCandless_II_during_EVA_in_1984.jpg/1200px-Bruce_McCandless_II_during_EVA_in_1984.jpg',
+                    music: 'Moonless',
+                    artist: 'Fl3r',
+                    nbLike: 8900,
+                    isLike: false,
+                },
+                {
+                    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Bruce_McCandless_II_during_EVA_in_1984.jpg/1200px-Bruce_McCandless_II_during_EVA_in_1984.jpg',
+                    music: 'Moonless',
+                    artist: 'Fl3r',
+                    nbLike: 8900,
+                    isLike: false,
+                },
+                {
+                    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Bruce_McCandless_II_during_EVA_in_1984.jpg/1200px-Bruce_McCandless_II_during_EVA_in_1984.jpg',
+                    music: 'Moonless',
+                    artist: 'Fl3r',
+                    nbLike: 8900,
+                    isLike: false,
+                },
+                {
+                    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Bruce_McCandless_II_during_EVA_in_1984.jpg/1200px-Bruce_McCandless_II_during_EVA_in_1984.jpg',
+                    music: 'Moonless',
+                    artist: 'Fl3r',
+                    nbLike: 8900,
+                    isLike: false,
+                },
+            ]
         }
     }
 }
@@ -79,5 +109,10 @@ export default {
         justify-content: space-between;
         text-align: center;
         flex-wrap: wrap;
+    }
+
+    #popular-general{
+        display: flex;
+        justify-content: space-between;
     }
 </style>

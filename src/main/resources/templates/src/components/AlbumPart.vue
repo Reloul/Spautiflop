@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="album">
         <div id="title">
             <div id="span-title">
                 <span>Albums</span>
@@ -58,6 +58,7 @@ export default {
                     date: "2023",
                     artist: "Fl3r",
                 },
+                
             ]
         }
     }
@@ -95,6 +96,11 @@ export default {
         display:flex;
         justify-content: space-between;
         width: 75vw;
+        flex-wrap: wrap;
+    }
+    #album{
+        margin-bottom: 20px;
+        
     }
     
 </style>

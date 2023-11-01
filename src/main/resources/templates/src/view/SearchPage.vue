@@ -10,8 +10,12 @@
             </div>
             <div id="search-result">
                 <div id="mid-top-search">
-                    <TopSearch />
-                    <SongList />
+                    <div>
+                        <TopSearch />
+                    </div>
+                    <div>
+                        <SongList />
+                    </div>
                 </div>
                 <div id="bottom-search">
                     <ArtistPart />
@@ -49,10 +53,12 @@ export default {
 
     #search-page{
         display: flex;
+        overflow: auto;
     }
     #main-search{
         background-color: #3b4762;
         width: 81vw;
+        min-width: 1100px;
         margin-left: 20px;
         margin-top: 4vh;
         border-radius: 10px;
