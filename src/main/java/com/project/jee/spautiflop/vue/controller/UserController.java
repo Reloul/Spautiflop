@@ -20,14 +20,14 @@ public class UserController {
     this.userService = userService;
   }
 
-/*
+
   @PutMapping("/like/{id}")
   public ResponseEntity<?> likeSong(@AuthenticationPrincipal LocalUser user, @PathVariable("id") @Valid @RequestBody @ModelAttribute Long id)
   {
     try {
-     // this.userService.addSongToFav(user, id);
+      this.userService.addSongToFav(user, id);
       return ResponseEntity.ok().build();
-    } catch (IllegalArgumentException e) {
+    } catch (RuntimeException e) {
       System.out.println(e.getMessage());
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
@@ -37,11 +37,11 @@ public class UserController {
   public ResponseEntity<?> dislikeSong(@AuthenticationPrincipal LocalUser user, @PathVariable("id") @Valid @RequestBody @ModelAttribute Long id)
   {
     try {
-    //        this.userService.removeSongFromFav(user, id);
+      this.userService.removeSongFromFav(user, id);
       return ResponseEntity.ok().build();
-    } catch (IllegalArgumentException e) {
+    } catch (RuntimeException e) {
       System.out.println(e.getMessage());
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
-  }*/
+  }
 }
