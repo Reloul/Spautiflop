@@ -1,15 +1,13 @@
 package com.project.jee.spautiflop.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.project.jee.spautiflop.model.linking_model.LinkingUserSong;
+import com.project.jee.spautiflop.model.links.Likes;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.proxy.HibernateProxy;
 
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Getter
 @Setter
@@ -45,5 +43,7 @@ public class Song {
   @JoinColumn(name = "artist_id")
   private Artist artist;
 
+  @OneToMany(mappedBy = "song", orphanRemoval = true)
+  private Set<Likes> likes = new LinkedHashSet<>();
 
 }
