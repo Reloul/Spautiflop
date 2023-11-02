@@ -1,10 +1,13 @@
 package com.project.jee.spautiflop.model;
 
+import com.project.jee.spautiflop.model.links.Playlist_Song;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -27,10 +30,7 @@ public class Playlist {
   @JoinColumn(name = "user_id", nullable = false)
   private LocalUser user;
 
-  @ManyToMany
-  @JoinTable(name = "playlist_songs",
-          joinColumns = @JoinColumn(name = "playlist_id"),
-          inverseJoinColumns = @JoinColumn(name = "songs_id"))
-  private Set<Song> songs = new LinkedHashSet<>();
+  @OneToMany(mappedBy = "playlist", orphanRemoval = true)
+  private List<Playlist_Song> songs = new ArrayList<>();
 
 }
