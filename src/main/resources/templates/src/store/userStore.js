@@ -18,6 +18,11 @@ export const useUserStore = defineStore( 'userStore', {
       const data = await queryStore.fetchJwtJson("/auth/me");
       this.pseudo = data.pseudo;
       this.profilPicture = await queryStore.fetchImage(data.photo);
+      this.musiqueLike = data.likes;
+      for(let playlist of data.playlists) {
+        console.log(playlist);
+        this.playlist.push({ id: playlist.first, name: playlist.second.first, image: playlist.second.second });
+      }
       return true;
     }
   }
