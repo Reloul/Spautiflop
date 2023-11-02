@@ -35,6 +35,7 @@ public class FileService {
   public String uploadImage(MultipartFile image) throws IOException {
     /* If no photo is provided, set the default one */
     if (image == null || image.isEmpty()) {
+      System.out.println("No photo provided");
       return DEFAULT_IMAGE;
     }
 
@@ -50,8 +51,10 @@ public class FileService {
       String filename = String.valueOf(System.currentTimeMillis()) + image.getOriginalFilename();
       String filePath = PATH_DIRECTORY + "images/" + filename;
 
-      if (filePath.length() > 255)
+      if (filePath.length() > 255){
+        System.out.println("File name too long");
         throw new IOException("File name too long");
+      }
 
       try {
         image.transferTo(new File(filePath));
