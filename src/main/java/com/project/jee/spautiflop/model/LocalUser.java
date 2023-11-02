@@ -31,7 +31,7 @@ public class LocalUser {
 
   @JsonIgnore
   @OneToMany(mappedBy = "user", orphanRemoval = true)
-  private List<Playlist> playlists = new ArrayList<>();
+  private List<Playlist> playlists = new ArrayList<Playlist>();
 
   @JsonIgnore
   @OneToMany(mappedBy = "localUser", orphanRemoval = true)
