@@ -32,6 +32,9 @@ public class LikeService {
         like.setSong(song);
         like.setLocalUser(user);
 
+        song.setNbLikes(song.getNbLikes() + 1);
+        songRepository.save(song);
+
         return this.likesRepository.save(like);
     }
 
@@ -47,8 +50,11 @@ public class LikeService {
     public void unlikeSong(LocalUser user, Song song) throws RuntimeException{
         Optional<Likes> opLike = this.likesRepository.findByLocalUserAndSong(user, song);
 
-        if(opLike.isPresent())
+        if(opLike.isPresent()) {
             this.likesRepository.delete(opLike.get());
+            song.setNbLikes(song.getNbLikes() - 1);
+            this.songRepository.save(song);
+        }
         else
             throw new RuntimeException("User didn't like this song");
     }
