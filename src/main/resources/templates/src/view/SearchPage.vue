@@ -35,7 +35,18 @@
     import ArtistPart from '../components/ArtistPart.vue'
     import AlbumPart from '../components/AlbumPart.vue';
 
+import {useUserStore} from '../store/userStore'
+import { onMounted } from 'vue';
 export default {
+    setup() {
+        const userStore = useUserStore();
+        
+        onMounted( async () => {
+            await userStore.init();
+        });
+        
+        return;
+    },
     name: "SearchPage",
     components : {
         SearchBar,

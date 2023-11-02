@@ -8,11 +8,13 @@ export const useUserStore = defineStore( 'userStore', {
     profilPicture: null,
     musiqueLike : [],
     playlist : [],
+    finishLoad: false,
   }),
   actions: {
 
     async init() {
-      if(!queryStore.jwt)
+      
+      if(!queryStore.jwt || this.finishLoad)
         return;
 
       const data = await queryStore.fetchJwtJson("/auth/me");
@@ -20,9 +22,9 @@ export const useUserStore = defineStore( 'userStore', {
       this.profilPicture = await queryStore.fetchImage(data.photo);
       this.musiqueLike = data.likes;
       for(let playlist of data.playlists) {
-        console.log(playlist);
-        this.playlist.push({ id: playlist.first, name: playlist.second.first, image: playlist.second.second });
+        this.playlist.push({ id: playlist.first, name: playlist.second.first, image: await queryStore.fetchImage(playlist.second.second) });
       }
+      this.finishLoad = true;
       return true;
     }
   }

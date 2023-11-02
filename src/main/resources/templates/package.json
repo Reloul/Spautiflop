@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "deploy": "(vue-cli-service build && cd ../static && rm -fr img css fonts js node_modules favicon.ico dist index.html && cd - && mv dist/* ../static )",
+    "deploy": "(vue-cli-service build && cd ../static && rm -fr img css fonts media js node_modules favicon.ico dist index.html && cd - && mv dist/* ../static )",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {

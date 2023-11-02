@@ -24,9 +24,14 @@
             </div>
             <hr>
             <div id="playlist">
-                <div v-for="(playlist, index) in playlists" :key="index">
+                <div>
                     <router-link to="/playlist" id="playlist-router">
-                        <PlaylistReduce :img="playlist.img" :name="playlist.name" :user="playlist.user" @toggle-active="handleToggleActive" :isActive="activePlaylistIndex === index" :index="index"/>
+                        <PlaylistReduce :img="require('../../../static/heart.png')" name="Favoris" :user="userStore.pseudo" @toggle-active="handleToggleActive" :isActive="activePlaylistIndex === -1" :index="-1"/>
+                    </router-link>
+                </div>
+                <div v-for="pl in userStore.playlist" :key="pl.id">
+                   <router-link to="/playlist" id="playlist-router">
+                        <PlaylistReduce :img="pl.image" :name="pl.name" :user="userStore.pseudo" @toggle-active="handleToggleActive" :isActive="activePlaylistIndex === pl.id" :index="pl.id"/>
                     </router-link>
                     
                 </div>
@@ -38,8 +43,19 @@
 <script>
 import AddPlaylist from '../components/AddPlaylist.vue';
 import PlaylistReduce from './PlaylistReduce.vue'
+import {useUserStore} from '../store/userStore'
+import {useQueryStore} from '../store/queryStore'
 
 export default {
+    setup() {
+        const userStore = useUserStore();
+        const queryStore = useQueryStore();
+
+        console.log(userStore.playlist);
+
+
+        return { userStore, queryStore};
+    },
     name : "LeftMain",
     components : {
         PlaylistReduce,
@@ -47,14 +63,6 @@ export default {
     },
     data (){
         return{
-            playlists: [
-                { 
-                    img : require('../../../static/heart.png'), name : "Favoris",user : "Le Couz"
-                },
-                { 
-                    img : require('../../../static/heart.png'), name : "Favoris",user : "Le Couz"
-                },
-        ],
         activePlaylistIndex: null,
         };
     },
