@@ -121,6 +121,13 @@ export default {
         margin-top: 5px;
         color: red;
         text-align: left;
-        visibility: hidden  ;
+        visibility: hidden;
     }   
+    
+</style>
+
+<style>
+#main-progress{
+    display: none;
+}
 </style>

@@ -95,6 +95,7 @@ export default {
     #artist-page{
         display: flex;
         overflow: auto;
+        margin-bottom: 100px;
     }
 
     #main-artist{

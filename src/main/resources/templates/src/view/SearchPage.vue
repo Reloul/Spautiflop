@@ -54,6 +54,7 @@ export default {
     #search-page{
         display: flex;
         overflow: auto;
+        margin-bottom: 100px;
     }
     #main-search{
         background-color: #3b4762;

@@ -43,6 +43,8 @@ export default {
     #main-page{
         display: flex;
         overflow: auto;
+        margin-bottom: 100px;
+        overflow-x:inherit
     }
     #main-content{
         background-color: #3b4762;
