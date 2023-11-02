@@ -2,6 +2,7 @@ package com.project.jee.spautiflop.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.jee.spautiflop.model.links.Likes;
+import com.project.jee.spautiflop.model.links.Playlist_Song;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -47,5 +48,9 @@ public class Song {
   @JsonIgnore
   @OneToMany(mappedBy = "song", orphanRemoval = true)
   private Set<Likes> likes = new LinkedHashSet<>();
+
+ @JsonIgnore
+  @OneToMany(mappedBy = "song", orphanRemoval = true)
+  private Set<Playlist_Song> playlist_Songs = new LinkedHashSet<>();
 
 }
