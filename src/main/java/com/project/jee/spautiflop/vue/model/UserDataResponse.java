@@ -32,7 +32,7 @@ public class UserDataResponse {
 
     @NotNull
     @NotBlank
-    private List<Pair<Long, String>> playlists;
+    private List<Pair<Long, Pair<String,String>>> playlists;
 
     @NotNull
     @NotBlank
