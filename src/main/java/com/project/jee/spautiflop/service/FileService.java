@@ -15,9 +15,9 @@ import java.nio.file.Paths;
 public class FileService {
 
   private final String PATH_DIRECTORY = System.getProperty("user.dir") + "/src/main/resources/static/";
-  private final static String DEFAULT_IMAGE = "images/default.png";
-  private final static String DEFAULT_PROFILE = "profiles/default.png";
-  private final static String DEFAULT_ALBUM = "album/default.png";
+  private final static String DEFAULT_IMAGE = "images_default.png";
+  private final static String DEFAULT_PROFILE = "profiles_default.png";
+  private final static String DEFAULT_ALBUM = "album_default.png";
 
   public String DEFAULT_IMAGE() {
     return PATH_DIRECTORY + DEFAULT_IMAGE;
@@ -73,14 +73,15 @@ public class FileService {
       throw new IOException("File is not an audio, it's type : " + music.getContentType());
 
     else {
-      String filePath = PATH_DIRECTORY + "musics/" + String.valueOf(System.currentTimeMillis()) + music.getOriginalFilename();
+      String filename = String.valueOf(System.currentTimeMillis()) + music.getOriginalFilename();
+      String filePath = PATH_DIRECTORY + "musics/" + filename;
 
       if (filePath.length() > 255)
         throw new IOException("File name too long");
 
       try {
         music.transferTo(new File(filePath));
-        return filePath;
+        return filename;
       } catch (IOException e) {
         throw new IOException("Error while saving music  : " + e.getMessage());
       }
