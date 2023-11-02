@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.net.UnknownServiceException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -71,13 +72,14 @@ public class SongService {
     /* if an album is given */
     if(songRegistrationBody.getAlbum() != null)
     {
-      Optional<Album> opAlbum = albumRepository.findByNameIgnoreCase(songRegistrationBody.getAlbum());
+      List<Album> opAlbum = albumRepository.findByNameContainsIgnoreCase(songRegistrationBody.getAlbum());
       /* if album exists, add song to album's list of songs
        * else, create album and add song to album's list of songs
        */
       Album album;
-      if( opAlbum.isPresent() ) {
-        album = opAlbum.get();
+
+      if( opAlbum.stream().anyMatch(album1 -> artist.getAlbums().contains(album1))) {
+        album = opAlbum.stream().filter(album1 -> artist.getAlbums().contains(album1)).findFirst().get();
       } else {
         AlbumRegisterBody albumRegisterBody = new AlbumRegisterBody();
         albumRegisterBody.setName(songRegistrationBody.getAlbum());
