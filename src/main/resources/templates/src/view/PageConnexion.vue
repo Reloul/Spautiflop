@@ -124,3 +124,9 @@ export default {
     }
 
 </style>
+
+<style>
+#main-progress{
+    display: none;
+}
+</style>

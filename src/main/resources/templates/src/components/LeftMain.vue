@@ -1,11 +1,19 @@
 <template>
   <div id="left-side">
-        <router-link to="/pagePrincipale" style="text-decoration: none; color: inherit;">
-            <div id="button-search">
-                <v-icon icon="mdi-magnify" color="#b9d1db" size="x-large"></v-icon>
-                <div id="text-search-button">Rechercher</div>
-            </div>
-        </router-link>
+        <div id="button-search">
+            <router-link to="/pagePrincipale" style="text-decoration: none; color: inherit;">
+                <div id="icon-button1">
+                    <v-icon icon="mdi-magnify" color="#b9d1db" size="x-large"></v-icon>
+                    <div id="text-search-button">Rechercher</div>
+                </div>
+            </router-link>
+            <router-link to="/ajoutMusique" style="text-decoration: none; color: inherit;">
+                <div id="icon-button2">
+                    <v-icon icon="mdi-music-note-plus" color="#b9d1db" size="x-large"></v-icon>
+                    <div id="text-search-button">Ajouter Musique</div>
+                </div>
+            </router-link>
+        </div>
         <div id="left-playlist">
             <div id="title-left-playlist">
                 <v-icon icon="mdi-music-box-multiple" color="#b9d1db" size="x-large"> </v-icon>
@@ -63,13 +71,13 @@ export default {
     #button-search{
         background-color: #3b4762;
         width: 250px;
-        height: 60px;
+        height: 120px;
         margin-left: 2vw;
         margin-top: 4vh;
         border-radius: 10px;
         text-align: left;
         padding: 11px;
-        display: flex;
+        display: block;
         font-size: 20px;
         min-width: 200px;
     }   
@@ -125,5 +133,12 @@ export default {
         margin: auto;
     }
 
+    #icon-button1{
+        display: flex;
+    }
 
+    #icon-button2{
+        display: flex;
+        margin-top: 15px;
+    }
 </style>

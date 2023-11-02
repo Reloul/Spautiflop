@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="item in musics" :key="item" id="row-music">
+            <tr v-for="(item, index) in musics" :key="item" id="row-music">
                 <td> 
                     <div id="colum-music">
                         <img :src="item.photo" id="img-pres">
@@ -24,8 +24,9 @@
                                 <span>{{ item.artist }} </span>
                             </div>
                         </div>
-                        <div id="play-button">
-                                <v-icon icon="mdi-play" color="#ead2ac"></v-icon>
+                        <div id="play-button"  @click="togglePlayPause(index)">
+                                <v-icon v-if="!isPlaying[index]" icon="mdi-play" color="#ead2ac"></v-icon>
+                                <v-icon v-else icon="mdi-pause" color="#ead2ac"></v-icon>
                         </div>
                     </div>
                 </td>
@@ -33,7 +34,7 @@
                 <td>{{ item.date }}</td>
                 <td>
                     <div id="time-row">
-                        <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: like ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike" :id="item">
+                        <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: like[index] ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike(index)" :id="index">
                     </div>
                 </td>
                 <td>                                       
@@ -58,13 +59,18 @@ export default {
         ParaSong,
     },
     setup(props) {
-        const like = ref(props.isLike);
+        const like = ref(Array(props.musics.length).fill(props.isLike));
+        const isPlaying = ref(Array(props.musics.length).fill(false));
         
-        const cliqueLike = () => {
-            like.value = !like.value; // Inversez la valeur de isLike lors du clic
+        const cliqueLike = (index) => {
+            like.value[index] = !like.value[index]; // Inversez la valeur de isLike lors du clic
         }
 
-        return {cliqueLike, like}
+        const togglePlayPause = (index) => {
+            isPlaying.value = isPlaying.value.map((_, i) => i === index);
+        }
+
+        return { cliqueLike, like, isPlaying, togglePlayPause };
     },
     props: {
         music: String,
@@ -120,7 +126,6 @@ export default {
     }
     #row-music{
         height: 90px;
-        border-top-color: #b9d1db !important;
     }
    
     #time-row img{

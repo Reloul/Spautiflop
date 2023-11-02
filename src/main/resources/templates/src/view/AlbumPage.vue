@@ -80,6 +80,8 @@ export default {
 <style scoped>
     #album-page{
         display:flex;
+        margin-bottom: 100px;
+        overflow: auto;
     }
     #album-content{
         background-color: #3b4762;

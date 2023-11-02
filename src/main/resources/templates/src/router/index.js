@@ -46,6 +46,11 @@ const routes = [
         path:'/test',
         name:'Test',
         component: () => import(/* webpackChunkName: "test" */ '../components/TestPage.vue'),
+    },
+    {
+        path:'/ajoutMusique',
+        name:"Ajout",
+        component: () => import(/* webpackChunkName: "ajout" */ '../view/AddMusic.vue'),
     }
 ]
 

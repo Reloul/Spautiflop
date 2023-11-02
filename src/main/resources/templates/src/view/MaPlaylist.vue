@@ -78,6 +78,7 @@ export default {
 <style scoped>
     #playlist-page{
         display:flex;
+        margin-bottom: 100px;
     }
     #playlist-content{
         background-color: #3b4762;

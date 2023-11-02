@@ -168,7 +168,7 @@ export default {
         margin-top: 5px;
         color: red;
         text-align: left;
-        visibility: hidden  ;
+        visibility: hidden;
     }   
     #submit{
         background-color: #A7BED3;
@@ -176,4 +176,9 @@ export default {
         border: none;
         padding: 5rem;
     }
+    
+
+#main-progress{
+    display: none;
+}
 </style>

@@ -2,17 +2,22 @@
   <v-app>
     <v-main class="main">
       <router-view/>
+      <div>
+        <SongProgress />
+      </div>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import PageConnexionVue from './view/PageConnexion.vue';
+import PageAccueil from "./view/PageAccueil.vue";
+import SongProgress from "./components/SongProgress.vue";
 
 export default {
   name: "App",
   components: {
-    PageConnexionVue,
+    PageAccueil,
+    SongProgress,
   },
 };
 </script>
