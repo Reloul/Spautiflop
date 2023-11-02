@@ -28,7 +28,7 @@ public class ArtistController {
     this.fileService = fileService;
   }
   @PostMapping(value = "/add", consumes = {"multipart/form-data"})
-  public ResponseEntity<?> GetLoggedUser(@AuthenticationPrincipal LocalUser user, @Valid @RequestBody @ModelAttribute ArtistRegisterBody artistRegistrationBody) {
+  public ResponseEntity<?> registerArtist(@AuthenticationPrincipal LocalUser user, @Valid @RequestBody @ModelAttribute ArtistRegisterBody artistRegistrationBody) {
     try {
       this.artistService.registerArtist(artistRegistrationBody);
       return ResponseEntity.ok().build();

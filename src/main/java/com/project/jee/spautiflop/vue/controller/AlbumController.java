@@ -28,7 +28,7 @@ public class AlbumController {
   }
 
   @PostMapping(value = "/add", consumes = {"multipart/form-data"})
-  public ResponseEntity<Object> GetLoggedUser(@AuthenticationPrincipal LocalUser user, @Valid @RequestBody @ModelAttribute AlbumRegisterBody albumRegistrationBody) {
+  public ResponseEntity<Object> registerAlbum(@AuthenticationPrincipal LocalUser user, @Valid @RequestBody @ModelAttribute AlbumRegisterBody albumRegistrationBody) {
     try {
       this.albumService.registerAlbum(albumRegistrationBody);
       return ResponseEntity.ok().build();
