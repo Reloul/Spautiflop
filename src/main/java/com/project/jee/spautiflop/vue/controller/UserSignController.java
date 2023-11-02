@@ -70,9 +70,9 @@ public class UserSignController {
 
     UserDataResponse userDataResponse = new UserDataResponse(user);
 
-    List<Pair<Long, String>> playlists = new ArrayList<Pair<Long, String>>();
+    List<Pair<Long, Pair<String,String>>> playlists = new ArrayList<Pair<Long, Pair<String,String>>>();
     for(Playlist p : playlistsRepository.findByUser(user))
-      playlists.add(Pair.of(p.getId(), p.getName()));
+      playlists.add(Pair.of(p.getId(), Pair.of(p.getName(), p.getImage())));
     userDataResponse.setPlaylists(playlists);
 
     List<Long> likes = new ArrayList<Long>();
