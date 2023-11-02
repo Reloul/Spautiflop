@@ -1,5 +1,6 @@
 package com.project.jee.spautiflop.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.project.jee.spautiflop.model.links.Playlist_Song;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -26,10 +27,12 @@ public class Playlist {
   @Column(name = "image", nullable = false)
   private String image;
 
+  @JsonIgnore
   @ManyToOne(optional = false)
   @JoinColumn(name = "user_id", nullable = false)
   private LocalUser user;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "playlist", orphanRemoval = true)
   private List<Playlist_Song> songs = new ArrayList<>();
 
