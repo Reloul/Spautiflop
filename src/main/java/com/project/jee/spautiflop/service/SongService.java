@@ -16,6 +16,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.net.UnknownServiceException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -157,15 +158,13 @@ public class SongService {
     }
     else
       throw new IllegalArgumentException("Song not found");
-  }/*
-
-  public void addLike(Song song) {
-    song.setNbLikes(song.getNbLikes() + 1);
-    this.songRepository.save(song);
   }
 
-  public void removeLike(Song song) {
-    song.setNbLikes(song.getNbLikes() - 1);
-    this.songRepository.save(song);
-  }*/
+    public List<Song> getTopSongs(int nb) {
+        List<Song> topSongs = new ArrayList<Song>();
+        songRepository.findAll().forEach(topSongs::add);
+        topSongs.sort((s1, s2) -> s2.getNbLikes().compareTo(s1.getNbLikes()));
+
+        return topSongs.subList(0, Math.min(nb, topSongs.size()));
+    }
 }

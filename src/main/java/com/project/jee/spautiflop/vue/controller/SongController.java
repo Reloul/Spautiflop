@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.*;
 import java.io.IOException;
 import java.net.UnknownServiceException;
 import java.security.PublicKey;
+import java.util.ArrayList;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/song")
@@ -55,4 +57,16 @@ public class SongController {
     }
   }
 
+  @GetMapping("/top/{nb}")
+    public ResponseEntity<List<SongDataResponse>> GetTopSongs(@PathVariable("nb") @Valid @RequestBody @ModelAttribute Integer nb) {
+        try {
+          List<SongDataResponse> response = new ArrayList<SongDataResponse>();
+
+          this.songService.getTopSongs(nb).forEach(song -> {response.add(new SongDataResponse(song));});
+          return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+        System.out.println(e.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 }
