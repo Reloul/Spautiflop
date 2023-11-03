@@ -12,20 +12,20 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(item, index) in musics" :key="item" id="row-music">
+            <tr v-for="item in musics" :key="item.id" id="row-music">
                 <td> 
                     <div id="colum-music">
                         <img :src="item.photo" id="img-pres">
                         <div id="text-music">
                             <div id="music-colum-music">
-                                <span>{{ item.music }}</span> 
+                                <span>{{ item.name }}</span> 
                             </div>
                             <div id="artist-colum-music">
                                 <span>{{ item.artist }} </span>
                             </div>
                         </div>
-                        <div id="play-button"  @click="togglePlayPause(index)">
-                                <v-icon v-if="!isPlaying[index]" icon="mdi-play" color="#ead2ac"></v-icon>
+                        <div id="play-button"  @click="togglePlayPause(item.id)">
+                                <v-icon v-if="!isPlaying[item.id]" icon="mdi-play" color="#ead2ac"></v-icon>
                                 <v-icon v-else icon="mdi-pause" color="#ead2ac"></v-icon>
                         </div>
                     </div>
@@ -34,7 +34,7 @@
                 <td>{{ item.date }}</td>
                 <td>
                     <div id="time-row">
-                        <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: like[index] ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike(index)" :id="index">
+                        <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: userStore.musiqueLike.includes(item.id) ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike(item.id)" :id="item.id">
                     </div>
                 </td>
                 <td>                                       
@@ -52,6 +52,8 @@
 <script>
 import {ref} from 'vue'
 import ParaSong from '../components/ParaSong.vue';
+import {useUserStore} from '../store/userStore';
+import {useRoute} from 'vue-router';
 
 export default {
     name:"TableMusic",
@@ -59,27 +61,36 @@ export default {
         ParaSong,
     },
     setup(props) {
-        const like = ref(Array(props.musics.length).fill(props.isLike));
+        const userStore = useUserStore();
+        const like = ref(Array());
+        const route = useRoute();
+
+        props.musics.forEach((item) => {
+            console.log(item);
+            like.value[item.id] = userStore.musiqueLike.includes(item.id);
+            console.log(userStore.musiqueLike.includes(item.id));
+        });
+        console.log(like.value);
         const isPlaying = ref(Array(props.musics.length).fill(false));
         
-        const cliqueLike = (index) => {
-            like.value[index] = !like.value[index]; // Inversez la valeur de isLike lors du clic
+        const cliqueLike = async (index) => {
+            if(!userStore.musiqueLike.includes(index))
+                await userStore.like(index)
+
+            else
+                await userStore.dislike(index)
+
+            if(route.query.id === 'like')
+                props.musics.filter((item) => item.id !== index);
         }
 
         const togglePlayPause = (index) => {
             isPlaying.value = isPlaying.value.map((_, i) => i === index);
         }
 
-        return { cliqueLike, like, isPlaying, togglePlayPause };
+        return { cliqueLike, like, isPlaying, togglePlayPause, userStore };
     },
     props: {
-        music: String,
-        photo: String,
-        artist: String,
-        album: String,
-        date: String,
-        time: String,
-        isLike: Boolean,
         musics: Array,
     },
     data(){

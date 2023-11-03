@@ -25,12 +25,12 @@
             <hr>
             <div id="playlist">
                 <div>
-                    <router-link to="/playlist" id="playlist-router">
+                    <router-link to="/playlist/like" id="playlist-router">
                         <PlaylistReduce :img="require('../../../static/heart.png')" name="Favoris" :user="userStore.pseudo" @toggle-active="handleToggleActive" :isActive="activePlaylistIndex === -1" :index="-1"/>
                     </router-link>
                 </div>
                 <div v-for="pl in userStore.playlist" :key="pl.id">
-                   <router-link to="/playlist" id="playlist-router">
+                   <router-link :to="'/playlist/' + pl.id" id="playlist-router">
                         <PlaylistReduce :img="pl.image" :name="pl.name" :user="userStore.pseudo" @toggle-active="handleToggleActive" :isActive="activePlaylistIndex === pl.id" :index="pl.id"/>
                     </router-link>
                     

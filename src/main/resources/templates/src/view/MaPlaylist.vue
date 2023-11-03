@@ -17,13 +17,13 @@
                             <span> {{ name }}</span>
                         </div>
                         <div id="user">
-                            <span>{{ user }} - </span>
+                            <span>{{ userStore.pseudo }} - </span>
                             <span>{{ nbSong }} musiques</span>
                         </div>
                     </div>
                 </div>
                 <div id="music">
-                    <TableMusic :musics="musics" />
+                    <TableMusic :musics="response" />
                 </div>
             </div>
         </div>
@@ -34,44 +34,53 @@
 import LeftMain from '../components/LeftMain.vue';
 import UserTop from '../components/UserTop.vue';
 import TableMusic from '../components/TableMusic.vue';
-
-
+import { onBeforeMount, onServerPrefetch, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { useUserStore } from '../store/userStore';
 export default {
+    setup() {
+        const userStore = useUserStore();
+        const route = useRoute();
+        
+        const response = ref([]);
+        const nbSong = ref(0);
+        const name = ref('');
+        const image = ref('');
+
+        const fetchingData = async () => {
+            let tmp;
+            
+            if(route.params.id != 'like') {
+                tmp = await userStore.getPlaylist(route.params.id);
+                image.value = tmp.image;
+            }
+                
+            else{
+                tmp = await userStore.getFavoris();
+                image.value = require("../../../static/heart.png");
+            }
+            response.value = tmp.musique;
+            name.value = tmp.name;
+            nbSong.value = response.value.length;
+        }
+
+        onServerPrefetch(async () => {await fetchingData()});
+    
+        onBeforeMount( async () => {
+            if(name.value != '')
+                return;
+            await fetchingData();    
+            });
+        
+
+        return {response, nbSong, userStore, name, image, nbSong};
+    },
     name:"MaPlaylist",
     components: {
         LeftMain,
         UserTop,
         TableMusic,
     },
-    data() {
-        return{
-            image: require("../../../static/heart.png"),
-            name: "Favoris",
-            user: "Le Couz",
-            nbSong: 2,
-            musics: [
-                {
-                    music: "Moonless",
-                    photo: require("../../../static/V4.jpg"),
-                    artist: "Fl3r",
-                    album: "Moonless",
-                    date: "22 oct. 2023",
-                    time: "2:34",
-                    isLike: true,
-                },
-                {
-                    music: "Moonless",
-                    photo: require("../../../static/V4.jpg"),
-                    artist: "Fl3r",
-                    album: "Moonless",
-                    date: "22 oct. 2023",
-                    time: "2:34",
-                    isLike: true,
-                },
-                
-            ]
-        }
-    }
 }
 </script>
 

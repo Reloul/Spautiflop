@@ -23,9 +23,9 @@ const routes = [
         component: () => import(/* webpackChunkName: "pagePrincipale" */ '../view/PagePrincipale.vue'),
     },
     {
-        path:'/playlist',
+        path:'/playlist/:id',
         name:'Playlist',
-        component: () => import(/* webpackChunkName: "playlist" */ '../view/MaPlaylist.vue')
+        component: () => import(/* webpackChunkName: "playlist" */ '../view/MaPlaylist.vue'),
     },
     {
         path:'/recherche',
