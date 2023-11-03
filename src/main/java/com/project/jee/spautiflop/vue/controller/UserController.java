@@ -1,13 +1,17 @@
 package com.project.jee.spautiflop.vue.controller;
 
 import com.project.jee.spautiflop.model.LocalUser;
+import com.project.jee.spautiflop.model.Song;
 import com.project.jee.spautiflop.service.UserService;
+import com.project.jee.spautiflop.vue.model.SongDataResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/user")
@@ -39,6 +43,17 @@ public class UserController {
     try {
       this.userService.removeSongFromFav(user, id);
       return ResponseEntity.ok().build();
+    } catch (RuntimeException e) {
+      System.out.println(e.getMessage());
+      return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+    }
+  }
+
+  @GetMapping("/fav")
+  public ResponseEntity<List<SongDataResponse>> getFavSongs(@AuthenticationPrincipal LocalUser user)
+  {
+    try {
+      return ResponseEntity.ok(this.userService.getFavSongs(user));
     } catch (RuntimeException e) {
       System.out.println(e.getMessage());
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();

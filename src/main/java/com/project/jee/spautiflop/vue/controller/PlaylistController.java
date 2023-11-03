@@ -9,6 +9,7 @@ import com.project.jee.spautiflop.model.repo.Playlist_SongRepository;
 import com.project.jee.spautiflop.model.repo.SongRepository;
 import com.project.jee.spautiflop.vue.model.PlaylistDataResponse;
 import com.project.jee.spautiflop.vue.model.PlaylistRegisterBody;
+import com.project.jee.spautiflop.vue.model.SongDataResponse;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,9 +58,9 @@ public class PlaylistController {
         }
 
         PlaylistDataResponse playlistDataResponse = new PlaylistDataResponse(playlist);
-        List<Song> songs = new ArrayList<Song>();
+        List<SongDataResponse> songs = new ArrayList<SongDataResponse>();
         for (Playlist_Song ps : playlist_songRepository.findByPlaylist(playlist)) {
-            songs.add(ps.getSong());
+            songs.add(new SongDataResponse( ps.getSong()));
         }
         playlistDataResponse.setSongs(songs);
 

@@ -37,7 +37,7 @@ public class PlaylistDataResponse {
 
     @NotNull
     @NotBlank
-    private List<Song> songs;
+    private List<SongDataResponse> songs;
 
     public PlaylistDataResponse(Playlist playlist) {
         this.id = playlist.getId();

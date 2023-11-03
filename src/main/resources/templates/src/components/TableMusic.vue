@@ -21,7 +21,7 @@
                                 <span>{{ item.name }}</span> 
                             </div>
                             <div id="artist-colum-music">
-                                <span>{{ item.artist }} </span>
+                                <span>{{ item.artist.name }} </span>
                             </div>
                         </div>
                         <div id="play-button"  @click="togglePlayPause(item.id)">
@@ -30,7 +30,7 @@
                         </div>
                     </div>
                 </td>
-                <td> <router-link to="/album" style="text-decoration: none; color: inherit;">{{ item.album }}</router-link></td>
+                <td> <router-link to="/album" style="text-decoration: none; color: inherit;">{{ item.album.name }}</router-link></td>
                 <td>{{ item.date }}</td>
                 <td>
                     <div id="time-row">

@@ -3,7 +3,10 @@ package com.project.jee.spautiflop.service;
 import com.project.jee.spautiflop.exception.UserAlreadyExistsException;
 import com.project.jee.spautiflop.model.LocalUser;
 import com.project.jee.spautiflop.model.Song;
+import com.project.jee.spautiflop.model.links.Likes;
+import com.project.jee.spautiflop.model.repo.LikesRepository;
 import com.project.jee.spautiflop.model.repo.UserRepository;
+import com.project.jee.spautiflop.vue.model.SongDataResponse;
 import com.project.jee.spautiflop.vue.model.UserLoginBody;
 import com.project.jee.spautiflop.vue.model.UserRegistrationBody;
 import jakarta.validation.Valid;
@@ -27,13 +30,15 @@ public class UserService {
   private final FileService fileService;
   private final SongService songService;
   private final LikeService likeService;
-  public UserService(UserRepository userRepository, EncryptionService encryptionService, JsonWebTokenService JsonWebTokenService, FileService fileService, SongService songService, LikeService likeService) {
+  private final LikesRepository likesRepository;
+  public UserService(UserRepository userRepository, EncryptionService encryptionService, JsonWebTokenService JsonWebTokenService, FileService fileService, SongService songService, LikeService likeService, LikesRepository likesRepository) {
     this.userRepository = userRepository;
     this.encryptionService = encryptionService;
     this.JsonWebTokenService = JsonWebTokenService;
     this.fileService = fileService;
     this.songService = songService;
     this.likeService = likeService;
+    this.likesRepository = likesRepository;
   }
 
   public LocalUser registerUser(@Valid UserRegistrationBody userRegistrationBody) throws UserAlreadyExistsException, IOException {
@@ -90,4 +95,16 @@ public class UserService {
       throw new RuntimeException(e.getMessage() + " : user do not like this song");
     }
    }
+
+    public List<SongDataResponse> getFavSongs(LocalUser user) throws RuntimeException {
+      try {
+        List<Likes> l = this.likesRepository.findByLocalUser(user);
+        List<SongDataResponse> songs = new ArrayList<SongDataResponse>();
+        for (Likes like : l)
+          songs.add(new SongDataResponse(like.getSong()));
+        return songs;
+      } catch (RuntimeException e) {
+        throw new RuntimeException(e.getMessage() + " : user do not like this song");
+      }
+    }
 }
