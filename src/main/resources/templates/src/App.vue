@@ -2,8 +2,8 @@
   <v-app>
     <v-main class="main">
       <router-view/>
-      <div>
-        <SongProgress />
+      <div v-if="!hideSongProgress">
+        <SongProgress/>
       </div>
     </v-main>
   </v-app>
@@ -19,8 +19,18 @@ export default {
     PageAccueil,
     SongProgress,
   },
+  computed: {
+    hideSongProgress() {
+      // Récupérer la route actuelle à partir du routeur
+      const currentRoute = this.$route;
+
+      // Vérifier si la meta-information hideSongProgress est définie et à true
+      return currentRoute.meta.hideSongProgress === true;
+    }
+  },
 };
 </script>
+
 
 <style>
 #app {

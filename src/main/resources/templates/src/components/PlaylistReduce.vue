@@ -23,6 +23,7 @@ export default {
         user : String,
         isActive: Boolean,
         index: Number,
+        id: Number,
     },
     methods: {
         toggleActive() {

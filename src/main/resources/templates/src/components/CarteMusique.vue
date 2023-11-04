@@ -24,7 +24,6 @@
 <script>
 import {ref} from 'vue'
 import ParaSong from '../components/ParaSong'
-import * as global from '../util/global'
 
 export default {
     name : 'CarteMusique',

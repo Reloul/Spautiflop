@@ -32,6 +32,9 @@
 </template>
 
 <script>
+
+import eventBus from "../main.js";
+
 export default {
     name: "SongProgress",
     data(){
@@ -112,17 +115,32 @@ export default {
             return formatTime;
         },
         addEventListeners() {
-        this.player.addEventListener('timeupdate', this.handleMusicProgress);
-        this.player.addEventListener('loadedmetadata', () => {
-            this.durationTime = this.player.duration;
-        });
-    }
+            this.player.addEventListener('timeupdate', this.handleMusicProgress);
+            this.player.addEventListener('loadedmetadata', () => {
+                this.durationTime = this.player.duration;
+            });
+        },
+        playMusic(musicData) {
+            // Mettez à jour les données de la musique avec les nouvelles données
+            this.current = {
+                src: musicData.link, // Le chemin de la musique
+                nameSong: musicData.music,
+                artistSong: musicData.artist,
+                img: musicData.img
+            };
+            // Mettez à jour le lecteur audio avec la nouvelle musique
+            this.player.src = this.current.src;
+            // Lancer la musique
+            this.player.play();
+            this.isPlaying = true;
+        },
     },
     created () {
         this.current = this.songs[this.index];
         this.player.src = this.current.src;
         this.addEventListeners();
-    }
+    },
+    
 }
 </script>
 
