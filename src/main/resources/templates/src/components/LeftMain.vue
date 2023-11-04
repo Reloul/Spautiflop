@@ -54,8 +54,8 @@ export default {
                 { 
                     img : require('../../../static/heart.png'), name : "Favoris",user : "Le Couz"
                 },
-        ],
-        activePlaylistIndex: null,
+            ],
+            activePlaylistIndex: null,
         };
     },
     methods: {
@@ -93,8 +93,7 @@ export default {
     #left-playlist{
         background-color: #3b4762;
         width: 250px;
-        height: 85vh;
-        min-height: 750px;
+        height: 690px;
         margin-left: 2vw;
         margin-top: 15px;
         border-radius: 10px;

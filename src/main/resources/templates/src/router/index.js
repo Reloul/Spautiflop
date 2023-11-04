@@ -10,12 +10,18 @@ const routes = [
     {
         path:'/connexion',
         name: 'Connexion',
-        component: () => import(/* webpackChunkName: "connexion" */ '../view/PageConnexion.vue' )
+        component: () => import(/* webpackChunkName: "connexion" */ '../view/PageConnexion.vue' ),
+        meta: {
+            hideSongProgress: true
+        }
     },
     {
         path:'/inscription',
         name: 'Inscription',
-        component: () => import(/* webpackChunkName: "inscription" */ '../view/PageInscription.vue' )
+        component: () => import(/* webpackChunkName: "inscription" */ '../view/PageInscription.vue' ),
+        meta: {
+            hideSongProgress: true
+        }
     },
     {
         path:'/pagePrincipale',
@@ -25,7 +31,7 @@ const routes = [
     {
         path:'/playlist',
         name:'Playlist',
-        component: () => import(/* webpackChunkName: "playlist" */ '../view/MaPlaylist.vue')
+        component: () => import(/* webpackChunkName: "playlist" */ '../view/MaPlaylist.vue'),
     },
     {
         path:'/recherche',
@@ -49,14 +55,26 @@ const routes = [
     },
     {
         path:'/ajoutMusique',
-        name:"Ajout",
-        component: () => import(/* webpackChunkName: "ajout" */ '../view/AddMusic.vue'),
-    }
+        name:"AjoutMusique",
+        component: () => import(/* webpackChunkName: "ajoutMusique" */ '../view/AddMusic.vue'),
+        meta: {
+            hideSongProgress: true
+        }
+    },
+    {
+        path:'/ajoutAll',
+        name:'AjoutAll',
+        component: () => import(/* webpackChunkName: "ajoutAll" */ '../view/AddAll.vue'),
+        meta: {
+            hideSongProgress: true
+        }
+    },
 ]
 
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),
-    routes
+    routes,
 })
+
 
 export default router
