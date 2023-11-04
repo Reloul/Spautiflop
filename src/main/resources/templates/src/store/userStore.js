@@ -103,7 +103,6 @@ export const useUserStore = defineStore( 'userStore', {
         this.playlist.splice(this.playlist.indexOf(idPlaylist), 1);
       }
     },
-
     
 }
 }); 

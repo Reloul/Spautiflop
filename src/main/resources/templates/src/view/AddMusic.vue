@@ -23,8 +23,8 @@
                 <v-text-field label="Nom de l'Artiste" required id="artist-song" v-model="inputMusicArtist"></v-text-field>
                 <v-text-field label="Nom de l'Album/Single" required id="album-song" v-model="inputMusicAlbum"></v-text-field>
                 <v-text-field label="Genre de la musique" required id="genre-song" v-model="inputMusicGenre"></v-text-field>
-                <v-file-input label="Image de la Musique" variant="filled" accept="image/*" prepend-icon="mdi-camera" id="song-picture" required v-model="inputMusicPicture"></v-file-input>
-                <v-file-input label="Fichier de la Musique" variant="filled" accept="audio/*" prepend-icon="mdi-camera" id="song-file" required @change="handleFileChange" v-model="inputMusicLink"></v-file-input>  
+                <v-file-input ref=cover label="Image de la Musique" variant="filled" accept="image/*" prepend-icon="mdi-camera" id="song-picture" required v-model="inputMusicPicture"></v-file-input>
+                <v-file-input ref=music label="Fichier de la Musique" variant="filled" accept="audio/*" prepend-icon="mdi-camera" id="song-file" required @change="handleFileChange" v-model="inputMusicLink"></v-file-input>  
                 <div id="submit">
                     <input type="submit" value="Ajouter Musique">                                           
                 </div>
@@ -34,7 +34,21 @@
 </template>
 
 <script>
+import {useQueryStore} from "../store/queryStore";
+import {ref} from "vue";
+
 export default {
+    setup() {
+        const cover = ref(null);
+        const music = ref(null);
+        const queryStore = useQueryStore();
+    
+        return {
+            queryStore,
+            cover,
+            music,
+        };
+    },
     name: "AddMusic",
      data() {
         return {
@@ -57,12 +71,16 @@ export default {
             console.log("image de la musique :", this.inputMusicPicture);
             console.log("fichier de la musique :", this.inputMusicLink);
 
-            this.maFonction(this.inputMusicName);
-            this.maFonction(this.inputMusicArtist);
-            this.maFonction(this.inputMusicAlbum);
-            this.maFonction(this.inputMusicGenre);
-            this.maFonction(this.inputMusicPicture);
-            this.maFonction(this.inputMusicLink);
+            let formData = new FormData();
+            formData.append("name", this.inputMusicName);
+            formData.append("artist", this.inputMusicArtist);
+            formData.append("album", this.inputMusicAlbum);
+            formData.append("genre", this.inputMusicGenre);
+            formData.append("cover", this.cover.files[0]);
+            formData.append("music", this.music.files[0]);
+            //formData.append("duration", this.audioDuration);
+
+            this.queryStore.fetchJwt("/api/song/add", formData, "POST");
         },
         handleFileChange(event) { //
             const file = event.target.files[0];
@@ -73,16 +91,11 @@ export default {
                 audio.onloadedmetadata = () => {
                     this.audioDuration = audio.duration;
                     console.log("Durée du fichier audio (en secondes) :", this.audioDuration);
-                    this.maFonction(this.audioDuration);
                 };
             };
             // Lisez le fichier audio sélectionné (File)
             reader.readAsDataURL(file);
         },
-        maFonction(valeur) {
-            // Faites quelque chose avec la valeur du champ de texte
-            console.log("Fonction appelée avec la valeur :", valeur);
-        }
     }
 
 
