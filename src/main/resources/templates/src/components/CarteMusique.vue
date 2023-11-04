@@ -12,7 +12,7 @@
             <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: like ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike">
         </div>
         <div id="button">
-            <a href="##"><v-icon icon="mdi-play" color="green"></v-icon></a>
+            <v-icon icon="mdi-play" color="green" @click="cliquePlay"></v-icon>
             <div id="para-song">
                 <ParaSong :items="items" :suppr="suppr "/>
             </div>
@@ -24,6 +24,7 @@
 <script>
 import {ref} from 'vue'
 import ParaSong from '../components/ParaSong'
+import { useMusicStore } from '../stores/MusicStore.js'
 
 export default {
     name : 'CarteMusique',
@@ -35,9 +36,22 @@ export default {
         
         const cliqueLike = () => {
             like.value = !like.value; // Inversez la valeur de isLike lors du clic
-        }
+        };
 
-        return {cliqueLike, like}
+        const musicStore = useMusicStore();
+        const cliquePlay = function(){
+            const musicData = {
+                img: props.img,
+                music: props.music,
+                artist: props.artist,
+                isLike: props.isLike,
+                time: props.time,
+                src: props.src,
+            };
+            musicStore.changeSong(musicData);
+        };
+
+        return {cliqueLike, like, musicStore, cliquePlay}
     },
     props : {
         img: String,
@@ -45,6 +59,8 @@ export default {
         artist: String,
         nbLike: Number,
         isLike: Boolean,
+        src: String,
+        time: String,
     },
     data(){
         return{
@@ -79,6 +95,9 @@ export default {
     }
     #PresM{
         font-size: 20px;
+         white-space: nowrap; /* Empêche le texte de revenir à la ligne */
+        overflow: hidden; /* Cache le texte qui dépasse la div */
+        text-overflow: ellipsis;
     }
     #like img{
         height: 20px;

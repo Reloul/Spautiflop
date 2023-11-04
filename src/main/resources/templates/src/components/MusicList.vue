@@ -5,7 +5,7 @@
         </div>
         <div id="pres-song">
             <div id="music-name">
-                <span> {{ music }} </span>
+                <span> {{ music }}</span>
             </div>
             <div id="artist-name">
                 <span> {{ artist }}</span>
@@ -27,7 +27,7 @@
 <script>
 
 import {ref} from 'vue';
-import eventBus from "../main.js";
+import { useMusicStore } from '../stores/MusicStore.js';
 
 export default {
     name: 'MusicList',
@@ -37,11 +37,12 @@ export default {
         artist: String,
         isLike: Boolean,
         time: String,
-        link: String,
+        src: String,
     },
-    setup(props, { emit }) {
+   
+    setup(props) {
         const like = ref(props.isLike);
-        
+        const musicStore = useMusicStore();
         const cliquePlay = function(){
             const musicData = {
                 img: props.img,
@@ -49,17 +50,18 @@ export default {
                 artist: props.artist,
                 isLike: props.isLike,
                 time: props.time,
-                link: props.link,
+                src: props.src,
             };
-
-            eventBus.emit('play-music', musicData);
+            musicStore.changeSong(musicData);
         };
+
+    
         const cliqueLike = () => {
             like.value = !like.value; // Inversez la valeur de isLike lors du clic
 
         }
 
-        return {cliqueLike, like, cliquePlay}
+        return {cliqueLike, cliquePlay, musicStore, like}
     },
 }
 </script>

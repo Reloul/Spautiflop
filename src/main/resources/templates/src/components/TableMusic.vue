@@ -12,7 +12,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr v-for="(item, index) in musics" :key="item" id="row-music">
+            <tr v-for="(item, index) in musics" :key="index" id="row-music">
                 <td> 
                     <div id="colum-music">
                         <img :src="item.photo" id="img-pres">
@@ -24,9 +24,8 @@
                                 <span>{{ item.artist }} </span>
                             </div>
                         </div>
-                        <div id="play-button"  @click="togglePlayPause(index)">
-                                <v-icon v-if="!isPlaying[index]" icon="mdi-play" color="#ead2ac"></v-icon>
-                                <v-icon v-else icon="mdi-pause" color="#ead2ac"></v-icon>
+                        <div id="play-button">
+                            <v-icon icon="mdi-play" color="#ead2ac"  @click="cliquePlay(index)"></v-icon>
                         </div>
                     </div>
                 </td>
@@ -52,25 +51,12 @@
 <script>
 import {ref} from 'vue'
 import ParaSong from '../components/ParaSong.vue';
+import { useMusicStore } from '../stores/MusicStore.js';
 
 export default {
     name:"TableMusic",
     components:{
         ParaSong,
-    },
-    setup(props) {
-        const like = ref(Array(props.musics.length).fill(props.isLike));
-        const isPlaying = ref(Array(props.musics.length).fill(false));
-        
-        const cliqueLike = (index) => {
-            like.value[index] = !like.value[index]; // Inversez la valeur de isLike lors du clic
-        }
-
-        const togglePlayPause = (index) => {
-            isPlaying.value = isPlaying.value.map((_, i) => i === index);
-        }
-
-        return { cliqueLike, like, isPlaying, togglePlayPause };
     },
     props: {
         music: String,
@@ -80,7 +66,31 @@ export default {
         date: String,
         time: String,
         isLike: Boolean,
+        src : String,
         musics: Array,
+    },
+    setup(props) {
+        const like = ref(Array(props.musics.length).fill(props.isLike));
+        
+        const cliqueLike = (index) => {
+            like.value[index] = !like.value[index]; // Inversez la valeur de isLike lors du clic
+        };
+
+
+        const musicStore = useMusicStore();
+        const cliquePlay = function(index){
+            const musicData = {
+                img: props.musics[index].photo,
+                music: props.musics[index].music,
+                artist: props.musics[index].artist,
+                isLike: props.musics[index].isLike,
+                time: props.musics[index].time,
+                src: props.musics[index].src,
+            };
+            musicStore.changeSong(musicData);
+        };
+
+        return { cliqueLike, like, musicStore, cliquePlay};
     },
     data(){
         return{
@@ -93,7 +103,7 @@ export default {
                 { title: 'playlist de couz' },
             ]
         }
-    }
+    },
 }
 </script>
 
@@ -120,6 +130,7 @@ export default {
     #text-music{
         margin-top: 20px;
         margin-left: 10px;
+        width: 250px;
     }
     #artist-colum-music{
         font-size: 12px;
@@ -144,7 +155,7 @@ export default {
     }
     #play-button{
         margin: auto;
-        margin-left: 20px;
+        margin-left: 10px;
     }
 
     #td-para{

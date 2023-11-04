@@ -56,6 +56,7 @@ export default {
                     date: "22 oct. 2023",
                     time: "2:34",
                     isLike: true,
+                    src: require("../../../static/Moonless.mp3"),
                 },
                 {
                     music: "Random",
@@ -65,6 +66,7 @@ export default {
                     date: "21 sept. 2023",
                     time: "2:25",
                     isLike: true,
+                    src: require("../../../static/ethereal.mp3"),
                 },
                 {
                     music: "Moonless",
@@ -74,6 +76,7 @@ export default {
                     date: "22 oct. 2023",
                     time: "2:34",
                     isLike: true,
+                    src: require("../../../static/Moonless.mp3"),
                 },
                 {
                     music: "Moonless",
@@ -83,6 +86,7 @@ export default {
                     date: "22 oct. 2023",
                     time: "2:34",
                     isLike: true,
+                    src: require("../../../static/Moonless.mp3"),
                 },
             ]
         }

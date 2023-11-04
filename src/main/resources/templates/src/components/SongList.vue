@@ -8,8 +8,8 @@
                 <hr>
             </div>
         </div>
-        <div id="list-song" v-for="music in musics" :key="music.name">
-            <MusicList :img="music.img" :music="music.music" :artist="music.artist" :isLike="music.isLike" :time="music.time" :link="musics.link"/>
+        <div id="list-song" v-for="(music, index) in musics" :key="index">
+            <MusicList :img="music.img" :music="music.music" :artist="music.artist" :isLike="music.isLike" :time="music.time" :src="music.src"/>
         </div>
     </div>
 </template>
@@ -30,7 +30,7 @@ export default {
                    artist: "Fl3r",
                    isLike: false,
                    time: "2:36", 
-                   link: require('../../../static/Moonless.mp3'),
+                   src: require('../../../static/Moonless.mp3'),
                 },
                 {
                    img: require('../../../static/ethereal.jpg'),
@@ -38,7 +38,7 @@ export default {
                    artist: "TOKYOPILL",
                    isLike: false,
                    time: "1:38", 
-                   link: require('../../../static/ethereal.mp3'),
+                   src: require('../../../static/ethereal.mp3'),
                 },
                 {
                    img: require('../../../static/V4.jpg'),
@@ -46,7 +46,7 @@ export default {
                    artist: "Fl3r",
                    isLike: false,
                    time: "2:36", 
-                   link: require('../../../static/Moonless.mp3'),
+                   src: require('../../../static/Moonless.mp3'),
                 },
                 {
                    img: require('../../../static/V4.jpg'),
@@ -54,7 +54,7 @@ export default {
                    artist: "Fl3r",
                    isLike: false,
                    time: "2:36", 
-                   link: require('../../../static/Moonless.mp3'),
+                   src: require('../../../static/Moonless.mp3'),
                 },
             ]
         }
