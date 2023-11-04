@@ -14,10 +14,7 @@
             </v-carousel-item>
             <v-carousel-item v-for="music in response" :key=music[0].id>
                 <div class="slide">
-                    <CarteMusique :img="require('../../../static/heart.png')" :music="music[0].name" :artist="music[0].artist.name" :nbLike="music[0].nbLikes" :isLike="true"/>
-                    <CarteMusique :img="music[1].image" :music="music[1].name" :artist="music[1].artist.name" :nbLike="music[1].nbLikes" :isLike="true" />
-                    <CarteMusique :img="music[2].image" :music="music[2].name" :artist="music[2].artist.name" :nbLike="music[2].nbLikes" :isLike="true" />
-                -</div>
+                </div>
             </v-carousel-item>
 
         </v-carousel>        
@@ -27,14 +24,12 @@
 </template>
 
 <script>
-import CarteMusique from '../components/CarteMusique.vue'
 import {onMounted, ref} from 'vue'
 import {useQueryStore} from '../store/queryStore'
     
 export default {
     name: 'AccueilCentral',
     components: {
-        CarteMusique,
     },
     setup() {
         const queryStore = useQueryStore();

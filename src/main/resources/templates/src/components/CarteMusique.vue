@@ -4,12 +4,12 @@
         <img :src="img" alt="Picture of the music">
     </div>
     <div id="PresM">
-        <p>{{ music }} - {{ artist }}</p>
+        <p>{{ music }} - {{ artist.name }}</p>
     </div>
     <div id="bottomCard">
         <div id="like">
             {{ nbLike }}
-            <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: like ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike">
+            <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: (userStore.musiqueLike.includes(id)) ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike(id)">
         </div>
         <div id="button">
             <a href="##"><v-icon icon="mdi-play" color="green"></v-icon></a>
@@ -22,42 +22,66 @@
 </template>
 
 <script>
-import {ref} from 'vue'
+import { onMounted, ref } from 'vue';
+
 import ParaSong from '../components/ParaSong'
+import {useUserStore} from '../store/userStore';
+import {useRoute} from 'vue-router';
 
 export default {
+    setup(props) {
+        const route = useRoute();
+        const userStore = useUserStore();
+        const items = ref([]);
+        const suppr = ref([]);
+
+        const cliqueLike = async (index) => {
+            if(!userStore.musiqueLike.includes(index)) {
+                await userStore.like(index)
+                props.nbLike++;
+            }
+                
+            else{
+                await userStore.dislike(index)
+                props.nbLike--;
+            }
+                
+            if(route.query.id === 'like')
+                props.musics.filter((item) => item.id !== index);
+        }
+
+        const fetchingData = async () => {
+            for(let pl of userStore.playlist){
+                items.value.push({title: pl.name});
+                suppr.value.push({title: pl.name});
+            }
+        }
+
+        onMounted(async () => {
+            await fetchingData();
+        });
+      
+      return {cliqueLike, userStore}
+    },
     name : 'CarteMusique',
     components:{
         ParaSong,
-    },
-    setup(props) {
-        const like = ref(props.isLike);
-        
-        const cliqueLike = () => {
-            like.value = !like.value; // Inversez la valeur de isLike lors du clic
-        }
-
-        return {cliqueLike, like}
     },
     props : {
         img: String,
         music: String,
         artist: String,
         nbLike: Number,
-        isLike: Boolean,
+        isLike: {
+            type: Boolean,
+            default: false,
+        },
+        id: {
+            type: Number,
+            required: true,
+        },
+        musicLink: String,
     },
-    data(){
-        return{
-            items: [
-                { title: 'Favoris' },
-                { title: 'playlist couz' },
-            ],
-            suppr: [
-                { title: 'Favorises' },
-                { title: 'playlist de couz' },
-            ]
-        }
-    }
 }
 
 </script>

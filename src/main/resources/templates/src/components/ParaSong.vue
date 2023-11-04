@@ -28,6 +28,7 @@
 </template>
 
 <script>
+import {useQueryStore} from "../store/queryStore";
 export default {
     name: "ParaSong",
     props: {

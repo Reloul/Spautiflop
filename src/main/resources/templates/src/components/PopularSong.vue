@@ -9,8 +9,8 @@
         </div>
     </div>
     <div id="popular-general">
-        <div id="popular-music" v-for="music in musics" :key="music">
-            <CarteMusique :img="music.img" :music="music.music" :artist="music.artist" :nbLike="music.nbLike" :isLike="music.isLike"/>
+        <div id="popular-music" v-for="music in musics" :key="music.id">
+            <CarteMusique :img="music.img" :music="music.name" :artist="music.artist" :nbLike="music.nbLikes" :id="music.id" :musicLink="music.music"/>
         </div>
     </div>
   </div>
@@ -19,18 +19,51 @@
 <script>
 
 import CarteMusique from './CarteMusique.vue'
+import {onMounted, ref} from 'vue'
+import {useQueryStore} from '../store/queryStore'
 
 export default {
+    setup(props) {
+        const queryStore = useQueryStore();
+        const musics = ref([]);
+
+        const fetchingData = async () => {
+            const response = await queryStore.fetchJwtJson(props.fetchLink);
+            if(queryStore.HttpCode !== 200)
+                console.log("Erreur lors de la récupération des musiques");
+            else {
+                for(let music of response){
+                    musics.value.push({
+                        id: music.id,
+                        img: await queryStore.fetchImage(music.image),
+                        name: music.name,
+                        artist: music.artist,
+                        nbLikes: music.nbLikes,
+                        music: await queryStore.fetchAudio(music.musicLink),
+                    });
+                }
+            }
+        }
+
+        //onServerPrefetch(async () => {await fetchingData()});
+        onMounted(async () => {
+            await fetchingData();
+            }); 
+
+
+      return {musics}
+    },
     name:  "PopularSong",
     components: {
         CarteMusique,
     },
     props: {
-        nameCat : String
+        nameCat : String,
+        fetchLink: String
     },
     data(){
         return{
-            musics: [
+            musicss: [
                 {
                     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/Bruce_McCandless_II_during_EVA_in_1984.jpg/1200px-Bruce_McCandless_II_during_EVA_in_1984.jpg',
                     music: 'Moonless',

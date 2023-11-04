@@ -114,7 +114,7 @@ export const useQueryStore = defineStore( 'queryStore', {
           const music = await this.fetchAudio(musique.musicLink);
           console.log(image);
           console.log(music);
-          res.push({id: musique.id, name: musique.name, artist: musique.artist, album: musique.album, image: image,  music: music});
+          res.push({id: musique.id, name: musique.name, artist: musique.artist, album: musique.album, image: image,  music: music, nbLikes: musique.nbLikes});
         }
 
         this.setResponse(res);
