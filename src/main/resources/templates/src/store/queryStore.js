@@ -53,6 +53,9 @@ export const useQueryStore = defineStore( 'queryStore', {
 
 
     async fetchJwtJson(request, body = null, method = "get") {
+      if(!this.jwt) 
+        return null;
+      
       const response = await fetch(URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body});
       this.setHttpCode(response.status);
       this.setResponse(null);
@@ -65,6 +68,9 @@ export const useQueryStore = defineStore( 'queryStore', {
     },
 
     async fetchJwt(request, body = null, method = "get") {
+      if(!this.jwt)
+        return null;
+
       const response = await fetch(URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body});
       this.setHttpCode(response.status);
       this.setResponse(null);
@@ -73,7 +79,7 @@ export const useQueryStore = defineStore( 'queryStore', {
 
 
     async fetchFile(request, body = null, method = "get") {
-      const reponse = await fetch(URL + request, {method: method, credentials: 'include', headers: this.getHeaders(), body: body});
+      const reponse = await fetch(URL + request, {method: method, body: body});
       this.setHttpCode(reponse.status);
       this.setResponse(null);
 
@@ -93,5 +99,29 @@ export const useQueryStore = defineStore( 'queryStore', {
       return await this.fetchFile("/api/file/audio/" + request, body, method);
     },
   
+
+    async getTopSongs(nb) {
+      const response = await fetch(URL + "/api/song/top/" + nb, {method: "get"});
+      this.setHttpCode(response.status);
+      this.setResponse(null);
+      if (response.ok) {
+        const data = (JSON.parse (JSON.stringify (await (response.json()))));
+        
+        let res = [];
+        for(let musique of data) {
+          console.log(musique);
+          const image = await this.fetchImage(musique.image);
+          const music = await this.fetchAudio(musique.musicLink);
+          console.log(image);
+          console.log(music);
+          res.push({id: musique.id, name: musique.name, artist: musique.artist, album: musique.album, image: image,  music: music});
+        }
+
+        this.setResponse(res);
+        return this.response;
+      }
+
+      return false;
+    },
   },
 });

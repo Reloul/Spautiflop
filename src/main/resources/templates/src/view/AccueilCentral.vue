@@ -4,18 +4,20 @@
         <h1>Bienvenu sur Spautiflop, le (presque) premier site de streaming de musique !</h1>
     <hr>
     <h2>Découvrez un large choix de musique et faites vos propres Playlist</h2>
-        
     </div>
     <div class="cardDiapo">
-
-        <v-carousel hide-delimiters>
-            <v-carousel-item v-for="i in 3" :key=i>
+        <v-carousel hide-delimiters ref=carousel>
+            <v-carousel-item>
                 <div class="slide">
-
-                <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike"/>
-<CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" />
-<CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" />
+                    <h1> Les musiques les plus like a porté de click  </h1>
                 </div>
+            </v-carousel-item>
+            <v-carousel-item v-for="music in response" :key=music[0].id>
+                <div class="slide">
+                    <CarteMusique :img="require('../../../static/heart.png')" :music="music[0].name" :artist="music[0].artist.name" :nbLike="music[0].nbLikes" :isLike="true"/>
+                    <CarteMusique :img="music[1].image" :music="music[1].name" :artist="music[1].artist.name" :nbLike="music[1].nbLikes" :isLike="true" />
+                    <CarteMusique :img="music[2].image" :music="music[2].name" :artist="music[2].artist.name" :nbLike="music[2].nbLikes" :isLike="true" />
+                -</div>
             </v-carousel-item>
 
         </v-carousel>        
@@ -26,22 +28,48 @@
 
 <script>
 import CarteMusique from '../components/CarteMusique.vue'
-
+import {onMounted, ref} from 'vue'
+import {useQueryStore} from '../store/queryStore'
     
 export default {
     name: 'AccueilCentral',
     components: {
         CarteMusique,
     },
-    data() {
-        return{
-            img: require('../../../static/images/moonless.jpg'),
-            music: 'Moonless',
-            artist: 'Fl3r',
-            nbLike: 8900,
-            isLike: true,
+    setup() {
+        const queryStore = useQueryStore();
+        const response = ref([]);
+        let nbSong = 0;
+
+        const fetchingData = async () => {
+            let tmp = await queryStore.getTopSongs(9);
+            if(!tmp)
+                console.log("Erreur lors de la récupération des musiques");
+            else {
+                let nb = ((tmp.length - (tmp.length % 3)) / 3);
+                console.log(nb)
+                while(nb > 0) 
+                {
+                    let page = [];
+                    page.push(tmp.pop());
+                    page.push(tmp.pop());
+                    page.push(tmp.pop());
+
+                    response.value.push(page);
+                    nb--;
+                }
+                console.log(response.value);
+            }
         }
-    }
+
+        //onServerPrefetch(async () => {await fetchingData()});
+        onMounted(async () => {
+            await fetchingData();
+            }); 
+
+
+      return {response, nbSong}
+    },
 }
 </script>
 
