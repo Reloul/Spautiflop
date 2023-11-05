@@ -19,6 +19,7 @@ import java.net.UnknownServiceException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class SongService {
@@ -166,5 +167,19 @@ public class SongService {
         topSongs.sort((s1, s2) -> s2.getNbLikes().compareTo(s1.getNbLikes()));
 
         return topSongs.subList(0, Math.min(nb, topSongs.size()));
+    }
+
+    public List<Song> getRandomSongs(int nb) {
+      List<Song> randomSongs = new ArrayList<Song>();
+      List<Song> tmp = new ArrayList<Song>();
+      songRepository.findAll().forEach(tmp::add);
+
+      for(int i = Math.min(nb, tmp.size()); i > 0; i--) {
+        int index = ThreadLocalRandom.current().nextInt(0, tmp.size());
+        randomSongs.add(tmp.get(index));
+        tmp.remove(index);
+      }
+
+        return randomSongs;
     }
 }

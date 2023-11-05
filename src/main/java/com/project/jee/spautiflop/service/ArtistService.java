@@ -11,7 +11,10 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class ArtistService {
@@ -61,5 +64,19 @@ public class ArtistService {
       return artist.get();
     else
       throw new IllegalArgumentException("Artist not found");
+  }
+
+  public List<Artist> getRandomArtists(int nb) {
+    List<Artist> randomArtists = new ArrayList<Artist>();
+    List<Artist> tmp = new ArrayList<Artist>();
+    artistRepository.findAll().forEach(tmp::add);
+
+    for(int i = Math.min(nb, tmp.size()); i > 0; i--) {
+      int index = ThreadLocalRandom.current().nextInt(0, tmp.size());
+      randomArtists.add(tmp.get(index));
+      tmp.remove(index);
+    }
+
+    return randomArtists;
   }
 }

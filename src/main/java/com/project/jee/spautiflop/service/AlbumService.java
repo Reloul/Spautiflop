@@ -12,7 +12,10 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Service
 public class AlbumService {
@@ -86,4 +89,17 @@ public class AlbumService {
     }
   }
 
+  public List<Album> getRandomAlbums(int nb) {
+    List<Album> randomAlbums = new ArrayList<Album>();
+    List<Album> tmp = new ArrayList<Album>();
+    albumRepository.findAll().forEach(tmp::add);
+
+    for(int i = Math.min(nb, tmp.size()); i > 0; i--) {
+      int index = ThreadLocalRandom.current().nextInt(0, tmp.size());
+      randomAlbums.add(tmp.get(index));
+      tmp.remove(index);
+    }
+
+    return randomAlbums;
+  }
 }

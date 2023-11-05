@@ -122,4 +122,14 @@ public class PlaylistController {
         }
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/containsSong/{id}")
+    public ResponseEntity<List<Playlist>> GetPlaylists(@AuthenticationPrincipal LocalUser user , @PathVariable("id") @Valid @RequestBody @ModelAttribute Long id) {
+        try {
+            return ResponseEntity.ok(this.playlistService.getPlaylistsWithSong(user, id));
+        } catch (IllegalArgumentException e) {
+            System.out.println(e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        }
+    }
 }

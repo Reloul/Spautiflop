@@ -35,7 +35,7 @@ public class AlbumDataResponse {
 
     @NotNull
     @NotBlank
-    private List<Song> songs = new ArrayList<>();
+    private List<SongDataResponse> songs = new ArrayList<>();
 
     @NotNull
     @NotBlank
@@ -46,7 +46,9 @@ public class AlbumDataResponse {
         this.name = album.getName();
         this.image = album.getImage();
         this.release = album.getRelease();
-        this.songs = album.getSongs();
+        album.getSongs().forEach(song -> {
+            this.songs.add(new SongDataResponse(song));
+        });
         this.artist = album.getArtist();
     }
 

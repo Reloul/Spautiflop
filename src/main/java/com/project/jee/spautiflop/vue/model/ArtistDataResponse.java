@@ -29,13 +29,13 @@ public class ArtistDataResponse {
     @NotBlank
     private String name;
 
+    @NotNull
+    @NotBlank
+    private List<SongDataResponse> bestSongs;
 
     @NotNull
     @NotBlank
-    private List<Song> bestSongs;
-    @NotNull
-    @NotBlank
-    private List<Album> albums;
+    private List<AlbumDataResponse> albums;
 
     @NotNull
     @NotBlank
@@ -44,17 +44,19 @@ public class ArtistDataResponse {
     public ArtistDataResponse(Artist artist) {
         this.id = artist.getId();
         this.name = artist.getName();
-        this.bestSongs = new ArrayList<Song>();
+        this.bestSongs = new ArrayList<SongDataResponse>();
 
         /* top 5 songs */
         List<Song> top5 = new ArrayList<Song>(artist.getSongs());
         top5.sort((s1, s2) -> s2.getNbLikes().compareTo(s1.getNbLikes()));
         for (int i = 0; i < 5 && i < top5.size(); i++) {
-            this.bestSongs.add(top5.get(i));
+            this.bestSongs.add(new SongDataResponse(top5.get(i)));
         }
 
-        this.albums = new ArrayList<Album>();
-        this.albums.addAll(artist.getAlbums());
+        this.albums = new ArrayList<AlbumDataResponse>();
+        artist.getAlbums().forEach(album -> {
+            this.albums.add(new AlbumDataResponse(album));
+        });
         this.photo = artist.getPhoto();
     }
 }

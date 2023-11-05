@@ -20,7 +20,7 @@ public class UserRegistrationBody {
 
   @NonNull
   @NotBlank
-    @Pattern(regexp =  "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$", message = "Password must contain at least 8 characters, one uppercase letter and one number")
+  @Pattern(regexp =  "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+$).{8,}$", message = "Password must contain at least 8 characters, one uppercase letter and one number")
   private String password;
 
   private MultipartFile photo;

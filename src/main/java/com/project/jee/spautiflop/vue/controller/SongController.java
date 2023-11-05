@@ -1,9 +1,11 @@
 package com.project.jee.spautiflop.vue.controller;
 
 import com.project.jee.spautiflop.model.LocalUser;
+import com.project.jee.spautiflop.model.Playlist;
 import com.project.jee.spautiflop.model.Song;
 import com.project.jee.spautiflop.service.FileService;
 import com.project.jee.spautiflop.service.SongService;
+import com.project.jee.spautiflop.vue.model.PlaylistDataResponse;
 import com.project.jee.spautiflop.vue.model.SongDataResponse;
 import com.project.jee.spautiflop.vue.model.SongRegistrationBody;
 import jakarta.validation.Valid;
@@ -69,4 +71,17 @@ public class SongController {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
     }
+
+    @GetMapping("/random/{nb}")
+  public ResponseEntity<List<SongDataResponse>> GetRandomSongs(@PathVariable("nb") @Valid @RequestBody @ModelAttribute Integer nb) {
+    try {
+      List<SongDataResponse> response = new ArrayList<SongDataResponse>();
+
+      this.songService.getRandomSongs(nb).forEach(song -> {response.add(new SongDataResponse(song));});
+      return ResponseEntity.ok(response);
+    } catch (IllegalArgumentException e) {
+      System.out.println(e.getMessage());
+      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+    }
+  }
 }

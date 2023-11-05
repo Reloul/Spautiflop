@@ -13,6 +13,7 @@ import jakarta.validation.Valid;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,5 +81,19 @@ public class PlaylistService {
         playlist.setUser(localUser);
 
         return playlistRepository.save(playlist);
+    }
+
+    public List<Playlist> getPlaylistsWithSong(LocalUser user, long songId) {
+        List<Playlist> playlists = playlistRepository.findByUser(user);
+        List<Playlist_Song> playlist_songs = playlist_songRepository.findBySong_Id(songId);
+        List<Playlist> playlistsWithSong = new ArrayList<Playlist>();
+        for (Playlist_Song ps : playlist_songs) {
+            for (Playlist p : playlists) {
+                if (ps.getPlaylist().getId() == p.getId()) {
+                    playlistsWithSong.add(p);
+                }
+            }
+        }
+        return playlistsWithSong;
     }
 }
