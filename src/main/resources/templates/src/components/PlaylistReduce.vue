@@ -45,6 +45,8 @@ export default {
     }
     img{
         height: 55px;
+        width:55px;
+        object-fit: cover;
         border-radius: 10px;
         margin-left: 5px;
     }

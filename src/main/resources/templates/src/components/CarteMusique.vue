@@ -130,6 +130,8 @@ export default {
     }
     #carteM #imgM img{
         margin-top: 2vh;
+        width:110px;
+        object-fit: cover;
         height: 110px;
         border-radius: 10px;
     }

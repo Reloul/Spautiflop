@@ -10,7 +10,7 @@
         </div>
         <div id="resume-artist">
             <div id="artist" v-for="artist in artists" :key="artist">
-                <router-link :to="'/artist/' + artist.id">
+                <router-link :to="'/artist/' + artist.id" style="text-decoration: none; color: inherit;">
                     <ArtistCard :img="artist.img" :name="artist.name" :id="artist.id" />
                 </router-link>
             </div>

@@ -3,10 +3,10 @@ import { defineStore } from 'pinia'
 export const useMusicStore = defineStore('musicStore', {
     state: () => ({
         currentSong: {
-            img: require('../../../static/ethereal.jpg'),
-            music: 'E t h e r e a l',
-            artist: 'TOKYOPILL',
-            src: require('../../../static/ethereal.mp3'),
+            img: require('../../../static/V4.jpg'),
+            music: 'Moonless',
+            artist: 'FL3R',
+            src: require('../../../static/Moonless.mp3'),
             isLike: false,
         },
     }),

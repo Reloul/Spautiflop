@@ -40,6 +40,8 @@ export default {
     }
     #profilPicture img{
         height: 100px;
+        width: 100px;
+        object-fit: cover;
         border-radius: 50%;
     }
     #profilPicture{

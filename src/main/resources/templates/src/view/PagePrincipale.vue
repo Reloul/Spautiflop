@@ -12,7 +12,7 @@
             <PopularSong nameCat="Musiques Populaire" fetchLink="/api/song/top/5"/>
         </div>
         <div id="mid-main-content">
-            <PopularSong nameCat="Découverte de Musique" fetchLink="/api/song/top/5"/>
+            <PopularSong nameCat="Découverte de Musique" fetchLink="/api/song/random/5"/>
         </div>
     </div>
   </div>
