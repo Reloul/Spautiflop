@@ -9,7 +9,7 @@
             </div>
         </div>
         <div id="list-song" v-for="music in musics" :key="music.name">
-            <MusicList :img="music.img" :music="music.music" :artist="music.artist" :isLike="music.isLike" :time="music.time" :link="musics.link"/>
+            <MusicList :img="music.img" :music="music.music" :artist="music.artist" :time="music.time" :link="musics.link" :id="music.id" />
         </div>
     </div>
 </template>
@@ -21,44 +21,9 @@ export default {
     components: {
         MusicList,
     },
-    data() {
-        return{
-            musics: [
-                {
-                   img: require('../../../static/V4.jpg'),
-                   music: "Moonless",
-                   artist: "Fl3r",
-                   isLike: false,
-                   time: "2:36", 
-                   link: require('../../../static/Moonless.mp3'),
-                },
-                {
-                   img: require('../../../static/ethereal.jpg'),
-                   music: "Ethereal",
-                   artist: "TOKYOPILL",
-                   isLike: false,
-                   time: "1:38", 
-                   link: require('../../../static/ethereal.mp3'),
-                },
-                {
-                   img: require('../../../static/V4.jpg'),
-                   music: "Moonless",
-                   artist: "Fl3r",
-                   isLike: false,
-                   time: "2:36", 
-                   link: require('../../../static/Moonless.mp3'),
-                },
-                {
-                   img: require('../../../static/V4.jpg'),
-                   music: "Moonless",
-                   artist: "Fl3r",
-                   isLike: false,
-                   time: "2:36", 
-                   link: require('../../../static/Moonless.mp3'),
-                },
-            ]
-        }
-    }
+    props: {
+        musics: Array,
+    },
 }
 </script>
 

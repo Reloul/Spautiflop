@@ -8,7 +8,9 @@
                 <span> {{ music }} </span>
             </div>
             <div id="artist-name">
-                <span> {{ artist }}</span>
+                <router-link :to="'/artist/' + artist.id" style="text-decoration: none; color: inherit;">
+                    <span> {{ artist.name }}</span>
+                </router-link>
             </div>
         </div>
         <div id="icon-play">
@@ -16,7 +18,7 @@
             <v-icon icon="mdi-play" color="#ead2ac" @click="cliquePlay"></v-icon>
         </div>
         <div id="like">
-            <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: like ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike">
+            <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: userStore.musiqueLike.includes(id) ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike(id)">
         </div>
         <div id="time">
             <span> {{ time }} </span>
@@ -26,22 +28,13 @@
 
 <script>
 
-import {ref} from 'vue';
 import eventBus from "../main.js";
+import { useUserStore } from "../store/userStore";
 
 export default {
-    name: 'MusicList',
-    props:{
-        img: String,
-        music: String,
-        artist: String,
-        isLike: Boolean,
-        time: String,
-        link: String,
-    },
-    setup(props, { emit }) {
-        const like = ref(props.isLike);
-        
+    setup() {
+        const userStore = useUserStore();
+
         const cliquePlay = function(){
             const musicData = {
                 img: props.img,
@@ -54,12 +47,30 @@ export default {
 
             eventBus.emit('play-music', musicData);
         };
-        const cliqueLike = () => {
-            like.value = !like.value; // Inversez la valeur de isLike lors du clic
 
+        const cliqueLike = async (index) => {
+            if(!userStore.musiqueLike.includes(index))
+                await userStore.like(index)
+
+            else
+                await userStore.dislike(index)
         }
 
-        return {cliqueLike, like, cliquePlay}
+        return {
+            cliqueLike,
+            cliquePlay,
+            userStore
+            }
+    
+    },
+    name: 'MusicList',
+    props:{
+        img: String,
+        music: String,
+        artist: String,
+        time: String,
+        link: String,
+        id: Number,
     },
 }
 </script>

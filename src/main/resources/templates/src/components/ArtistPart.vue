@@ -10,7 +10,9 @@
         </div>
         <div id="resume-artist">
             <div id="artist" v-for="artist in artists" :key="artist">
-                <ArtistCard :img="artist.img" :name="artist.name" />
+                <router-link :to="'/artist/' + artist.id">
+                    <ArtistCard :img="artist.img" :name="artist.name" />
+                </router-link>
             </div>
 
         </div>
@@ -25,31 +27,8 @@ export default {
     components: {
         ArtistCard,
     },
-    data(){
-        return{
-            artists: [
-                {
-                    img: require('../../../static/ppCouz.jpg'),
-                    name: "DJ Couscous",
-                },
-                {
-                    img: require('../../../static/ppCouz.jpg'),
-                    name: "DJ Couscous",
-                },
-                {
-                    img: require('../../../static/ppCouz.jpg'),
-                    name: "DJ Couscous",
-                },
-                {
-                    img: require('../../../static/ppCouz.jpg'),
-                    name: "DJ Couscous",
-                },
-                {
-                    img: require('../../../static/ppCouz.jpg'),
-                    name: "DJ Couscous",
-                },
-            ]
-        }
+    props: {
+        artists: Array,
     }
 }
 </script>

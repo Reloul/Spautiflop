@@ -10,7 +10,9 @@
         </div>
         <div id="resume-album">
             <div id="album" v-for="album in albums" :key="album">
-                <AlbumCard :image="album.image" :name="album.name" :date="album.date" :artist="album.artist" :id="album.id"/>
+                <routerLink :to="'/album/' + album.id">
+                    <AlbumCard :image="album.image" :name="album.name" :date="album.date" :artist="album.artist" :id="album.id"/>
+                </routerLink>
             </div>
 
         </div>

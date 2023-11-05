@@ -10,14 +10,14 @@
         </div>
         <div id="top-search-card">
             <div id="img-search">
-                <img :src="imgSearch" alt="">
+                <img :src="song.image">
             </div>
             <div id="text-card">
                 <div id="song-name">
-                    <span> {{ nameSong }}</span>
+                    <span> {{ song.name }}</span>
                 </div>
                 <div id="artist-name">
-                    <span>{{ nameArtist }}</span>
+                    <span>{{ song.artist.name }}</span>
                 </div>
             </div>
             <div id="play">
@@ -30,12 +30,8 @@
 <script>
 export default {
     name: 'TopSearch',
-    data() {
-        return{
-            imgSearch: require('../../../static/V4.jpg'),
-            nameSong: "Moonless",
-            nameArtist: "Fl3r",
-        }
+    props: {
+        song: Array,
     }
 }
 </script>

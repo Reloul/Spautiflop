@@ -1,12 +1,36 @@
 <template>
     <div id="input-main-search">
-        <v-icon icon="mdi-magnify" color="#3b4762" size="x-large" id="button-search-main"></v-icon>
-        <input type="text" id="music-seach" placeholder="Recherchez votre musique ici !">
+        <v-icon icon="mdi-magnify" color="#3b4762" size="x-large" id="button-search-main" @click="search()"></v-icon>
+        <input ref=inputSearch type="text" id="music-seach" placeholder="Recherchez votre musique ici !">
     </div>
 </template>
 
 <script>
+import {ref} from "vue";
+import {useRouter} from "vue-router";
+import {useUpdateStore} from "../store/updateStore";
+
+
 export default {
+    setup() {
+        const inputSearch = ref(null);
+        const route = useRouter();
+        const updateStore = useUpdateStore();
+
+        const search = () => {
+            if(inputSearch.value.value != '')
+                route.push('/recherche/' + inputSearch.value.value)
+            else
+                route.push('/pagePrincipale');
+
+            updateStore.update();
+        }
+
+        return {
+            inputSearch,
+            search,
+        };
+    },
     name: "SearchBar",
 }
 </script>

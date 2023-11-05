@@ -11,15 +11,15 @@
             <div id="search-result">
                 <div id="mid-top-search">
                     <div>
-                        <TopSearch />
+                        <TopSearch :song=response.bestSongs />
                     </div>
                     <div>
-                        <SongList />
+                        <SongList  :musics="response.songs"/>
                     </div>
                 </div>
                 <div id="bottom-search">
-                    <ArtistPart />
-                    <AlbumPart />
+                    <ArtistPart :artists="response.artists"/>
+                    <AlbumPart :albums="response.albums"/>
                 </div>
             </div>
         </div>
@@ -34,18 +34,39 @@
     import SongList from '../components/SongList.vue';
     import ArtistPart from '../components/ArtistPart.vue'
     import AlbumPart from '../components/AlbumPart.vue';
+import { onBeforeMount, ref } from 'vue';
+import { useRoute } from 'vue-router';
+import { useToast } from 'vue-toastification';
+import { useQueryStore } from '@/store/queryStore';
+import { useUserStore } from '@/store/userStore';
 
-import {useUserStore} from '../store/userStore'
-import { onMounted } from 'vue';
+
+
 export default {
-    setup() {
+    setup(){
+        const queryStore = useQueryStore();
         const userStore = useUserStore();
-        
-        onMounted( async () => {
-            await userStore.init();
+        const route = useRoute();
+        const response = ref([]);
+
+        const fetchingData = async () => {
+            if( !route.params.query) {
+                route.push('/pagePrincipale')
+                toast.error("Erreur lors de la recherche");
+                return;
+            }
+
+            response.value = await queryStore.getSearch(route.params.query);
+        }
+
+        onBeforeMount(async () => {
+            await fetchingData();
         });
-        
-        return;
+
+        return {
+            response
+        }
+
     },
     name: "SearchPage",
     components : {

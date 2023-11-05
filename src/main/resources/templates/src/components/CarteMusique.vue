@@ -9,11 +9,11 @@
     <div id="bottomCard">
         <div id="like">
             {{ likes }}
-            <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: (userStore.musiqueLike.includes(id)) ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike(id)">
+            <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: (isLike ||userStore.musiqueLike.includes(id)) ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike(id)">
         </div>
         <div id="button">
             <a href="##"><v-icon icon="mdi-play" color="green"></v-icon></a>
-            <div id="para-song">
+            <div id="para-song" v-if="!isLike">
                 <ParaSong :items="items" :suppr="suppr" :id="id" />
             </div>
         </div>
@@ -25,12 +25,10 @@
 import ParaSong from '../components/ParaSong.vue';
 import { onMounted, ref } from 'vue';
 import {useUserStore} from '../store/userStore';
-import {useRoute} from 'vue-router';
 import {useQueryStore} from "../store/queryStore";
 
 export default {
     setup(props) {
-        const route = useRoute();
         const userStore = useUserStore();
         const queryStore = useQueryStore();
         const items = ref([]);
@@ -38,6 +36,9 @@ export default {
         const likes = ref(props.nbLike)
 
         const cliqueLike = async (index) => {
+            if(props.isLike)
+                return
+
             if(!userStore.musiqueLike.includes(index)) {
                 await userStore.like(index)
                 likes.value.nbLike++;
@@ -45,14 +46,13 @@ export default {
                 
             else{
                 await userStore.dislike(index)
-                props.value.nbLike--;
+                likes.value.nbLike--;
             }
-                
-            if(route.query.id === 'like')
-                props.musics.filter((item) => item.id !== index);
         }
 
         onMounted(async () => {
+            if(props.isLike)
+                return 
             let tmpI = [];
             let tmpS = await queryStore.getPlaylistWithMusic(props.id);
             userStore.playlist.forEach((val) => tmpI.push({id: val.id, name: val.name}));

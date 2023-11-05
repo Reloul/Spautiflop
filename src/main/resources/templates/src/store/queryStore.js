@@ -166,7 +166,31 @@ export const useQueryStore = defineStore( 'queryStore', {
         res.push({id: album.id, name: album.name});
 
       return res;
-    }
+    },
+
+    async getSearch(query) {
+      const data = await this.fetchJwtJson("/api/search/" + query);
+      
+      if (this.HttpCode !== API.OK) 
+        return false;
+      
+      let res = {artists: [], albums: [], songs: [], bestSongs:  {id: data.bestMatchSong.id, name: data.bestMatchSong.name, artist: data.bestMatchSong.artist, album: data.bestMatchSong.album, image: await this.fetchImage(data.bestMatchSong.image),  music: await this.fetchAudio(data.bestMatchSong.musicLink), time: 0}};
+
+      for(let artist of data.artists) 
+        res.artists.push({id: artist.id, name: artist.name, img: await this.fetchImage(artist.photo)});
+
+      for(let album of data.albums) 
+        res.albums.push({id: album.id, name: album.name, artist: album.artist, image: await this.fetchImage(album.image), date: album.release});
+
+      for(let musique of data.songs) 
+        res.songs.push({id: musique.id, music: musique.name, artist: musique.artist, album: musique.album, img: await this.fetchImage(musique.image),  link: await this.fetchAudio(musique.musicLink), nbLikes: musique.nbLikes});
+
+
+      console.log(res);
+      return res;
+    },
+
+
   
   },
 });

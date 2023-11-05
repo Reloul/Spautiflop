@@ -34,7 +34,7 @@ const routes = [
         component: () => import(/* webpackChunkName: "playlist" */ '../view/MaPlaylist.vue'),
     },
     {
-        path:'/recherche',
+        path:'/recherche/:query',
         name:'Search',
         component: () => import(/* webpackChunkName: "recherche" */ '../view/SearchPage.vue'),
     },
