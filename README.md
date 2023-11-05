@@ -3,6 +3,7 @@ Site web de streaming de musique en JEE avec Spring et VueJS.
 
 ## Initialiser le projet
 
+-Vous devez tout d'abord vous rendre à la racine du projet Spautiflop.
 -Pour initialiser les dockers tapez la commande :
 ```bash
 sudo docker-compose up -d
