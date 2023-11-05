@@ -41,7 +41,7 @@ export default {
             const musicData = {
                 img: props.song.image,
                 music: props.song.name,
-                artist: props.artist.name,
+                artist: props.song.artist.name,
                 src: props.song.music, 
             };
             musicStore.changeSong(musicData);

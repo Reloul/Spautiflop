@@ -7,12 +7,16 @@
     </div>
     <div class="cardDiapo">
         <v-carousel hide-delimiters ref=carousel>
-            <v-carousel-item v-for="music in response" :key=music[0].id>
+            <v-carousel-item>
                 <div class="slide">
-                    <div v-if="i <= 1" id="first">
+                    <div id="first">
                         <FirstCarouselItem />
                     </div>
-                    <div v-else id="rest">
+                </div>
+            </v-carousel-item>
+            <v-carousel-item v-for="music in response" :key=music[0].id>
+                <div class="slide">
+                    <div id="rest">
                         <CarteMusique :img="music[0].image" :music="music[0].name" :artist="music[0].artist.name" :nbLike="music[0].nbLikes" :isLike="true" :id="music[0].id" :musicLink="music[0].music"/>
                         <CarteMusique :img="music[1].image" :music="music[1].name" :artist="music[1].artist.name" :nbLike="music[1].nbLikes" :isLike="true" :id="music[1].id" :musicLink="music[1].music" />
                         <CarteMusique :img="music[2].image" :music="music[2].name" :artist="music[2].artist.name" :nbLike="music[2].nbLikes" :isLike="true" :id="music[2].id" :musicLink="music[2].music" />

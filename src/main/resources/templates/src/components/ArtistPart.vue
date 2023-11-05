@@ -11,7 +11,7 @@
         <div id="resume-artist">
             <div id="artist" v-for="artist in artists" :key="artist">
                 <router-link :to="'/artist/' + artist.id">
-                    <ArtistCard :img="artist.img" :name="artist.name" />
+                    <ArtistCard :img="artist.img" :name="artist.name" :id="artist.id" />
                 </router-link>
             </div>
 

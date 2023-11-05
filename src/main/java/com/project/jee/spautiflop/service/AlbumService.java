@@ -60,7 +60,7 @@ public class AlbumService {
     this.artistService.addAlbumToArtist(artist, album);
 
     if(albumRegisterBody.getRelease() != null) {
-      album.setRelease(album.getRelease());
+      album.setRelease(albumRegisterBody.getRelease());
     } else {
       album.setRelease("");
     }

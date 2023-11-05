@@ -42,12 +42,12 @@ export default {
 
             if(!userStore.musiqueLike.includes(index)) {
                 await userStore.like(index)
-                likes.value.nbLike++;
+                likes.value++;
             }
                 
             else{
                 await userStore.dislike(index)
-                likes.value.nbLike--;
+                likes.value--;
             }
         }
 

@@ -53,17 +53,6 @@ export default {
         };
     },
     name: "SearchBar",
-    setup() {
-        const router = useRouter();
-
-
-        
-
-        return {
-            searchInput,
-            handleEnter,
-        };
-    },
 }
 </script>
 

@@ -36,17 +36,20 @@
 <script>
 import {useQueryStore} from "../store/queryStore";
 import {ref} from "vue";
+import {useToast} from "vue-toastification";
 
 export default {
     setup() {
         const cover = ref(null);
         const music = ref(null);
         const queryStore = useQueryStore();
+        const toast = useToast();
     
         return {
             queryStore,
             cover,
             music,
+            toast,
         };
     },
     name: "AddMusic",
@@ -73,7 +76,12 @@ export default {
             formData.append("music", this.music.files[0]);
             //formData.append("duration", this.audioDuration);
 
-            this.queryStore.fetchJwt("/api/song/add", formData, "POST");
+            
+            if(this.queryStore.fetchJwt("/api/song/add", formData, "POST"))
+                this.toast.success("Musique ajoutée avec succès");
+            else
+                this.toast.error("Erreur lors de l'ajout de la musique");
+            
         },
         handleFileChange(event) { //
             const file = event.target.files[0];

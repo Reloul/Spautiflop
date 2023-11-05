@@ -22,8 +22,7 @@ public class AlbumRegisterBody {
   @Size(min = 3, max = 254)
   private String artist;
 
-  @Size(max = 4)
-  @Pattern(regexp =  "^[0-9]*$", message = "release must only contains letters")
+  @Pattern(regexp = "^[0-9-]*$", message = "release must only contains letters and -")
   private String release;
 
   private MultipartFile cover;

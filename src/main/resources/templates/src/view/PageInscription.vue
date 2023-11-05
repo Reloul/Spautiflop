@@ -16,11 +16,11 @@
                 <div id="Erreur">
                     <span id="confirmError" v-show="passwordMismatch" >Erreur, pas le même mot de passe !</span>
                 </div>
-                 <v-file-input label="Photo de Profil" variant="filled" accept="image/*" prepend-icon="mdi-camera" id="profil-picture" required v-model="profilPicture"></v-file-input>
+                 <v-file-input ref=image label="Photo de Profil" variant="filled" accept="image/*" prepend-icon="mdi-camera" id="profil-picture" required v-model="profilPicture"></v-file-input>
                 <div id="basForm">
                     <div id="input-temp">
                         <div id="input">
-                            <v-btn id="submit" @click=register>Envoyer</v-btn>
+                            <input type="submit" id="submit" value="S'inscrire">
                         </div>
                     </div>
                 </div>
@@ -35,16 +35,17 @@ import { useQueryStore } from '../store/queryStore'
 import {  useToast } from 'vue-toastification'
 import { useRouter } from 'vue-router'
 import * as global from '../util/global'
-
+import { ref } from 'vue'
 export default {
     name: 'PageInscription',
     setup() {
         const router = useRouter();
         const queryStore = useQueryStore();
         const toast = useToast();
+        const image = ref(null);
  
 
-        return {toast, queryStore}
+        return {toast, queryStore, image, router}
     },
     data(){
         return{
@@ -68,6 +69,7 @@ export default {
                 }else{
                     this.passwordMismatch = true;
                     this.toast.warning('Les mots de passe ne correspondent pas !');
+                    return;
                 }
 
                 const regexp = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{8,}$/;
@@ -76,38 +78,34 @@ export default {
                 if(!isPasswordValid){
                     this.toast.warning('Mot de passe non valide ! (8 caractères minimum, 1 majuscule, 1 minuscule, 1 chiffre)');
                     this.passwordValid = false;
-                    return
+                    return;
                 }
                     
-                this.passwordValid = false;
+                this.passwordValid = true;
                   
                 const formData = new FormData();
                 formData.append('pseudo', this.pseudonyme);
                 formData.append('password', this.password);
-                if(this.profilPicture.files[0]){
-                    formData.append('photo', this.profilPicture.files[0]);
+                if(this.image.files[0]){
+                    formData.append('photo', this.image.files[0]);
                 }
                 
                 const response = await this.queryStore.registerUser(formData);
 
                 if (this.queryStore.HttpCode === global.OK) {
-                    toast.success('Inscription réussie !');
+                    this.toast.success('Inscription réussie !');
                     
                     setTimeout(() => {
-                        router.push('/connexion');
+                        this.router.push('/connexion');
                     }, 1000);
                 } else {
                     if (this.queryStore.HttpCode === global.CONFLICT) {
-                        toast.error('Nom d\'utilisateur déjà utilisé !');
+                        this.toast.error('Nom d\'utilisateur déjà utilisé !');
                     } else {
-                        toast.error('Erreur dans l\'inscription !');
+                        this.toast.error('Erreur dans l\'inscription !');
                     }
                 }
             },
-            maFonction(valeur) {
-                // Faites quelque chose avec la valeur du champ de texte
-                console.log("Fonction appelée avec la valeur :", valeur);
-        },
     }
 }
 </script>

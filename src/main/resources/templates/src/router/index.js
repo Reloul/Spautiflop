@@ -60,15 +60,15 @@ const routes = [
         meta: {
             hideSongProgress: true
         }
-    },/*
+    },
     {
         path:'/ajoutAll',
         name:'AjoutAll',
-        component: () => import(/* webpackChunkName: "ajoutAll"  '../view/AddAll.vue'),
-        /*meta: {
+        component: () => import(/* webpackChunkName: "ajoutAll" */ '../view/AddAll.vue'),
+        meta: {
             hideSongProgress: true
         }
-    },*/
+    },
 ]
 
 const router = createRouter({

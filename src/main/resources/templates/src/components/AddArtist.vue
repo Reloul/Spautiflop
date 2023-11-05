@@ -4,7 +4,7 @@
             <h2>Ajouter un Artiste</h2>
             <form @submit.prevent="handleSubmit">
                 <v-text-field label="Nom de l'Artiste" required id="artist" v-model="nameArtist"></v-text-field>
-                <v-file-input label="Photo de l'Artiste" variant="filled" accept="image/*" prepend-icon="mdi-camera" id="artist-picture" required v-model="pictureArtist"></v-file-input> 
+                <v-file-input ref=image label="Photo de l'Artiste" variant="filled" accept="image/*" prepend-icon="mdi-camera" id="artist-picture" required v-model="pictureArtist"></v-file-input> 
                 <div id="submit">
                     <input type="submit" value="Ajouter l'Artiste">                                           
                 </div>
@@ -14,7 +14,22 @@
 </template>
 
 <script>
+import { ref } from "vue";
+import { useToast } from "vue-toastification";
+import { useQueryStore } from "../store/queryStore";
+
 export default {
+    setup(){
+        const image = ref(null)
+        const toast = useToast()
+        const queryStore = useQueryStore()
+
+        return {
+            image,
+            toast,
+            queryStore,
+        }
+    },
     name: "AddArtist",
      data() {
         return {
@@ -24,16 +39,14 @@ export default {
     },
     methods: {
         handleSubmit() {
-            // Effectuez les actions que vous souhaitez avec this.inputValue
-            console.log("Valeur du champ de texte :", this.nameArtist);
-            console.log("Valeur du champ de texte :", this.pictureArtist);
-            // Appelez votre fonction ici
-            this.maFonction(this.nameArtist);
-            this.maFonction(this.pictureArtist);
-        },
-        maFonction(valeur) {
-            // Faites quelque chose avec la valeur du champ de texte
-            console.log("Fonction appelée avec la valeur :", valeur);
+            const formData = new FormData();
+            formData.append("name", this.nameArtist);
+            formData.append("cover", this.image.files[0]);
+
+            if(this.queryStore.createArtist(formData))
+                this.toast.success("Artiste ajouté avec succès");
+            else
+                this.toast.error("Erreur lors de l'ajout de l'artiste");
         }
     }
 

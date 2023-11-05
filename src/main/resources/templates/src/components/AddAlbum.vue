@@ -10,7 +10,7 @@
                         <input type="date" required id="album-date" v-model="inputAlbumDate">
                         <hr>
                     </div>
-                    <v-file-input label="Image de l'Album" variant="filled" accept="image/*" prepend-icon="mdi-camera" id="song-picture" required v-model="inputAlbumPicture"></v-file-input> 
+                    <v-file-input ref=image label="Image de l'Album" variant="filled" accept="image/*" prepend-icon="mdi-camera" id="song-picture" required v-model="inputAlbumPicture"></v-file-input> 
                     <div id="submit">
                         <input type="submit" value="Ajouter l'Album">                                           
                     </div>
@@ -22,8 +22,23 @@
 
 <script>
 import { VDatePicker } from 'vuetify/labs/VDatePicker'
+import { ref } from "vue";
+import { useToast } from "vue-toastification";
+import { useQueryStore } from "../store/queryStore";
+
 
 export default {
+    setup() {
+        const image = ref(null)
+        const toast = useToast();
+        const queryStore = useQueryStore();
+
+        return {
+            image,
+            toast,
+            queryStore,
+        }
+    },
     name: "AddAlbum",
      components: {
         VDatePicker,
@@ -38,24 +53,20 @@ export default {
     },
     methods: {
         handleSubmit() {
-            // Effectuez les actions que vous souhaitez avec this.inputValue
-            console.log("Valeur du champ de texte :", this.inputAlbumName);
-            console.log("Valeur du champ de texte :", this.inputAlbumArtist);
-            console.log("Valeur du champ de texte :", this.inputAlbumDate);
-            console.log("Valeur du champ de texte :", this.inputAlbumPicture);
+            console.log(this.inputAlbumDate);
 
+            const formData = new FormData();
+            formData.append("name", this.inputAlbumName);
+            formData.append("artist", this.inputAlbumArtist);
+            formData.append("release", this.inputAlbumDate.split("-").reverse().join("-"));
+            formData.append("cover", this.image.files[0]);
 
-            // Appelez votre fonction ici
-            this.maFonction(this.inputAlbumName);
-            this.maFonction(this.inputAlbumArtist);
-            this.maFonction(this.inputAlbumDate);
-            this.maFonction(this.inputAlbumPicture);
+            if(this.queryStore.createAlbum(formData))
+                this.toast.success("Album ajouté avec succès");
+            else
+                this.toast.error("Erreur lors de l'ajout de l'album");
             
         },
-        maFonction(valeur) {
-            // Faites quelque chose avec la valeur du champ de texte
-            console.log("Fonction appelée avec la valeur :", valeur);
-        }
     }
 
 

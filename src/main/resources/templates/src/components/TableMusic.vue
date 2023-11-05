@@ -94,7 +94,7 @@ export default {
             musicStore.changeSong(musicData);
         };
         
-        return { cliqueLike, like, isPlaying, togglePlayPause, userStore , updateStore, cliquePlay, musicStore};
+        return { cliqueLike, like, isPlaying, userStore , updateStore, cliquePlay, musicStore};
     },
     props: {
         musics: Array,

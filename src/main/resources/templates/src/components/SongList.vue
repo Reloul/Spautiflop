@@ -9,7 +9,7 @@
             </div>
         </div>
         <div id="list-song" v-for="music in musics" :key="music.name">
-            <MusicList :img="music.img" :music="music.music" :artist="music.artist" :time="music.time" :link="musics.link" :id="music.id" />
+            <MusicList :img="music.img" :music="music.music" :artist="music.artist" :time="music.time" :link="music.link" :id="music.id" />
         </div>
     </div>
 </template>

@@ -12,10 +12,11 @@
                 <span id="mdpError">Erreur, mauvais mot de passe!</span>
             </div>
             <div id="input">
-                <v-btn type="submit" id="submit" value="Envoyer" @click=login>Login</v-btn>
+                 <input type="submit" id="submit" value="Se Connecter">
             </div>
             <div id="sign-up"><router-link to="/inscription"> Inscription </router-link></div>
         </div>
+    </form>
     </div>
 </template>
 
@@ -118,10 +119,4 @@ export default {
         margin-bottom: 20px;
     }
 
-</style>
-
-<style>
-#main-progress{
-    display: none;
-}
 </style>

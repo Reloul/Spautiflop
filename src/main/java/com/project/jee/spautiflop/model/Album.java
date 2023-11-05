@@ -28,8 +28,7 @@ public class Album {
   @Column(name = "image")
   private String image;
 
-  @JsonIgnore
-  @Column(name = "release", nullable = false)
+  @Column(name = "release")
   private String release;
 
   @JsonIgnore

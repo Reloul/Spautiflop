@@ -1,6 +1,6 @@
 <template>
     <div>
-        <router-link to="/artist" style="text-decoration: none; color: inherit;">
+        <router-link :to="'/artist/' + id" style="text-decoration: none; color: inherit;">
             <div id="artist-card">
                     <div id="profilPicture">
                         <img :src="img">
@@ -24,6 +24,7 @@ export default {
     props:{
         img : String,
         name : String,
+        id: Number,
     }
 }
 </script>

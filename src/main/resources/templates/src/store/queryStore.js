@@ -191,6 +191,24 @@ export const useQueryStore = defineStore( 'queryStore', {
     },
 
 
+    async createAlbum(formData) {
+      await this.fetchJwt("/api/album/add", formData, "POST");
+      if (this.HttpCode !== API.OK) {
+        console.log("Erreur lors de la création de l'album : " + this.HttpCode);
+        return false;  
+      }
+      return true;
+    },
+
+    async createArtist(formData) {
+      await this.fetchJwt("/api/artist/add", formData, "POST");
+      if (this.HttpCode !== API.OK) {
+        console.log("Erreur lors de la création de l'artiste : " + this.HttpCode);
+        return false;  
+      }
+      return true;
+    }
+
   
   },
 });
