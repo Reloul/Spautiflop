@@ -24,25 +24,28 @@
 </template>
 
 <script>
+import CarteMusique from '../components/CarteMusique.vue'
 import {onMounted, ref} from 'vue'
 import {useQueryStore} from '../store/queryStore'
-    
+import {useToast} from 'vue-toastification'
+
 export default {
     name: 'AccueilCentral',
     components: {
+        CarteMusique,
     },
     setup() {
         const queryStore = useQueryStore();
         const response = ref([]);
+        const toast = useToast();
         let nbSong = 0;
 
         const fetchingData = async () => {
             let tmp = await queryStore.getTopSongs(9);
             if(!tmp)
-                console.log("Erreur lors de la récupération des musiques");
+                toast.error("Erreur lors de la récupération des musiques");
             else {
                 let nb = ((tmp.length - (tmp.length % 3)) / 3);
-                console.log(nb)
                 while(nb > 0) 
                 {
                     let page = [];
@@ -53,7 +56,6 @@ export default {
                     response.value.push(page);
                     nb--;
                 }
-                console.log(response.value);
             }
         }
 

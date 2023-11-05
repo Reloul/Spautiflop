@@ -1,16 +1,16 @@
 <template>
     <div>
-        <router-link to="/album" id="routerLink" style="text-decoration: none; color: inherit;">
+        <router-link :to="'/album/' + id" id="routerLink" style="text-decoration: none; color: inherit;">
             <div id="album-card">
                 <div id="album-photo">
-                    <img :src="img">
+                    <img :src="image">
                 </div>
                 <div id="text-album">
                     <div id="name">
                         <span> {{ name }}</span>
                     </div>
                     <div id="type-album">
-                        <span>{{ date }} - {{ artist }}</span>
+                        <span>{{ date }} - <router-link :to="'/artist/' + artist.id" id="routerLink" style="text-decoration: none; color: inherit;">{{ artist.name }}</router-link></span>
                     </div>
                 </div>
             </div>
@@ -22,10 +22,11 @@
 export default {
     name: "AlbumCard",
     props: {
-        img: String,
+        image: String,
         name: String,
         date: String,
         artist: String,
+        id: Number,
     }
 }
 </script>

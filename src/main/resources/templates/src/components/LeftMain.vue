@@ -24,13 +24,13 @@
             </div>
             <hr>
             <div id="playlist">
-                <div>
+                <div @click="update()">
                     <router-link to="/playlist/like" id="playlist-router">
                         <PlaylistReduce :img="require('../../../static/heart.png')" name="Favoris" :user="userStore.pseudo" @toggle-active="handleToggleActive" :isActive="activePlaylistIndex === -1" :index="-1"/>
                     </router-link>
                     
-                </div>
-                <div v-for="pl in userStore.playlist" :key="pl.id">
+                </div>  
+                <div v-for="pl in userStore.playlist" :key="pl.id" @click="update()">
                    <router-link :to="'/playlist/' + pl.id" id="playlist-router">
                         <PlaylistReduce :img="pl.image" :name="pl.name" :user="userStore.pseudo" @toggle-active="handleToggleActive" :isActive="activePlaylistIndex === pl.id" :index="pl.id"/>
                     </router-link>
@@ -46,16 +46,17 @@ import AddPlaylist from '../components/AddPlaylist.vue';
 import PlaylistReduce from './PlaylistReduce.vue'
 import {useUserStore} from '../store/userStore'
 import {useQueryStore} from '../store/queryStore'
-
+import { useUpdateStore } from '@/store/updateStore';
 export default {
     setup() {
         const userStore = useUserStore();
         const queryStore = useQueryStore();
+        const updateStore = useUpdateStore();
+        const update = () => {
+            updateStore.update();
+        }
 
-        console.log(userStore.playlist);
-
-
-        return { userStore, queryStore};
+        return { userStore, queryStore, update};
     },
     name : "LeftMain",
     components : {
@@ -70,7 +71,6 @@ export default {
     methods: {
         handleToggleActive(index, isActive) {
             this.activePlaylistIndex = isActive ? index : null;
-            console.log('Playlist réduite active :', index);
         },
     },
 };

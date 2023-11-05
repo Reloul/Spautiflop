@@ -63,13 +63,6 @@ export default {
     },
     methods: {
         handleSubmit() {
-            // Effectuez les actions que vous souhaitez avec this.inputValue
-            console.log("nom de la musique :", this.inputMusicName);
-            console.log("nom de l'artiste :", this.inputMusicArtist);
-            console.log("nom de l'album :", this.inputMusicAlbum);
-            console.log("genre de la musique :", this.inputMusicGenre);
-            console.log("image de la musique :", this.inputMusicPicture);
-            console.log("fichier de la musique :", this.inputMusicLink);
 
             let formData = new FormData();
             formData.append("name", this.inputMusicName);
@@ -90,7 +83,6 @@ export default {
                 const audio = new Audio(event.target.result);
                 audio.onloadedmetadata = () => {
                     this.audioDuration = audio.duration;
-                    console.log("Durée du fichier audio (en secondes) :", this.audioDuration);
                 };
             };
             // Lisez le fichier audio sélectionné (File)

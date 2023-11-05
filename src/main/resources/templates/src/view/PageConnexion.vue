@@ -55,10 +55,8 @@ export default {
 
                 setTimeout(() => {
                     router.push('/pagePrincipale');
-                }, 1150);
+                }, 450);
                 const res = await queryStore.fetchJwtJson("/auth/me");
-                console.log(await queryStore.jwt);
-                console.log(await queryStore.response);
             } else {
                 toast.error('Connexion échouée !');
             }

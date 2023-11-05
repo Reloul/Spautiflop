@@ -1,26 +1,26 @@
 <template>
-    <div id="artist-page">
+    <div id="artist-page" >
         <div id="left-side">
             <LeftMain />
         </div>
-        <div id="main-artist">
+        <div id="main-artist" v-if="response.image">
             <div id="top-main-content">
                 <UserTop />
             </div>
             <div id="top-artist-page">
                 <div id="img-artist">
-                    <img :src="img">
+                    <img :src="response.image">
                 </div>
                 <div id="artist-name">
-                    <span> {{ name }} </span>
+                    <span> {{ response.name }} </span>
                 </div>
             </div>
             <div id="artist-content">
                 <div id="artist-top-music">
-                    <TableMusic :musics="musics"/>
+                    <TableMusic :musics="response.bestSongs"/>
                 </div>
                 <div id="artist-album">
-                    <AlbumPart />
+                    <AlbumPart :albums="response.albums" />
                 </div>
             </div>
         </div>
@@ -33,9 +33,68 @@ import AlbumPart from '../components/AlbumPart.vue';
 import LeftMain from '../components/LeftMain.vue';
 import TableMusic from '../components/TableMusic.vue';
 import UserTop from "../components/UserTop.vue";
+import { onBeforeMount, ref, onServerPrefetch } from 'vue';
+import { useRoute } from 'vue-router';
+import { useToast } from 'vue-toastification';
+import { useQueryStore } from '@/store/queryStore';
+import { useUserStore } from '@/store/userStore';
+import { useUpdateStore } from '@/store/updateStore';
+
 
 
 export default {
+    setup() {
+        const queryStore = useQueryStore();
+        const userStore = useUserStore();
+        const updateStore = useUpdateStore();
+        const route = useRoute();
+        const toast = useToast();
+        
+        const response = ref({});
+        
+        const fetchingData = async () => {
+            
+            if( !route.params.id) {
+                route.push('/pagePrincipale')
+                toast.error("Erreur lors de la récupération de l'artiste : artiste inexistante");
+                return;
+            }
+
+            let tmp =  await queryStore.fetchArtist(route.params.id);
+            response.value = {id: tmp.id, name: tmp.name, image: tmp.image, bestSongs: [], albums: tmp.albums};
+
+            for(let item of tmp.bestSongs) {
+                let suppr = [];
+                let items = [];
+                //item.time = Math.floor(item.time / 60) + ':' + (item.time % 60 < 10 ? '0' : '') + item.time % 60;
+                suppr = await queryStore.getPlaylistWithMusic(item.id);
+                items = [];
+                userStore.playlist.forEach((val) => items.push({id: val.id, name: val.name}));
+            
+                for(let album of suppr) 
+                    items = items.filter((val) => val.id !== album.id);
+
+                if(userStore.musiqueLike.includes(item.id))
+                    suppr.push({id: "like", name: "Favoris"});
+                else
+                    items.push({id: "like", name: "Favoris"});
+
+                response.value.bestSongs.push({id: item.id, name: item.name, artist: item.artist, album: item.album, time: item.time, items: items, suppr: suppr, photo: item.photo, music: item.music, nbLikes: item.nbLikes});
+            }
+        }
+
+        onServerPrefetch(async () => {await fetchingData()});
+    
+        onBeforeMount( async () => {
+            await fetchingData();    
+            });
+        
+
+        return {
+            response,
+            updateStore
+            };
+    },
     name:"ArtistPage",
     components:{
         LeftMain,

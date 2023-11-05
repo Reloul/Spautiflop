@@ -9,15 +9,15 @@
                 <v-list-item id="item-list-add">
                     <v-list-item-title>Ajouter à la Playlist :
                         <v-list id="add-song">
-                            <v-list-item v-for="(item, i) in items" :key="i" value="i" id="item-list-add">
-                                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                            <v-list-item v-for="(item, i) in itemsR" :key="i" value="i" id="item-list-add" @click="addSong(item, id)">
+                                <v-list-item-title>{{ item.name }}</v-list-item-title>
                             </v-list-item>
                         </v-list>
                     </v-list-item-title>
                     <v-list-item-title>Supprimer de la Playlist:
                         <v-list id="add-song">
-                            <v-list-item v-for="(item, i) in suppr" :key="i" value="i" id="item-list-add">
-                                <v-list-item-title>{{ item.title }}</v-list-item-title>
+                            <v-list-item v-for="(item, i) in supprR" :key="i" value="i" id="item-list-add" @click="deleteFromPlaylist(item, id)">
+                                <v-list-item-title >{{ item.name }}</v-list-item-title>
                             </v-list-item>
                         </v-list>  
                     </v-list-item-title>                            
@@ -28,12 +28,54 @@
 </template>
 
 <script>
-import {useQueryStore} from "../store/queryStore";
+import {useUserStore} from "../store/userStore";
+import {ref} from "vue";
+
+
 export default {
+    setup(props) {
+        const userStore = useUserStore();
+
+        const itemsR = ref(props.items);
+        const supprR = ref(props.suppr);
+
+        const addSong = (item, id) => {
+            supprR.value.push(item);
+            itemsR.value.splice(itemsR.value.indexOf(item), 1);
+
+            if(item.name == "Favoris")
+                userStore.like(props.id);
+            
+            else
+                userStore.addSongToPlaylist(item.id, id);
+        }
+
+        const deleteFromPlaylist = (item, id) => {
+            itemsR.value.push(item);
+            supprR.value.splice(supprR.value.indexOf(item), 1);
+
+            if(item.name == "Favoris")
+                userStore.dislike(props.id);
+            
+            else
+                userStore.removeSongFromPlaylist(item.id, id);
+        }
+
+        return {
+            itemsR,
+            supprR,
+            deleteFromPlaylist,
+            addSong
+        }
+    },
     name: "ParaSong",
     props: {
         items: Array,
         suppr: Array,
+        id: {
+            type: Number,
+            required: true,
+        },
     }
 }
 </script>

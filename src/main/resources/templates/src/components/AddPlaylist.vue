@@ -64,9 +64,7 @@ export default {
             let formData = new FormData();
             formData.append('image', this.cover.files[0]);
             formData.append('name', this.name.value);
-            console.log(this.name.value);
-            console.log(this.name);
-
+            
             this.userStore.addPlaylist(formData);
         }
     }

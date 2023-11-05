@@ -21,17 +21,20 @@
 import CarteMusique from './CarteMusique.vue'
 import {onMounted, ref} from 'vue'
 import {useQueryStore} from '../store/queryStore'
+import {useToast} from 'vue-toastification'
 
 export default {
     setup(props) {
+        const toast = useToast();
         const queryStore = useQueryStore();
         const musics = ref([]);
 
         const fetchingData = async () => {
             const response = await queryStore.fetchJwtJson(props.fetchLink);
             if(queryStore.HttpCode !== 200)
-                console.log("Erreur lors de la récupération des musiques");
-            else {
+                toast.error("Erreur lors de la récupération des musiques");
+           
+           else {
                 for(let music of response){
                     musics.value.push({
                         id: music.id,

@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main class="main">
-      <router-view/>
+      <router-view v-if="updateStore.render"/>
       <div v-if="!hideSongProgress">
         <SongProgress/>
       </div>
@@ -12,8 +12,14 @@
 <script>
 import PageAccueil from "./view/PageAccueil.vue";
 import SongProgress from "./components/SongProgress.vue";
-
+import { useUpdateStore } from "./store/updateStore";
 export default {
+  setup() {
+    const updateStore = useUpdateStore();
+    return {
+      updateStore,
+    }
+  },
   name: "App",
   components: {
     PageAccueil,

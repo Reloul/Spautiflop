@@ -3,30 +3,30 @@
         <div id="left-side">
             <LeftMain />
         </div>
-        <div id="main-album">
+        <div id="main-album" v-if="response.image">
             <div id="top-main-content">
                 <UserTop />
             </div>
             <div id="album-content">
                 <div id="top-content-album">
                     <div id="picture">
-                        <img :src='image'>
+                        <img :src='response.image'>
                     </div>
                     <div id="text">
                         <div id="name">
-                            <span> {{ name }}</span>
+                            <span> {{ response.name }}</span>
                         </div>
                         <div id="user">
-                            <router-link to="/artist" style="text-decoration: none; color: inherit;">
-                                <span>{{ artist }}</span>
+                            <router-link :to="'/artist/' + response.artist.id" style="text-decoration: none; color: inherit;" @click=updateStore.update()>
+                                <span>{{ response.artist.name }}</span>
                             </router-link>
-                            <span>{{ - date }} - </span>
+                            <span>{{ - response.date }} - </span>
                             <span>{{ nbSong }} musiques</span>
                         </div>
                     </div>
                 </div>
                 <div id="music">
-                    <TableMusic :musics="musics" />
+                    <TableMusic :musics="response.songs" />
                 </div>
             </div>
         </div>
@@ -34,11 +34,70 @@
 </template>
 
 <script>
+      
 import LeftMain from '../components/LeftMain.vue';
 import TableMusic from '../components/TableMusic.vue';
 import UserTop from '../components/UserTop.vue';
+import { onBeforeMount, ref, onServerPrefetch } from 'vue';
+import { useRoute } from 'vue-router';
+import { useToast } from 'vue-toastification';
+import { useQueryStore } from '@/store/queryStore';
+import { useUserStore } from '@/store/userStore';
+import { useUpdateStore } from '@/store/updateStore';
 
 export default {
+    setup() {
+        const queryStore = useQueryStore();
+        const userStore = useUserStore();
+        const updateStore = useUpdateStore();
+        const route = useRoute();
+        const toast = useToast();
+        
+        const response = ref({});
+        const nbSong = ref(0);
+        
+        const fetchingData = async () => {
+            
+            if( !route.params.id) {
+                route.push('/pagePrincipale')
+                toast.error("Erreur lors de la récupération de la playlist : playlist inexistante");
+                return;
+            }
+
+            let tmp = await queryStore.fetchAlbum(route.params.id);
+            response.value = {id: tmp.id, name: tmp.name, artist: tmp.artist, date: tmp.date, image: tmp.image, songs: []}
+
+            for(let item of tmp.songs) {
+                let suppr = [];
+                let items = [];
+                //item.time = Math.floor(item.time / 60) + ':' + (item.time % 60 < 10 ? '0' : '') + item.time % 60;
+                suppr = await queryStore.getPlaylistWithMusic(item.id);
+                items = [];
+                userStore.playlist.forEach((val) => items.push({id: val.id, name: val.name}));
+            
+                for(let album of suppr) 
+                    items = items.filter((val) => val.id !== album.id);
+
+                if(userStore.musiqueLike.includes(item.id))
+                    suppr.push({id: "like", name: "Favoris"});
+                else
+                    items.push({id: "like", name: "Favoris"});
+
+                response.value.songs.push({id: item.id, name: item.name, artist: item.artist, album: item.album, time: item.time, items: items, suppr: suppr, photo: item.photo, music: item.music, nbLikes: item.nbLikes});
+            }
+
+            nbSong.value = response.value.songs.length; 
+        }
+
+        onServerPrefetch(async () => {await fetchingData()});
+    
+        onBeforeMount( async () => {
+            await fetchingData();    
+            });
+        
+
+        return {response, nbSong, updateStore};
+    },
     name: "AlbumPage",
     components:{
         LeftMain,
@@ -46,33 +105,6 @@ export default {
         UserTop,
     },
     data(){
-        return{
-            image: require('../../../static/V4.jpg'),
-            name: "Moonless",
-            artist: "Fl3r",
-            date: "2023",
-            nbSong: "2",
-            musics: [
-                {
-                    music: "Moonless",
-                    photo: require("../../../static/V4.jpg"),
-                    artist: "Fl3r",
-                    album: "Moonless",
-                    date: "22 oct. 2023",
-                    time: "2:34",
-                    isLike: true,
-                },
-                {
-                    music: "Moonless",
-                    photo: require("../../../static/V4.jpg"),
-                    artist: "Fl3r",
-                    album: "Moonless",
-                    date: "22 oct. 2023",
-                    time: "2:34",
-                    isLike: true,
-                },
-            ]
-        }
     }
 }
 </script>

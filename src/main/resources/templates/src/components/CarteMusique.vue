@@ -8,13 +8,13 @@
     </div>
     <div id="bottomCard">
         <div id="like">
-            {{ nbLike }}
+            {{ likes }}
             <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: (userStore.musiqueLike.includes(id)) ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike(id)">
         </div>
         <div id="button">
             <a href="##"><v-icon icon="mdi-play" color="green"></v-icon></a>
             <div id="para-song">
-                <ParaSong :items="items" :suppr="suppr "/>
+                <ParaSong :items="items" :suppr="suppr" :id="id" />
             </div>
         </div>
     </div>
@@ -22,46 +22,64 @@
 </template>
 
 <script>
+import ParaSong from '../components/ParaSong.vue';
 import { onMounted, ref } from 'vue';
-
-import ParaSong from '../components/ParaSong'
 import {useUserStore} from '../store/userStore';
 import {useRoute} from 'vue-router';
+import {useQueryStore} from "../store/queryStore";
 
 export default {
     setup(props) {
         const route = useRoute();
         const userStore = useUserStore();
+        const queryStore = useQueryStore();
         const items = ref([]);
         const suppr = ref([]);
+        const likes = ref(props.nbLike)
 
         const cliqueLike = async (index) => {
             if(!userStore.musiqueLike.includes(index)) {
                 await userStore.like(index)
-                props.nbLike++;
+                likes.value.nbLike++;
             }
                 
             else{
                 await userStore.dislike(index)
-                props.nbLike--;
+                props.value.nbLike--;
             }
                 
             if(route.query.id === 'like')
                 props.musics.filter((item) => item.id !== index);
         }
 
-        const fetchingData = async () => {
-            for(let pl of userStore.playlist){
-                items.value.push({title: pl.name});
-                suppr.value.push({title: pl.name});
-            }
-        }
-
         onMounted(async () => {
-            await fetchingData();
+            let tmpI = [];
+            let tmpS = await queryStore.getPlaylistWithMusic(props.id);
+            userStore.playlist.forEach((val) => tmpI.push({id: val.id, name: val.name}));
+            
+            for(let album of tmpS) 
+                tmpI = tmpI.filter((item) => item.id !== album.id);
+
+            if(userStore.musiqueLike.includes(props.id))
+                tmpS.push({id: "like", name: "Favoris"});
+            else
+                tmpI.push({id: "like", name: "Favoris"});
+
+            for(let item of tmpI)
+                items.value.push(item);
+            
+            for(let item of tmpS)
+                suppr.value.push({id: item.id, name: item.name});
+
         });
-      
-      return {cliqueLike, userStore}
+
+      return {
+        cliqueLike,
+        userStore,
+        likes,
+        items,
+        suppr,
+        }
     },
     name : 'CarteMusique',
     components:{

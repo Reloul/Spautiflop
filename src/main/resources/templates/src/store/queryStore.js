@@ -1,5 +1,6 @@
 import {defineStore} from 'pinia'
 import { API_URL as URL } from '@/util/global'
+import * as API from '@/util/global'
 
 export const useQueryStore = defineStore( 'queryStore', {
   state: () => ({
@@ -84,7 +85,6 @@ export const useQueryStore = defineStore( 'queryStore', {
       this.setResponse(null);
 
       if(!reponse.ok) {
-        console.log("Error while fetching file : " + reponse.status + " " + reponse.statusText);
         return null
       }
         
@@ -109,11 +109,8 @@ export const useQueryStore = defineStore( 'queryStore', {
         
         let res = [];
         for(let musique of data) {
-          console.log(musique);
           const image = await this.fetchImage(musique.image);
           const music = await this.fetchAudio(musique.musicLink);
-          console.log(image);
-          console.log(music);
           res.push({id: musique.id, name: musique.name, artist: musique.artist, album: musique.album, image: image,  music: music, nbLikes: musique.nbLikes});
         }
 
@@ -123,5 +120,53 @@ export const useQueryStore = defineStore( 'queryStore', {
 
       return false;
     },
+
+    async fetchAlbum(id) {
+      const data = await this.fetchJwtJson("/api/album/" + id);
+      
+      if (this.HttpCode !== API.OK) 
+        return false;
+        
+      let res = {id: data.id, name: data.name, artist: data.artist, image: await this.fetchImage(data.image), songs: [], date: data.release};
+
+      for(let musique of data.songs) {
+        res.songs.push({id: musique.id, name: musique.name, artist: musique.artist, album: musique.album, photo: await this.fetchImage(musique.image),  music: await this.fetchAudio(musique.musicLink), time: 0});
+      }
+
+      return res;
+    },
+
+    async fetchArtist(id) {
+      const data = await this.fetchJwtJson("/api/artist/" + id);
+      
+      if (this.HttpCode !== API.OK) 
+        return false;
+        
+      let res = {id: data.id, name: data.name, image: await this.fetchImage(data.photo), albums: [], bestSongs: []};
+
+      for(let album of data.albums) {
+        res.albums.push({id: album.id, name: album.name, artist: album.artist, image: await this.fetchImage(album.image), date: album.release});
+      }
+
+      for(let musique of data.bestSongs) {
+        res.bestSongs.push({id: musique.id, name: musique.name, artist: musique.artist, album: musique.album, photo: await this.fetchImage(musique.image),  music: await this.fetchAudio(musique.musicLink), time: 0});
+      }
+
+      return res;
+    },
+
+    async getPlaylistWithMusic(id) {
+      const data = await this.fetchJwtJson("/api/playlist/containsSong/" + id );
+      
+      if (this.HttpCode !== API.OK) 
+        return false;
+      
+      let res = [];
+      for(let album of data) 
+        res.push({id: album.id, name: album.name});
+
+      return res;
+    }
+  
   },
 });

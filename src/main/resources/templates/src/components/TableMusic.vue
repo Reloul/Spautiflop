@@ -21,7 +21,7 @@
                                 <span>{{ item.name }}</span> 
                             </div>
                             <div id="artist-colum-music">
-                                <span>{{ item.artist.name }} </span>
+                                <router-link @click="updateStore.update()" :to="'/artist/' + item.artist.id" style="text-decoration: none; color: inherit;"><span>{{ item.artist.name }}</span></router-link>
                             </div>
                         </div>
                         <div id="play-button"  @click="togglePlayPause(item.id)">
@@ -30,8 +30,7 @@
                         </div>
                     </div>
                 </td>
-                <td> <router-link to="/album" style="text-decoration: none; color: inherit;">{{ item.album.name }}</router-link></td>
-                <td>{{ item.date }}</td>
+                <td><router-link @click="updateStore.update()" :to="'/album/' + item.album.id" style="text-decoration: none; color: inherit;">{{ item.album.name }}{{ item.date }}</router-link></td>
                 <td>
                     <div id="time-row">
                         <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: userStore.musiqueLike.includes(item.id) ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike(item.id)" :id="item.id">
@@ -41,7 +40,7 @@
                     {{ item.time }}            
                 </td>
                 <td id="td-para">
-                    <ParaSong :items="items" :suppr="suppr" />
+                    <ParaSong :items="item.items" :suppr="item.suppr" :id="item.id"/>
                 </td>
             </tr>
         </tbody>
@@ -53,6 +52,7 @@
 import {ref} from 'vue'
 import ParaSong from '../components/ParaSong.vue';
 import {useUserStore} from '../store/userStore';
+import {useUpdateStore} from '../store/updateStore';
 import {useRoute} from 'vue-router';
 
 export default {
@@ -62,15 +62,13 @@ export default {
     },
     setup(props) {
         const userStore = useUserStore();
+        const updateStore = useUpdateStore();
         const like = ref(Array());
         const route = useRoute();
 
         props.musics.forEach((item) => {
-            console.log(item);
             like.value[item.id] = userStore.musiqueLike.includes(item.id);
-            console.log(userStore.musiqueLike.includes(item.id));
         });
-        console.log(like.value);
         const isPlaying = ref(Array(props.musics.length).fill(false));
         
         const cliqueLike = async (index) => {
@@ -87,24 +85,12 @@ export default {
         const togglePlayPause = (index) => {
             isPlaying.value = isPlaying.value.map((_, i) => i === index);
         }
-
-        return { cliqueLike, like, isPlaying, togglePlayPause, userStore };
+        
+        return { cliqueLike, like, isPlaying, togglePlayPause, userStore , updateStore};
     },
     props: {
         musics: Array,
     },
-    data(){
-        return{
-            items: [
-                { title: 'Favoris' },
-                { title: 'playlist couz' },
-            ],
-            suppr: [
-                { title: 'Favorises' },
-                { title: 'playlist de couz' },
-            ]
-        }
-    }
 }
 </script>
 

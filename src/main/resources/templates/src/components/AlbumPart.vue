@@ -10,7 +10,7 @@
         </div>
         <div id="resume-album">
             <div id="album" v-for="album in albums" :key="album">
-                <AlbumCard :img="album.img" :name="album.name" :date="album.date" :artist="album.artist"/>
+                <AlbumCard :image="album.image" :name="album.name" :date="album.date" :artist="album.artist" :id="album.id"/>
             </div>
 
         </div>
@@ -25,43 +25,9 @@ export default {
     components: {
         AlbumCard,
     },
-    data(){
-        return{
-            albums: [
-                {
-                    img: require('../../../static/V4.jpg'),
-                    name: "Moonless",
-                    date: "2023",
-                    artist: "Fl3r",
-                },
-                {
-                    img: require('../../../static/V4.jpg'),
-                    name: "Moonless",
-                    date: "2023",
-                    artist: "Fl3r",
-                },
-                {
-                    img: require('../../../static/V4.jpg'),
-                    name: "Moonless",
-                    date: "2023",
-                    artist: "Fl3r",
-                },
-                {
-                    img: require('../../../static/V4.jpg'),
-                    name: "Moonless",
-                    date: "2023",
-                    artist: "Fl3r",
-                },
-                {
-                    img: require('../../../static/V4.jpg'),
-                    name: "Moonless",
-                    date: "2023",
-                    artist: "Fl3r",
-                },
-                
-            ]
-        }
-    }
+    props: {
+        albums: Array,
+    },
 }
 </script>
 
