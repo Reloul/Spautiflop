@@ -5,7 +5,6 @@
             <tr>
                 <th class="text-left" id="head-table-music">Musique</th>
                 <th class="text-left" id="head-table-music">Album</th>
-                <th class="text-left" id="head-table-music">Date</th>
                 <th class="text-left" id="head-table-music"></th>
                 <th class="text-left" id="head-table-music"> <v-icon icon="mdi-clock-time-five-outline"></v-icon></th>
                 <th class="text-left" id="head-table-music-para"></th>
@@ -30,7 +29,6 @@
                     </div>
                 </td>
                 <td> <router-link to="/album" style="text-decoration: none; color: inherit;">{{ item.album }}</router-link></td>
-                <td>{{ item.date }}</td>
                 <td>
                     <div id="time-row">
                         <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: like[index] ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike(index)" :id="index">
@@ -40,7 +38,7 @@
                     {{ item.time }}            
                 </td>
                 <td id="td-para">
-                    <ParaSong :items="items" :suppr="suppr" />
+                    <ParaSong :items="items" :suppr="suppr" :color="color"/>
                 </td>
             </tr>
         </tbody>
@@ -63,7 +61,6 @@ export default {
         photo: String,
         artist: String,
         album: String,
-        date: String,
         time: String,
         isLike: Boolean,
         src : String,
@@ -101,7 +98,8 @@ export default {
             suppr: [
                 { title: 'Favorises' },
                 { title: 'playlist de couz' },
-            ]
+            ],
+            color: "#b9d1db"
         }
     },
 }
@@ -141,6 +139,8 @@ export default {
    
     #time-row img{
         height: 30px;
+        width: 30px;
+        object-fit: cover;
     }
 
     #time-row{
@@ -160,11 +160,5 @@ export default {
 
     #td-para{
         width: 5px;   
-    }
-</style>
-
-<style>
-    #para-add-song{
-        color: #b9d1db;
     }
 </style>

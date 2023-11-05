@@ -55,7 +55,6 @@ export default {
                     photo: require("../../../static/V4.jpg"),
                     artist: "Fl3r",
                     album: "Moonless",
-                    date: "22 oct. 2023",
                     time: "2:34",
                     isLike: true,
                     src: require("../../../static/Moonless.mp3")
@@ -65,7 +64,6 @@ export default {
                     photo: require("../../../static/ethereal.jpg"),
                     artist: "TOKYOSHIFT",
                     album: "Ethereal",
-                    date: "22 oct. 2021",
                     time: "1:37",
                     isLike: true,
                     src: require("../../../static/ethereal.mp3"),

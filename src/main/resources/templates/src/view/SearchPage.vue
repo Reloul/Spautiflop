@@ -11,7 +11,7 @@
             <div id="search-result">
                 <div id="mid-top-search">
                     <div>
-                        <TopSearch />
+                        <TopSearch  :artist="artist" :img="img" :src="src" :music="music" :isLike="isLike" :time="time"/>
                     </div>
                     <div>
                         <SongList />
@@ -45,6 +45,16 @@ export default {
         SongList,
         ArtistPart,
         AlbumPart,
+    },
+    data() {
+        return{
+            img: require('../../../static/V4.jpg'),
+            music: "Moonless",
+            artist: "Fl3r",
+            src: require('../../../static/Moonless.mp3'),
+            isLike: false,
+            time: "2:34",
+        }
     },
 }
 </script>

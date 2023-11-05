@@ -7,31 +7,36 @@
         
     </div>
     <div class="cardDiapo">
-
-        <v-carousel hide-delimiters>
-            <v-carousel-item v-for="i in 3" :key=i>
-                <div class="slide">
-
-                <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike"/>
-                <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" />
-                <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" />
-                </div>
-            </v-carousel-item>
-
-        </v-carousel>        
-
+        <div>
+            <v-carousel hide-delimiters>
+                <v-carousel-item v-for="i in 3" :key=i>
+                    <div class="slide">
+                        <div v-if="i <= 1" id="first">
+                            <FirstCarouselItem />
+                        </div>
+                        <div v-else id="rest">
+                            <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" :src="src" :home="home"/>
+                            <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" :src="src" :home="home"/>
+                            <CarteMusique :img="img" :music="music" :artist="artist" :nbLike="nbLike" :isLike="isLike" :src="src" :home="home"/>
+                        </div>
+                    </div>
+                </v-carousel-item>
+            </v-carousel>        
+        </div>
     </div>
   </div>
 </template>
 
 <script>
 import CarteMusique from '../components/CarteMusique.vue'
+import FirstCarouselItem from '../components/FirstCarouselItem.vue'
 
 
 export default {
     name: 'AccueilCentral',
     components: {
         CarteMusique,
+        FirstCarouselItem,
     },
     data() {
         return{
@@ -40,6 +45,8 @@ export default {
             artist: 'Fl3r',
             nbLike: 8900,
             isLike: true,
+            src: require("../../../static/Moonless.mp3"),
+            home: true,
         }
     }
 }
@@ -54,7 +61,6 @@ export default {
         background-color: #3b4762;
         width: 70vw;
         height: auto;
-        max-height: 80vh;
         border-radius: 10px;
         text-align: center;
         margin:auto;
@@ -103,6 +109,17 @@ export default {
         justify-content: space-evenly;
         align-items: center;
         height: 100%;
+        z-index: 1;
+    }   
+
+    #rest{
+        display: flex;
+        width: 90%;
+        justify-content: space-around;
+    }
+
+    #first{
+        width: 90%;
     }
     
    

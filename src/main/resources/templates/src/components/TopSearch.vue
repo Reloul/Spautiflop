@@ -10,32 +10,49 @@
         </div>
         <div id="top-search-card">
             <div id="img-search">
-                <img :src="imgSearch" alt="">
+                <img :src="img" alt="">
             </div>
             <div id="text-card">
                 <div id="song-name">
-                    <span> {{ nameSong }}</span>
+                    <span> {{ music }}</span>
                 </div>
                 <div id="artist-name">
-                    <span>{{ nameArtist }}</span>
+                    <span>{{ artist }}</span>
                 </div>
             </div>
             <div id="play">
-                <v-icon icon="mdi-play-circle-outline" color="#87bceb" size="70" id="icon-play"></v-icon>
+                <v-icon icon="mdi-play-circle-outline" color="#87bceb" size="70" id="icon-play"  @click="cliquePlay"></v-icon>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { useMusicStore } from '../stores/MusicStore'
+
 export default {
     name: 'TopSearch',
-    data() {
-        return{
-            imgSearch: require('../../../static/V4.jpg'),
-            nameSong: "Moonless",
-            nameArtist: "Fl3r",
+    props: {
+        img: String,
+        music: String,
+        artist: String,
+        src: String,
+        isLike: Boolean,
+        time: String,
+    },
+    setup(props){
+        const musicStore = useMusicStore();
+        const cliquePlay = function(){
+            const musicData = {
+                img: props.img,
+                music: props.music,
+                artist: props.artist,
+                src: props.src, 
+            };
+            musicStore.changeSong(musicData);
         }
+
+        return{musicStore, cliquePlay};
     }
 }
 </script>

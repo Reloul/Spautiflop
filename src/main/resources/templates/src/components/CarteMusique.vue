@@ -7,14 +7,18 @@
         <p>{{ music }} - {{ artist }}</p>
     </div>
     <div id="bottomCard">
-        <div id="like">
+        <div id="like" v-if="!home">
             {{ nbLike }}
             <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: like ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike">
+        </div>
+        <div id="like" v-else>
+            {{ nbLike }}
+            <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: like ? 'saturate(100%)':'saturate(0%)' }">
         </div>
         <div id="button">
             <v-icon icon="mdi-play" color="green" @click="cliquePlay"></v-icon>
             <div id="para-song">
-                <ParaSong :items="items" :suppr="suppr "/>
+                <ParaSong :items="items" :suppr="suppr" :color="color"/>
             </div>
         </div>
     </div>
@@ -61,6 +65,7 @@ export default {
         isLike: Boolean,
         src: String,
         time: String,
+        home: Boolean,
     },
     data(){
         return{
@@ -71,7 +76,8 @@ export default {
             suppr: [
                 { title: 'Favorises' },
                 { title: 'playlist de couz' },
-            ]
+            ],
+            color: "#273043",
         }
     }
 }
@@ -86,7 +92,6 @@ export default {
         height: 217px;
         border-radius: 10px;
         color: #273043;
-        flex-basis: 200px;
     }
     #carteM #imgM img{
         margin-top: 2vh;
@@ -98,6 +103,8 @@ export default {
          white-space: nowrap; /* Empêche le texte de revenir à la ligne */
         overflow: hidden; /* Cache le texte qui dépasse la div */
         text-overflow: ellipsis;
+        margin-right: 15px;
+        margin-left: 15px;
     }
     #like img{
         height: 20px;
@@ -113,11 +120,5 @@ export default {
     }
     #para-song{
         margin-left: 25px;
-    }
-</style>
-
-<style>
-    #para-add-song{
-        color: #273043;
     }
 </style>

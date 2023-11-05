@@ -14,7 +14,7 @@
             </div>
         </div>
         <div id="audio">
-            <audio controls :src="musicStore.currentSong.src"></audio>
+            <audio controls :src="musicStore.currentSong.src" ></audio>
         </div>
     </div>
 </template>
