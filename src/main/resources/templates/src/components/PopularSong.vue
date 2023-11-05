@@ -113,15 +113,12 @@ export default {
 
     #popular-music{
         margin-top: 6vh;
-        width: 70vw;
-        display: flex;
-        justify-content: space-between;
         text-align: center;
-        flex-wrap: wrap;
     }
 
     #popular-general{
+        flex-wrap: wrap;
         display: flex;
-        justify-content: space-between;
+        justify-content: space-around;
     }
 </style>

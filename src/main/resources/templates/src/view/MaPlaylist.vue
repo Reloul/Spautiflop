@@ -86,7 +86,6 @@ export default {
         margin-left: 20px;
         margin-top: 4vh;
         border-radius: 10px;
-        height: 93vh;
         min-height: 825px;
     }
     img{
