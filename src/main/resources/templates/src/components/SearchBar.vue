@@ -1,23 +1,30 @@
 <template>
     <div id="input-main-search">
         <v-icon icon="mdi-magnify" color="#3b4762" size="x-large" id="button-search-main" @click="search()"></v-icon>
-        <input ref=inputSearch type="text" id="music-seach" placeholder="Recherchez votre musique ici !">
+        <input ref=inputSearch type="text" id="music-seach" placeholder="Recherchez votre musique ici !" @keydown.enter="handleEnter" v-model="searchInput">
     </div>
 </template>
 
 <script>
-import {ref} from "vue";
+import {ref, onMounted} from "vue";
 import {useRouter} from "vue-router";
 import {useUpdateStore} from "../store/updateStore";
-
+import { useSearchStore } from '../stores/SearchStore'
 
 export default {
     setup() {
         const inputSearch = ref(null);
+        const searchInput = ref('');
+        const searchStore = useSearchStore();
         const route = useRouter();
         const updateStore = useUpdateStore();
 
         const search = () => {
+            const searchData = {
+                myResearch: searchInput.value,
+            };
+            searchStore.madeSearch(searchData);
+
             if(inputSearch.value.value != '')
                 route.push('/recherche/' + inputSearch.value.value)
             else
@@ -26,12 +33,37 @@ export default {
             updateStore.update();
         }
 
+        const handleEnter = (event) => {    
+            if (event.key === 'Enter') {
+                search()
+            };
+        };
+
+        onMounted(() => {
+            searchInput.value = searchStore.currentSearch.myResearch;
+        });
+
         return {
             inputSearch,
             search,
+            searchStore,
+            searchInput,
+            handleEnter,
+            
         };
     },
     name: "SearchBar",
+    setup() {
+        const router = useRouter();
+
+
+        
+
+        return {
+            searchInput,
+            handleEnter,
+        };
+    },
 }
 </script>
 

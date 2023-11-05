@@ -5,7 +5,7 @@
         </div>
         <div id="pres-song">
             <div id="music-name">
-                <span> {{ music }} </span>
+                <span> {{ music }}</span>
             </div>
             <div id="artist-name">
                 <router-link :to="'/artist/' + artist.id" style="text-decoration: none; color: inherit;">
@@ -27,25 +27,22 @@
 </template>
 
 <script>
-
-import eventBus from "../main.js";
 import { useUserStore } from "../store/userStore";
-
+import { useMusicStore } from '../stores/MusicStore.js';
 export default {
-    setup() {
+    setup(props) {
         const userStore = useUserStore();
 
+
+        const musicStore = useMusicStore();
         const cliquePlay = function(){
             const musicData = {
                 img: props.img,
                 music: props.music,
                 artist: props.artist,
-                isLike: props.isLike,
-                time: props.time,
-                link: props.link,
+                src: props.link,
             };
-
-            eventBus.emit('play-music', musicData);
+            musicStore.changeSong(musicData);
         };
 
         const cliqueLike = async (index) => {
@@ -59,8 +56,9 @@ export default {
         return {
             cliqueLike,
             cliquePlay,
-            userStore
-            }
+            userStore,
+            musicStore            
+        }
     
     },
     name: 'MusicList',

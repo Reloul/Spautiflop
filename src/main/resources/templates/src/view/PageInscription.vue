@@ -2,41 +2,22 @@
   <div id="inscription">
     <h1>Inscription</h1>
         <div id="input-group">
-            <form action="/auth/register" method="post" enctype="multipart/form-data">
-                <div id="label">
-                    <label for="pseudonym">Pseudonyme</label>
+            <form @submit.prevent="handleSubmit">
+                <v-text-field label="Rentrez votre Pseudonyme" required id="pseudo" v-model="pseudonyme"></v-text-field>
+                <div id="Erreur">
+                    <span id="pseudoError">Erreur, pseudo déjà pris !</span>
                 </div>
-                <div id="input">
-                    <input ref=pseudo type="text" id="pseudonym">
-                    <div id="Erreur">
-                        <span id="pseudoError">Erreur, pseudo déjà pris !</span>
-                    </div>
+
+                <v-text-field label="Entrez votre Mot de Passe" required id="password" type="password" v-model="password"></v-text-field>
+                <div id="Erreur">
+                    <span id="mdpIError" v-show="!passwordValid">Erreur, mot de passe non valide !</span>
                 </div>
-                <div id="label">
-                    <label for="password">Mot de Passe</label>
+                <v-text-field label="Confirmez votre Mot de Passe" required id="confirmPassword" type="password" v-model="confirmPassword"></v-text-field>       
+                <div id="Erreur">
+                    <span id="confirmError" v-show="passwordMismatch" >Erreur, pas le même mot de passe !</span>
                 </div>
-                <div id="input">
-                    <input ref=pwd type="password" id="password">
-                    <div id="Erreur">
-                        <span id="mdpIError">Erreur, mot de passe non valide !</span>
-                    </div>
-                </div>
-                <div id="label">
-                    <label for="ConfirmPassword">Confirmer le Mot de Passe</label>
-                </div>
-                <div id="input">
-                    <input type="password" id="ConfirmPassword">
-                    <div id="Erreur">
-                        <span id="confirmError">Erreur, pas le même mot de passe !</span>
-                    </div>
-                </div>
+                 <v-file-input label="Photo de Profil" variant="filled" accept="image/*" prepend-icon="mdi-camera" id="profil-picture" required v-model="profilPicture"></v-file-input>
                 <div id="basForm">
-                    <div id="label">
-                        <label for="profilPic">Photo de Profil</label>
-                    </div>
-                    <div id="input">
-                        <input ref=photo type="file" id="profilPic">
-                    </div>
                     <div id="input-temp">
                         <div id="input">
                             <v-btn id="submit" @click=register>Envoyer</v-btn>
@@ -51,7 +32,6 @@
 
 <script>
 import { useQueryStore } from '../store/queryStore'
-import {ref} from 'vue'
 import {  useToast } from 'vue-toastification'
 import { useRouter } from 'vue-router'
 import * as global from '../util/global'
@@ -62,42 +42,72 @@ export default {
         const router = useRouter();
         const queryStore = useQueryStore();
         const toast = useToast();
-        const pseudo = ref(null);
-        const pwd = ref(null);
-        const photo = ref(null);
  
 
-        const register = async () => {
-            if (pseudo.value.value === '' || pwd.value.value === '') {
-                toast.error('Veuillez remplir tous les champs !');
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append('pseudo', pseudo.value.value);
-            formData.append('password', pwd.value.value);
-            if(photo.value.files[0]){
-                formData.append('photo', photo.value.files[0]);
-            }
-            
-            const response = await queryStore.registerUser(formData);
-
-            if (queryStore.HttpCode === global.OK) {
-                toast.success('Inscription réussie !');
-                
-                setTimeout(() => {
-                    router.push('/connexion');
-                }, 1000);
-            } else {
-                if (queryStore.HttpCode === global.CONFLICT) {
-                    toast.error('Nom d\'utilisateur déjà utilisé !');
-                } else {
-                    toast.error('Erreur dans l\'inscription !');
-                }
-            }
-
+        return {toast, queryStore}
+    },
+    data(){
+        return{
+            pseudonyme: "",
+            password: "",
+            confirmPassword: "",
+            profilPicture: [],
+            passwordMismatch: false,
+            passwordValid: true,
         }
-        return {toast, register, pseudo, pwd, photo}
+    },
+    methods: {
+        async handleSubmit() {
+                if (this.pseudonyme === '' || this.password === '') {
+                    toast.error('Veuillez remplir tous les champs !');
+                    return;
+                }
+
+                if(this.password === this.confirmPassword){
+                    this.passwordMismatch = false;
+                }else{
+                    this.passwordMismatch = true;
+                    this.toast.warning('Les mots de passe ne correspondent pas !');
+                }
+
+                const regexp = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\S+$).{8,}$/;
+                const isPasswordValid = regexp.test(this.password);
+
+                if(!isPasswordValid){
+                    this.toast.warning('Mot de passe non valide ! (8 caractères minimum, 1 majuscule, 1 minuscule, 1 chiffre)');
+                    this.passwordValid = false;
+                    return
+                }
+                    
+                this.passwordValid = false;
+                  
+                const formData = new FormData();
+                formData.append('pseudo', this.pseudonyme);
+                formData.append('password', this.password);
+                if(this.profilPicture.files[0]){
+                    formData.append('photo', this.profilPicture.files[0]);
+                }
+                
+                const response = await this.queryStore.registerUser(formData);
+
+                if (this.queryStore.HttpCode === global.OK) {
+                    toast.success('Inscription réussie !');
+                    
+                    setTimeout(() => {
+                        router.push('/connexion');
+                    }, 1000);
+                } else {
+                    if (this.queryStore.HttpCode === global.CONFLICT) {
+                        toast.error('Nom d\'utilisateur déjà utilisé !');
+                    } else {
+                        toast.error('Erreur dans l\'inscription !');
+                    }
+                }
+            },
+            maFonction(valeur) {
+                // Faites quelque chose avec la valeur du champ de texte
+                console.log("Fonction appelée avec la valeur :", valeur);
+        },
     }
 }
 </script>
@@ -117,27 +127,23 @@ export default {
         padding-bottom: 5vh;
     }
     #input-group{
-        position: inherit;
-        display: inline-block;
+        padding: 30px;
     }
     #input-group input{
         background-color: #A7BED3;
         outline: 2px solid #A7BED3;
         border: none;
         border-radius: 4px;
-        width: 20vw;
-        color:#3b4762;
+        color:#3b4762; 
     }
 
-    #input-group #input{
-        margin-bottom: 2vh;
-    }
+   
     #label{
         margin-bottom: 2vh;
         text-align: left;
     }
     #input #submit {
-        width: 80px;
+        width: 120px;
         float: left;
         padding: 5px;
         margin-top: 6vh;
@@ -146,7 +152,7 @@ export default {
         color: #A7BED3;
         float: right;
         font-size: 18px;
-        margin-top: 7vh;
+        margin-top: 6vh;
     }
     #input #profilPic{
         width: 98px;
@@ -164,11 +170,11 @@ export default {
         width: 5vw;
     }
 
-     #input-group #Erreur{
-        margin-top: 5px;
+    #input-group #Erreur{
+        margin-top: -10px;
         color: red;
         text-align: left;
-        visibility: hidden;
+        margin-bottom: 20px;
     }   
     #submit{
         background-color: #A7BED3;
@@ -177,14 +183,7 @@ export default {
         padding: 5rem;
     }
     
-
-#main-progress{
-    display: none;
-}
-    #submit{
-        background-color: #A7BED3;
-        color:#3b4762;
-        border: none;
-        padding: 5rem;
+    #pseudoError{
+        visibility: hidden;
     }
 </style>

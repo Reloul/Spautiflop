@@ -2,7 +2,7 @@
     <div id="para-song">
         <v-menu theme="dark" id="menu-add-song">
             <template v-slot:activator="{ props }">
-                <v-icon icon="mdi-dots-vertical" v-bind="props" id="para-add-song"></v-icon>
+                <v-icon icon="mdi-dots-vertical" v-bind="props" id="para-add-song" :color="color"></v-icon>
             </template>
 
             <v-list id="add-song">
@@ -76,6 +76,7 @@ export default {
             type: Number,
             required: true,
         },
+        color: String,
     }
 }
 </script>

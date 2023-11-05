@@ -104,8 +104,6 @@ export default {
         TableMusic,
         UserTop,
     },
-    data(){
-    }
 }
 </script>
 

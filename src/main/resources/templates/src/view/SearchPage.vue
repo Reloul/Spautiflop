@@ -78,6 +78,16 @@ export default {
         ArtistPart,
         AlbumPart,
     },
+    data() {
+        return{
+            img: require('../../../static/V4.jpg'),
+            music: "Moonless",
+            artist: "Fl3r",
+            src: require('../../../static/Moonless.mp3'),
+            isLike: false,
+            time: "2:34",
+        }
+    },
 }
 </script>
 

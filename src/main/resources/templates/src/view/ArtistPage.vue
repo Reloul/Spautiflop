@@ -102,51 +102,6 @@ export default {
         TableMusic,
         AlbumPart,
     },
-    data() {
-        return{
-            img: require('../../../static/ppCouz.jpg'),
-            name: "Fl3r",
-            musics: [
-                {
-                    music: "Moonless",
-                    photo: require("../../../static/V4.jpg"),
-                    artist: "Fl3r",
-                    album: "Moonless",
-                    date: "22 oct. 2023",
-                    time: "2:34",
-                    isLike: true,
-                },
-                {
-                    music: "Random",
-                    photo: require("../../../static/heart.png"),
-                    artist: "Moi",
-                    album: "Random",
-                    date: "21 sept. 2023",
-                    time: "2:25",
-                    isLike: true,
-                },
-                {
-                    music: "Moonless",
-                    photo: require("../../../static/V4.jpg"),
-                    artist: "Fl3r",
-                    album: "Moonless",
-                    date: "22 oct. 2023",
-                    time: "2:34",
-                    isLike: true,
-                },
-                {
-                    music: "Moonless",
-                    photo: require("../../../static/V4.jpg"),
-                    artist: "Fl3r",
-                    album: "Moonless",
-                    date: "22 oct. 2023",
-                    time: "2:34",
-                    isLike: true,
-                },
-            ]
-        }
-    }
-
 }
 </script>
 

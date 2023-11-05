@@ -21,17 +21,33 @@
                 </div>
             </div>
             <div id="play">
-                <v-icon icon="mdi-play-circle-outline" color="#87bceb" size="70" id="icon-play"></v-icon>
+                <v-icon icon="mdi-play-circle-outline" color="#87bceb" size="70" id="icon-play"  @click="cliquePlay"></v-icon>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { useMusicStore } from '../stores/MusicStore'
+
 export default {
     name: 'TopSearch',
     props: {
         song: Array,
+    },
+    setup(props){
+        const musicStore = useMusicStore();
+        const cliquePlay = function(){
+            const musicData = {
+                img: props.song.image,
+                music: props.song.name,
+                artist: props.artist.name,
+                src: props.song.music, 
+            };
+            musicStore.changeSong(musicData);
+        }
+
+        return{musicStore, cliquePlay};
     }
 }
 </script>

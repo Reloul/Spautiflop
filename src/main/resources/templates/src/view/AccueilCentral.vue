@@ -7,16 +7,16 @@
     </div>
     <div class="cardDiapo">
         <v-carousel hide-delimiters ref=carousel>
-            <v-carousel-item>
-                <div class="slide">
-                    <h1> Les musiques les plus like a porté de click  </h1>
-                </div>
-            </v-carousel-item>
             <v-carousel-item v-for="music in response" :key=music[0].id>
                 <div class="slide">
-                    <CarteMusique :img="music[0].image" :music="music[0].name" :artist="music[0].artist.name" :nbLike="music[0].nbLikes" :isLike="true" :id="music[0].id" :musicLink="music[0].music"/>
-                    <CarteMusique :img="music[1].image" :music="music[1].name" :artist="music[1].artist.name" :nbLike="music[1].nbLikes" :isLike="true" :id="music[1].id" :musicLink="music[1].music" />
-                    <CarteMusique :img="music[2].image" :music="music[2].name" :artist="music[2].artist.name" :nbLike="music[2].nbLikes" :isLike="true" :id="music[2].id" :musicLink="music[2].music" />
+                    <div v-if="i <= 1" id="first">
+                        <FirstCarouselItem />
+                    </div>
+                    <div v-else id="rest">
+                        <CarteMusique :img="music[0].image" :music="music[0].name" :artist="music[0].artist.name" :nbLike="music[0].nbLikes" :isLike="true" :id="music[0].id" :musicLink="music[0].music"/>
+                        <CarteMusique :img="music[1].image" :music="music[1].name" :artist="music[1].artist.name" :nbLike="music[1].nbLikes" :isLike="true" :id="music[1].id" :musicLink="music[1].music" />
+                        <CarteMusique :img="music[2].image" :music="music[2].name" :artist="music[2].artist.name" :nbLike="music[2].nbLikes" :isLike="true" :id="music[2].id" :musicLink="music[2].music" />
+                    </div>
                 </div>
             </v-carousel-item>
 
@@ -31,11 +31,14 @@ import CarteMusique from '../components/CarteMusique.vue'
 import {onMounted, ref} from 'vue'
 import {useQueryStore} from '../store/queryStore'
 import {useToast} from 'vue-toastification'
+import FirstCarouselItem from '../components/FirstCarouselItem.vue'
+
 
 export default {
     name: 'AccueilCentral',
     components: {
         CarteMusique,
+        FirstCarouselItem,
     },
     setup() {
         const queryStore = useQueryStore();
@@ -82,7 +85,6 @@ export default {
         background-color: #3b4762;
         width: 70vw;
         height: auto;
-        max-height: 80vh;
         border-radius: 10px;
         text-align: center;
         margin:auto;
@@ -131,6 +133,17 @@ export default {
         justify-content: space-evenly;
         align-items: center;
         height: 100%;
+        z-index: 1;
+    }   
+
+    #rest{
+        display: flex;
+        width: 90%;
+        justify-content: space-around;
+    }
+
+    #first{
+        width: 90%;
     }
     
    

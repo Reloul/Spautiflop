@@ -50,4 +50,5 @@ export default {
 body, .main {
   background-color: #273043;
 }
+
 </style>

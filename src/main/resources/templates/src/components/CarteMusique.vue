@@ -12,9 +12,9 @@
             <img :src="require('../../../static/heart.png')" alt="Picture of like" :style="{ filter: (isLike ||userStore.musiqueLike.includes(id)) ? 'saturate(100%)':'saturate(0%)' }" @click="cliqueLike(id)">
         </div>
         <div id="button">
-            <a href="##"><v-icon icon="mdi-play" color="green"></v-icon></a>
+            <v-icon icon="mdi-play" color="green" @click="cliquePlay"></v-icon>
             <div id="para-song" v-if="!isLike">
-                <ParaSong :items="items" :suppr="suppr" :id="id" />
+                <ParaSong :items="items" :suppr="suppr" :id="id" :color="color"/>
             </div>
         </div>
     </div>
@@ -26,6 +26,7 @@ import ParaSong from '../components/ParaSong.vue';
 import { onMounted, ref } from 'vue';
 import {useUserStore} from '../store/userStore';
 import {useQueryStore} from "../store/queryStore";
+import { useMusicStore } from '../stores/MusicStore.js'
 
 export default {
     setup(props) {
@@ -73,12 +74,26 @@ export default {
 
         });
 
+        const musicStore = useMusicStore();
+        const cliquePlay = function(){
+            const musicData = {
+                img: props.img,
+                music: props.music,
+                artist: props.artist.name,
+                src: props.musicLink,
+            };
+            musicStore.changeSong(musicData);
+        };
+
+
       return {
         cliqueLike,
         userStore,
         likes,
         items,
         suppr,
+        cliquePlay,
+        musicStore
         }
     },
     name : 'CarteMusique',
@@ -112,7 +127,6 @@ export default {
         height: 217px;
         border-radius: 10px;
         color: #273043;
-        flex-basis: 200px;
     }
     #carteM #imgM img{
         margin-top: 2vh;
@@ -121,6 +135,11 @@ export default {
     }
     #PresM{
         font-size: 20px;
+         white-space: nowrap; /* Empêche le texte de revenir à la ligne */
+        overflow: hidden; /* Cache le texte qui dépasse la div */
+        text-overflow: ellipsis;
+        margin-right: 15px;
+        margin-left: 15px;
     }
     #like img{
         height: 20px;
@@ -136,11 +155,5 @@ export default {
     }
     #para-song{
         margin-left: 25px;
-    }
-</style>
-
-<style>
-    #para-add-song{
-        color: #273043;
     }
 </style>
