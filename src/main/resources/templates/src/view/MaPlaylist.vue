@@ -68,7 +68,6 @@ export default {
                     isLike: true,
                     src: require("../../../static/ethereal.mp3"),
                 },
-                
             ]
         }
     }

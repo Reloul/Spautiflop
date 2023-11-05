@@ -1,25 +1,15 @@
 <template>
   <div id="connexion">
     <h1>Connexion</h1>
-    <form action=""> 
+    <form @submit.prevent="handleSubmit"> 
         <div id="input-group">
-            <div id="label">
-                <label for="pseudonym">Pseudonyme</label>
+            <v-text-field label="Rentrez votre Pseudonyme" required id="pseudo" v-model="pseudonyme"></v-text-field>
+            <div id="Erreur">
+                <span id="pseudpError">Erreur, pseudo introuvable!</span>
             </div>
-            <div id="input">
-                <input type="text" id="pseudonym">
-                <div id="Erreur">
-                    <span id="pseudpError">Erreur, pseudo introuvable!</span>
-                </div>
-            </div>
-            <div id="label">
-                <label for="password">Mot de Passe</label>
-            </div>
-            <div id="input">
-                <input type="password" id="password">
-                <div id="Erreur">
-                    <span id="mdpError">Erreur, mauvais mot de passe!</span>
-                </div>
+            <v-text-field label="Entrez votre Mot de Passe" required id="password" type="password" v-model="password"></v-text-field>
+            <div id="Erreur">
+                <span id="mdpError">Erreur, mauvais mot de passe!</span>
             </div>
             <div id="input">
                 <input type="submit" id="submit" value="Se Connecter">
@@ -33,6 +23,28 @@
 <script>
 export default {
     name : 'PageConnexion',
+    data(){
+        return{
+            pseudonyme: "",
+            password: "",
+        }
+    },
+    methods: {
+        handleSubmit() {
+                // Effectuez les actions que vous souhaitez avec this.inputValue
+                console.log("Valeur du champ de texte :", this.pseudonyme);
+                console.log("Valeur du champ de texte :", this.password);
+                // Appelez votre fonction ici
+                this.maFonction(this.pseudonyme);
+                this.maFonction(this.password);
+            },
+            maFonction(valeur) {
+                // Faites quelque chose avec la valeur du champ de texte
+                console.log("Fonction appelée avec la valeur :", valeur);
+        },
+
+    }
+    
 }
 </script>
 
@@ -52,21 +64,18 @@ export default {
         padding-top: 8vh;
         padding-bottom: 5vh;
     }
+
     #input-group{
-        position: inherit;
-        display: inline-block;
+        padding: 30px;
     }
     #input-group input{
         background-color: #A7BED3;
         outline: 2px solid #A7BED3;
         border: none;
         border-radius: 4px;
-        width: 20vw;
-        color:#3b4762;
+        color:#3b4762; 
     }
-    #input{
-        margin-bottom: 3vh;
-    }
+  
 
     #label{
         margin-bottom: 2vh;
@@ -81,14 +90,15 @@ export default {
     #sign-up a{
         color: #A7BED3;
         float: right;
-        margin-top: 7vh;
+        margin-top: 6vh;
         font-size: 18px;
     }
     #input-group #Erreur{
-        margin-top: 5px;
+        margin-top: -10px;
         color: red;
         text-align: left;
-        visibility: hidden  ;
+        visibility: hidden ;
+        margin-bottom: 20px;
     }
 
 </style>
