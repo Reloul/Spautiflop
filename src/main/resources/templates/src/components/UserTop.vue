@@ -27,6 +27,8 @@ export default {
 <style scoped>
     #user-resume img{
         height: 70px;
+        width: 70px;
+        object-fit: cover;
         border-radius: 50%;
         z-index: 3;
     }

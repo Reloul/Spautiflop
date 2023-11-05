@@ -81,7 +81,7 @@ export default {
 
     #img-music img{
         height: 60px;
-        widows: 60px;
+        width: 60px;
         border-radius: 10px;
         margin-right: 20px;
         object-fit: cover;
