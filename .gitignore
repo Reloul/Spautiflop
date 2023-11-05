@@ -33,10 +33,4 @@ build/
 ### VS Code ###
 .vscode/
 
-### image and song stock ###
-src/main/resources/static/css
-src/main/resources/static/favicon.ico
-src/main/resources/static/js
-src/main/resources/static/fonts
-src/main/resources/static/index.html
 
